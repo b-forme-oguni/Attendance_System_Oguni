@@ -14,13 +14,15 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name_sei');
-            $table->string('name_mei');
-            $table->string('name_sei_kana');
-            $table->string('name_mei_kana');
-            $table->integer('region');
-            $table->timestamps();
+            $table->bigIncrements('id')->comment('ID');
+            $table->string('name_sei')->comment('姓');
+            $table->string('name_mei')->comment('名');
+            $table->string('name_sei_kana')->comment('セイ');
+            $table->string('name_mei_kana')->comment('メイ');
+            $table->integer('region')->comment('所属');
+            // $table->timestamps();
+            $table->timestamp('created_at')->nullable()->comment('登録日時');
+            $table->timestamp('updated_at')->nullable()->comment('更新日時');
         });
     }
 
