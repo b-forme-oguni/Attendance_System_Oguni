@@ -19,6 +19,7 @@ class CreatePerformancesTable extends Migration
             $table->time('start')->comment('開始時間');
             $table->time('end')->nullable()->comment('終了時間');
             $table->integer('user_id')->comment('利用者ID');
+            $table->string('user_name')->comment('利用者名');
             $table->boolean('food_fg')->default(0)->comment('食事提供加算フラグ');
             $table->boolean('outside_fg')->default(0)->comment('施設外支援フラグ');
             $table->boolean('medical_fg')->default(0)->comment('医療連携体制加算フラグ');
