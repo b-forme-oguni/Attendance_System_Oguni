@@ -15,12 +15,12 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id')->comment('ID');
-            $table->string('name_sei')->comment('姓');
-            $table->string('name_mei')->comment('名');
-            $table->string('name_sei_kana')->comment('セイ');
-            $table->string('name_mei_kana')->comment('メイ');
-            $table->integer('region')->comment('所属');
-            // $table->timestamps();
+            $table->string('last_name')->comment('姓');
+            $table->string('first_name')->comment('名');
+            $table->string('last_name_kana')->comment('セイ');
+            $table->string('first_name_kana')->comment('メイ');
+            $table->integer('school_id')->comment('所属ID');
+            $table->softDeletes()->comment('削除フラグ');
             $table->timestamp('created_at')->nullable()->comment('登録日時');
             $table->timestamp('updated_at')->nullable()->comment('更新日時');
         });
@@ -33,6 +33,8 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('deleted_at');
+        });
     }
 }
