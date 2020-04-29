@@ -1,0 +1,20 @@
+html,
+body {
+    background-color: royalblue;
+}
+
+.content {}
+
+body {
+    color: #ffffff;
+    padding: 4%;
+}
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+}
+
+a,a:hover {
+    color: #ffffff
+}

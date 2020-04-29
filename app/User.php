@@ -17,12 +17,17 @@ class User extends Model
         'school_id' => 'required | integer',
     );
 
-    public function getUserName()
+    public function scopeSchoolIdEqual($query, $int)
+    {
+        return $query->where('school_id', $int);
+    }
+
+    public function getName()
     {
         return $this->last_name . '　' . $this->first_name;
     }
 
-    public function getUserNameKana()
+    public function getNameKana()
     {
         return $this->last_name_kana . '　' . $this->first_name_kana;
     }

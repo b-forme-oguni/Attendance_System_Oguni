@@ -11,6 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'UserController@index');
+
+Route::get('stamp/{id?}', 'UserController@stamp');
+// Route::post('main', 'UserController@main');
+
+Route::get('second', 'UserController@secondTop');
+// Route::post('second', 'UserController@second');
