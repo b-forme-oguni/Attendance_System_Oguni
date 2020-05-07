@@ -11,10 +11,7 @@
 |
 */
 
-Route::get('/', 'UserController@index');
+Route::get('/', 'IndexController@index');
 
-Route::get('stamp/{id?}', 'UserController@stamp');
-// Route::post('main', 'UserController@main');
-
-Route::get('second', 'UserController@secondTop');
-// Route::post('second', 'UserController@second');
+Route::get('stamp/{id?}', 'StampController@all');
+Route::post('stamp/{id?}', 'StampController@kanaSelect');

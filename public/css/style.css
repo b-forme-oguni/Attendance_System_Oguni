@@ -12,12 +12,20 @@ body {
     /* padding: 4%; */
 }
 
+.userslist {
+    width: 80%;
+}
+
 .side {
-    width: 50%;
+    width: 35%;
+}
+
+.kanaindex {
+    width: 20%;
 }
 
 .main {
-    width: 50%;
+    width: 65%;
     padding: 4%;
 }
 
