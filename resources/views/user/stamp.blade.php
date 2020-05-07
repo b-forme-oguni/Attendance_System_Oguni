@@ -1,25 +1,27 @@
 @extends('layouts.stamp_base')
 @section('title',$school->getlName() . 'タイムカード')
 
-@section('content')
+@section('schoolname')
+<p>
 
+    {{ $school->getlName()}}</p>
+@endsection
 
-<div>
-    <p>
+@section('userslist')
 
-        {{ $school->getlName()}}</p>
-</div>
+<ul class="list-group">
+    @foreach ($users as $user)
+    <li class="list-group-item list-group-item-action">
 
-<div>
-    <ul>
-        @foreach ($users as $user)
-        <li>
+        {{ $user->id }} .
 
-            {{ $user->id }} .
+        {{ $user->getName() }}</li>
 
-            {{ $user->getName() }}</li>
+    @endforeach
+</ul>
+@endsection
 
-        @endforeach
-    </ul>
-</div>
+@section('paginate')
+
+{{ $users->links() }}
 @endsection

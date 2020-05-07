@@ -3,16 +3,26 @@ body {
     background-color: royalblue;
 }
 
-.content {}
+.content {
+    width: 100%;
+}
 
 body {
     color: #ffffff;
+    /* padding: 4%; */
+}
+
+.side {
+    width: 50%;
+}
+
+.main {
+    width: 50%;
     padding: 4%;
 }
 
 h1 {
-    text-align: center;
-    font-size: 24px;
+    font-size: 1.6rem;
 }
 
 a,a:hover {

@@ -3,13 +3,13 @@
 
 @section('content')
 
-<ul>
+<div class="list-group">
     @foreach ($schools as $school)
-    <li><a href="stamp/{{ $school->id }}">
+    <a class="list-group-item list-group-item-action" href="stamp/{{ $school->id }}">
 
-            {{ $school->getlName() }}</a></li>
+            {{ $school->getlName() }}</a>
 
     @endforeach
-</ul>
+</div>
 
 @endsection
