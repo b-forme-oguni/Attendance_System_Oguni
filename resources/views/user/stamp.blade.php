@@ -52,13 +52,12 @@
 @endsection
 
 @section('kanaindex')
-<ul class="list-group">
-    <li class="list-group-item list-group-item-action">ALL</li>
-    @foreach ($kanalist as $key=>$value)
-    <li class="list-group-item list-group-item-action">
+<a class="list-group-item list-group-item-action" href="{{ $school->id }}">ALL</a>
 
-        {{ $key }}</li>
+@foreach ($kanalist as $key=>$value)
+<a class="list-group-item list-group-item-action" href="{{ $school->id }}?index={{ urlencode($key) }}">
 
-    @endforeach
-</ul>
+    {{ $key }}</a>
+
+@endforeach
 @endsection

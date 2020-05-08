@@ -13,5 +13,4 @@
 
 Route::get('/', 'IndexController@index');
 
-Route::get('stamp/{id?}', 'StampController@all');
-Route::post('stamp/{id?}', 'StampController@kanaSelect');
+Route::get('stamp/{id?}', 'StampController@stamp');

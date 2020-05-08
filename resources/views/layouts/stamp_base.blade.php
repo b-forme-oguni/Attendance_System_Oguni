@@ -23,7 +23,7 @@
                     @yield('userslist')
 
                 </div>
-                <div class="kanaindex text-center">
+                <div class="kanaindex list-group text-center">
                     @yield('kanaindex')
 
                 </div>
