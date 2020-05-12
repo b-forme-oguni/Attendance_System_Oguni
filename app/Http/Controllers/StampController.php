@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Performance;
 use App\User;
 use App\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class StampController extends Controller
 {
@@ -25,17 +25,19 @@ class StampController extends Controller
         'ワ' => ['ワ', 'ヲ', 'ン'],
     );
 
-    public function stamp(Request $request, $id)
+    public function stamp(Request $request, $school_id)
     {
-        $school =  School::idEqual($id)->first();
+        $school =  School::idEqual($school_id)->first();
 
+        // 日付を曜日付きで表示
         Carbon::setLocale('ja');
         $dt = new \Carbon\Carbon();
         $today = $dt->isoFormat('YYYY年MM月DD日（ddd）');
 
+        // 利用者リストを目次で絞る
         $index = $request->index;
         if ($index) {
-            // クエリ文字をキーとしてSQL文を生成
+            // 指定行のユーザーのみ表示
             $kanaindex = self::KANA[$index];
             $param = '';
             for ($i = 0; $i < count($kanaindex); $i++) {
@@ -46,23 +48,56 @@ class StampController extends Controller
                 }
             }
             $sqltxt = 'left(last_name_kana, 1) in (' . $param . ')';
-            // 指定行のユーザーのみ表示
-            $users = User::schoolIdEqual($id)
+            $users = User::schoolIdEqual($school_id)
                 ->whereRaw($sqltxt)
                 ->orderBy('last_name_kana')
                 ->get();
         } else {
             // 全てのユーザーを表示
-            $users =  User::schoolIdEqual($id)
+            $users =  User::schoolIdEqual($school_id)
                 ->orderBy('last_name_kana')->get();
+        }
+
+        // 利用者名を表示
+        if ($request->id) {
+            $personal = User::where('id', $request->id)->first();
+        } else {
+            $personal = '';
         }
 
         $prame = [
             'school' => $school,
+            'school_id' => $school_id,
             'users' => $users,
+            'personal' => $personal,
             'kanalist' => self::KANA,
             'today' => $today,
         ];
         return view('user.stamp', $prame);
+    }
+
+    public function start(Request $request, $school_id)
+    {
+
+        $oldTimestamp = Performance::where('user_id', $request->user_id)->latest()->first();
+        if ($oldTimestamp) {
+            $oldTimestampDay = $oldTimestamp->insert_date;
+        } else {
+            $oldTimestampDay = '';
+        }
+
+        $newTimestampDay = Carbon::now()->toDateString();
+
+        if (($oldTimestampDay == $newTimestampDay) && (empty($oldTimestamp->end))) {
+            return  redirect('stamp/' . $school_id);
+        }
+
+        $timestamp = Performance::create([
+            'user_id' => $request->user_id,
+            'insert_date' => $newTimestampDay,
+            'start' => Carbon::now()->toTimeString(),
+        ]);
+
+        return  redirect('stamp/' . $school_id);
     }
 }

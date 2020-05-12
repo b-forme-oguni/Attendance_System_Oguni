@@ -9,15 +9,28 @@ body {
 
 body {
     color: #ffffff;
-    /* padding: 4%; */
 }
 
 .userslist {
     width: 80%;
+    height: 100vh;
+    overflow: overlay;
+    border-right: royalblue solid 2px;
+}
+
+.side .list-group-item {
+    border-radius: unset;
+    border: none;
+    border-bottom: royalblue solid 1px;
+    color: royalblue;
+    margin-bottom: 0
 }
 
 .side {
     width: 35%;
+    height: 100vh;
+    background: #fff;
+    /* color: royalblue; */
 }
 
 .kanaindex {
@@ -33,6 +46,26 @@ h1 {
     font-size: 1.6rem;
 }
 
-a,a:hover {
+a,
+a:hover {
     color: #ffffff
+}
+
+.button {
+    display: inline-block;
+    border-radius: 50%;
+    font-size: 3rem;
+    text-align: center;
+    cursor: pointer;
+    padding: 6%;
+    background: darkblue;
+    color: #ffffff;
+    line-height: 1em;
+    transition: .3s;
+    border: none;
+}
+
+.button:hover {
+    color: royalblue;
+    background: #ffffff;
 }

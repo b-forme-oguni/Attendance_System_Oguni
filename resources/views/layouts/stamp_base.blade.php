@@ -7,6 +7,7 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+        <script type="text/javascript" src="{{ asset('js/common.js') }}"></script>
         <title>@yield('title')</title>
 
     </head>
@@ -17,17 +18,15 @@
                 @yield('schoolname')
                 @yield('date')
                 @yield('timer')
+                @yield('userarea')
             </div>
             <div class="side d-flex">
-                <div class="userslist">
+                <div class="userslist list-group">
                     @yield('userslist')
-
                 </div>
                 <div class="kanaindex list-group text-center">
                     @yield('kanaindex')
-
                 </div>
-
             </div>
         </div>
         <!-- Optional JavaScript -->

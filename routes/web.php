@@ -13,4 +13,5 @@
 
 Route::get('/', 'IndexController@index');
 
-Route::get('stamp/{id?}', 'StampController@stamp');
+Route::get('stamp/{school_id?}', 'StampController@stamp');
+Route::post('stamp/{school_id?}', 'StampController@start');
