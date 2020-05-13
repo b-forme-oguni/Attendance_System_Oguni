@@ -67,11 +67,10 @@ class StampController extends Controller
 
         $prame = [
             'school' => $school,
-            'school_id' => $school_id,
+            'today' => $today,
             'users' => $users,
             'personal' => $personal,
             'kanalist' => self::KANA,
-            'today' => $today,
         ];
         return view('user.stamp', $prame);
     }
@@ -87,8 +86,7 @@ class StampController extends Controller
         }
 
         $newTimestampDay = Carbon::now()->toDateString();
-
-        if (($oldTimestampDay == $newTimestampDay) && (empty($oldTimestamp->end))) {
+        if (($oldTimestampDay == $newTimestampDay)) {
             return  redirect('stamp/' . $school_id);
         }
 
@@ -96,6 +94,25 @@ class StampController extends Controller
             'user_id' => $request->user_id,
             'insert_date' => $newTimestampDay,
             'start' => Carbon::now()->toTimeString(),
+        ]);
+
+        return  redirect('stamp/' . $school_id);
+    }
+
+
+    public function end(Request $request, $school_id)
+    {
+
+        $timestamp = Performance::where('user_id', $request->user_id)->latest()->first();
+
+
+        if (!empty($timestamp->end)) {
+            return  redirect('stamp/' . $school_id);
+        }
+
+
+        $timestamp->update([
+            'end' => Carbon::now()->toTimeString(),
         ]);
 
         return  redirect('stamp/' . $school_id);

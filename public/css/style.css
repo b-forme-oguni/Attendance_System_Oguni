@@ -11,11 +11,15 @@ body {
     color: #ffffff;
 }
 
+.stamp {
+    padding: 0 20%;
+}
+
 .userslist {
     width: 80%;
     height: 100vh;
     overflow: overlay;
-    border-right: royalblue solid 2px;
+    border-right: royalblue solid 4px;
 }
 
 .side .list-group-item {
@@ -57,12 +61,14 @@ a:hover {
     font-size: 3rem;
     text-align: center;
     cursor: pointer;
-    padding: 6%;
-    background: darkblue;
+    /* padding: 6% 0; */
+    width: 140px;
+    height: 140px;
+    background: royalblue;
     color: #ffffff;
     line-height: 1em;
     transition: .3s;
-    border: none;
+    border: #fff solid 4px;
 }
 
 .button:hover {

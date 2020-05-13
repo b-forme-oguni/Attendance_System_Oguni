@@ -24,15 +24,22 @@
 
         {{ $personal->getName() }}</span>さん
 </p>
-
-<form action="{{ $school_id }}" method="POST">
+<div class="stamp d-flex justify-content-around">
+<form action="start/{{ $school->id }}" method="POST">
 
     {{ csrf_field() }}
     <input type="hidden" name="user_id" value="{{ $personal->id }}">
-    <input type="submit" value="IN" class="button">
+    <input type="submit" value=" IN " class="button">
 
 </form>
+<form action="end/{{ $school->id }}" method="POST">
 
+    {{ csrf_field() }}
+    <input type="hidden" name="user_id" value="{{ $personal->id }}">
+    <input type="submit" value="OUT" class="button">
+
+</form>
+</div>
 
 @else
 <p class="username">
@@ -43,15 +50,15 @@
 
 @section('userslist')
 @foreach ($users as $user)
-<a href="{{ $school_id }}?id={{ $user->id }}" class="list-group-item list-group-item-action">
+<a href="{{ $school->id }}?id={{ $user->id }}" class="list-group-item list-group-item-action">
     {{$user->id . '：' . $user->getName() }}</a>
 @endforeach
 @endsection
 
 @section('kanaindex')
-<a href="{{ $school_id }}" class="list-group-item list-group-item-action">ALL</a>
+<a href="{{ $school->id }}" class="list-group-item list-group-item-action">ALL</a>
 @foreach ($kanalist as $key=>$value)
-<a href="{{ $school_id }}?index={{ urlencode($key) }}" class="list-group-item list-group-item-action">
+<a href="{{ $school->id }}?index={{ urlencode($key) }}" class="list-group-item list-group-item-action">
 
     {{ $key }}</a>
 @endforeach
