@@ -41,19 +41,22 @@ class StampController extends Controller
         // 利用者リストを配列で取得
         $userslist = $userstable->get();
 
+        // クエリ実行の繰り返しを回避
+        $userIdlist = array();
+        foreach ($userslist as $user) {
+            $userIdlist[] = $user['id'];
+        }
+        $newTimestampDay = Carbon::now()->toDateString();
+        $timestamp = Performance::where('insert_date', $newTimestampDay)->whereIn('user_id', $userIdlist)->get();
+
         //利用者の出席状態を連想配列で記録
         $attendlist = array();
-        foreach ($userslist as $user) {
-            $timestamp = Performance::where('user_id', $user->id)->latest()->first();
-            if ($timestamp) {
-                $oldTimestampDay = $timestamp->insert_date;
-                $newTimestampDay = Carbon::now()->toDateString();
-                if (($oldTimestampDay == $newTimestampDay)) {
-                    if (!$timestamp->end) {
-                        $attendlist[$user->id] = true;
-                    } else {
-                        $attendlist[$user->id] = false;
-                    }
+        foreach ($timestamp as $stamp) {
+            if ($stamp) {
+                if (!$stamp->end) {
+                    $attendlist[$stamp->user_id] = true;
+                } else {
+                    $attendlist[$stamp->user_id] = false;
                 }
             }
         }
