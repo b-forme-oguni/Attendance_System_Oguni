@@ -5,7 +5,7 @@
 
 <div class="list-group">
     @foreach ($schools as $school)
-    <a class="list-group-item list-group-item-action" href="stamp/{{ $school->id }}">
+    <a class="list-group-item list-group-item-action" href="stamp/{{ $school->id }}?index=all">
 
             {{ $school->getlName() }}</a>
 

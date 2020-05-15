@@ -24,7 +24,10 @@
 
         {{ $personal->getName() }}</span>さん
 </p>
-<div class="stamp d-flex justify-content-around">
+<div class="stamp">
+
+    @if ( !array_key_exists ($personal->id , $attendlist) )
+    {{-- 出席ボタンの表示 --}}
     <form action="start/{{ $school->id }}" method="POST">
 
         {{ csrf_field() }}
@@ -32,6 +35,8 @@
         <input type="submit" value=" IN " class="button">
 
     </form>
+    @elseif ( $attendlist[$personal->id] == true )
+    {{-- 退席ボタンの表示 --}}
     <form action="end/{{ $school->id }}" method="POST">
 
         {{ csrf_field() }}
@@ -39,23 +44,27 @@
         <input type="submit" value="OUT" class="button">
 
     </form>
+    @else
+    <p class="msg"> 本日はお疲れ様でした！</p>
+    <p class="msg">右リストから利用者名を選択して下さい </p>
+
+    @endif
 </div>
 
 @else
-<p class="username">
-
-    {{ $alerttxt }}
-</p>
+<div class="stamp">
+    <p class="msg">右リストから利用者名を選択して下さい </p>
+</div>
 @endif
 @endsection
 
 @section('userslist')
 @foreach ($users as $user)
-<a href="{{ $school->id }}?id={{ $user->id }}" class="d-flex justify-content-between list-group-item list-group-item-action">
+<a href="{{ url()->full()}}&id={{ $user->id }}" class="d-flex justify-content-between list-group-item list-group-item-action">
     <dl class="namebox d-inline-block">
         <dt class="namebox_id d-inline-block text-right">
 
-            {{ $user->id }}</dt>：
+            {{ $user->id }}：</dt>
 
         <dd class="namebox_name d-inline-block">
 
@@ -80,7 +89,7 @@
 @endsection
 
 @section('kanaindex')
-<a href="{{ $school->id }}" class="list-group-item list-group-item-action">ALL</a>
+<a href="{{ $school->id }}?index=all" class="list-group-item list-group-item-action">ALL</a>
 @foreach ($kanalist as $key=>$value)
 <a href="{{ $school->id }}?index={{ urlencode($key) }}" class="list-group-item list-group-item-action">
 

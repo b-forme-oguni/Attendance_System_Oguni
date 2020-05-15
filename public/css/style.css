@@ -11,14 +11,17 @@ body {
     color: #ffffff;
 }
 
+.msg {
+    font-size: x-large;
+}
+
 .stamp {
-    padding: 0 20%;
+    margin-top: 10%;
 }
 
 .userslist {
     min-width: fit-content;
     width: 85%;
-    height: 100vh;
     overflow: auto;
     border-right: royalblue solid 4px;
     overflow-x: hidden;
@@ -35,19 +38,19 @@ body {
 
 .namebox_name {
     margin-bottom: 0;
-    vertical-align: middle;
 }
 
 .namebox {
-    margin-bottom: 0;
+    margin-bottom: 0.25rem;
     margin-right: 1rem;
+    margin-top: 0.25rem;
 }
 
 .namebox_attend_in {
     background-color: royalblue;
     color: #fff;
     border-radius: 0.2rem;
-    padding: 0.2rem 0.5rem;
+    padding: 0.25rem 0.5rem;
     margin-bottom: 0;
 }
 
@@ -60,8 +63,7 @@ body {
 }
 
 .namebox_id {
-    width: 2em;
-    vertical-align: middle;
+    width: 3em;
 }
 
 .side {
@@ -69,11 +71,9 @@ body {
     width: 40%;
     height: 100vh;
     background: #fff;
-    /* color: royalblue; */
 }
 
 .kanaindex {
-    /* min-width: fit-content; */
     width: 15%;
 }
 
@@ -98,7 +98,6 @@ a:hover {
     font-size: 3rem;
     text-align: center;
     cursor: pointer;
-    /* padding: 6% 0; */
     width: 140px;
     height: 140px;
     background: royalblue;

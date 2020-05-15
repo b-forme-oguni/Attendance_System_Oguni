@@ -36,7 +36,10 @@ class StampController extends Controller
         $today = $dt->isoFormat('YYYY年MM月DD日（ddd）');
 
         // 利用者リストを学校idでスコープ
-        $userslist = User::schoolIdEqual($school_id)->get();
+        $userstable = User::schoolIdEqual($school_id);
+
+        // 利用者リストを配列で取得
+        $userslist = $userstable->get();
 
         //利用者の出席状態を連想配列で記録
         $attendlist = array();
@@ -55,13 +58,10 @@ class StampController extends Controller
             }
         }
 
-        // 利用者リストを学校idでスコープ
-        $userstable = User::schoolIdEqual($school_id);
-
         // 利用者リストを目次で絞る
         $index = $request->index;
-        if ($index) {
-            // 指定行のユーザーのみ表示
+        if ($index != 'all') {
+            // クエリ文作成（指定行のユーザーのみ表示）
             $kanaindex = self::KANA[$index];
             $initial = '';
             for ($i = 0; $i < count($kanaindex); $i++) {
@@ -91,13 +91,10 @@ class StampController extends Controller
             'attendlist' =>  $attendlist,
         ];
 
-        // 利用者名を表示
+        // idクエリがあれば対象のユーザー情報を取得
         if ($request->id) {
-            $personal = User::where('id', $request->id)->first();
+            $personal = $userstable->where('id', $request->id)->first();
             $prame['personal'] = $personal;
-        } else {
-            $alerttxt = '右リストから利用者名を選択して下さい';
-            $prame['alerttxt'] = $alerttxt;
         }
 
         return view('user.stamp', $prame);
@@ -114,34 +111,30 @@ class StampController extends Controller
             $oldTimestampDay = '';
         }
 
-        //当日2回目の打刻は行わない
+        //当日レコードがある場合、2回目の打刻は行わない
         $newTimestampDay = Carbon::now()->toDateString();
-        if (($oldTimestampDay == $newTimestampDay)) {
-            return  redirect('stamp/' . $school_id);
+        if ($oldTimestampDay != $newTimestampDay) {
+
+            //当日のレコードを作成
+            $timestamp = Performance::create([
+                'user_id' => $request->user_id,
+                'insert_date' => $newTimestampDay,
+                'start' => Carbon::now()->toTimeString(),
+            ]);
         }
-
-        //当日のレコードを作成
-        $timestamp = Performance::create([
-            'user_id' => $request->user_id,
-            'insert_date' => $newTimestampDay,
-            'start' => Carbon::now()->toTimeString(),
-        ]);
-
-        return  redirect('stamp/' . $school_id);
+        return  redirect('stamp/' . $school_id . '?index=all');
     }
 
     //終了打刻
     public function end(Request $request, $school_id)
     {
-        //終了打刻がまだであれば、レコードに終了時刻を追加変更
+        //終了打刻が空であれば、レコードに終了時刻を追加変更
         $timestamp = Performance::where('user_id', $request->user_id)->latest()->first();
-        if (!empty($timestamp->end)) {
-            return  redirect('stamp/' . $school_id);
+        if (empty($timestamp->end)) {
+            $timestamp->update([
+                'end' => Carbon::now()->toTimeString(),
+            ]);
         }
-        $timestamp->update([
-            'end' => Carbon::now()->toTimeString(),
-        ]);
-
-        return  redirect('stamp/' . $school_id);
+        return  redirect('stamp/' . $school_id . '?index=all');
     }
 }
