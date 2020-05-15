@@ -22,25 +22,25 @@
 <p class="username">
     <span class="display-4">
 
-        {{ $personal->getName() }}</span>さん
+        {{ $personal['name'] }}</span>さん
 </p>
 <div class="stamp">
 
-    @if ( !array_key_exists ($personal->id , $attendlist) )
+    @if ( !array_key_exists ($personal['id'], $attendlist) )
     {{-- 出席ボタンの表示 --}}
     <form action="start/{{ $school->id }}" method="POST">
 
         {{ csrf_field() }}
-        <input type="hidden" name="user_id" value="{{ $personal->id }}">
+        <input type="hidden" name="user_id" value="{{ $personal['id'] }}">
         <input type="submit" value=" IN " class="button">
 
     </form>
-    @elseif ( $attendlist[$personal->id] == true )
+    @elseif ( $attendlist[$personal['id']] == true )
     {{-- 退席ボタンの表示 --}}
     <form action="end/{{ $school->id }}" method="POST">
 
         {{ csrf_field() }}
-        <input type="hidden" name="user_id" value="{{ $personal->id }}">
+        <input type="hidden" name="user_id" value="{{ $personal['id'] }}">
         <input type="submit" value="OUT" class="button">
 
     </form>

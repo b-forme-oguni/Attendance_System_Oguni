@@ -39,11 +39,11 @@ class StampController extends Controller
         $userstable = User::schoolIdEqual($school_id);
 
         // 利用者リストを配列で取得
-        $userslist = $userstable->get();
+        $users = $userstable->orderBy('last_name_kana')->get();
 
         // クエリ実行の繰り返しを回避
         $userIdlist = array();
-        foreach ($userslist as $user) {
+        foreach ($users as $user) {
             $userIdlist[] = $user['id'];
         }
         $newTimestampDay = Carbon::now()->toDateString();
@@ -79,11 +79,6 @@ class StampController extends Controller
                 ->whereRaw($sqltxt)
                 ->orderBy('last_name_kana')
                 ->get();
-        } else {
-            // 全てのユーザーを表示
-            $users = $userstable
-                ->orderBy('last_name_kana')
-                ->get();
         }
 
         $prame = [
@@ -96,7 +91,15 @@ class StampController extends Controller
 
         // idクエリがあれば対象のユーザー情報を取得
         if ($request->id) {
-            $personal = $userstable->where('id', $request->id)->first();
+            foreach ($users as $user) {
+                if ($user->id == $request->id) {
+                    $username = $user->getName();
+                }
+            }
+            $personal = [
+                'id' => $request->id,
+                'name' => $username,
+            ];
             $prame['personal'] = $personal;
         }
 
