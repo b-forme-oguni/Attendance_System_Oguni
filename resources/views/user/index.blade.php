@@ -2,14 +2,16 @@
 @section('title','出欠管理システムTOP')
 
 @section('content')
+@foreach ($schools as $school)
+<a class="button square" href="stamp/{{ $school->id }}?index=all">
 
-<div class="list-group">
-    @foreach ($schools as $school)
-    <a class="list-group-item list-group-item-action" href="stamp/{{ $school->id }}?index=all">
+    {{ $school->getlName() }}</a>
 
-            {{ $school->getlName() }}</a>
+@endforeach
+@endsection
 
-    @endforeach
-</div>
+@section('footer')
+<a class="button square_min" href="login">
 
+    管理者ログイン</a>
 @endsection

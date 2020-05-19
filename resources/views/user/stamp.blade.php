@@ -24,7 +24,7 @@
 
         {{ $personal['name'] }}</span>さん
 </p>
-<div class="stamp">
+<div class="stampbox">
 
     @if ( !array_key_exists ($personal['id'], $attendlist) )
     {{-- 出席ボタンの表示 --}}
@@ -32,7 +32,7 @@
 
         {{ csrf_field() }}
         <input type="hidden" name="user_id" value="{{ $personal['id'] }}">
-        <input type="submit" value=" IN " class="button">
+        <input type="submit" value=" IN " class="button round">
 
     </form>
     @elseif ( $attendlist[$personal['id']] == true )
@@ -41,7 +41,7 @@
 
         {{ csrf_field() }}
         <input type="hidden" name="user_id" value="{{ $personal['id'] }}">
-        <input type="submit" value="OUT" class="button">
+        <input type="submit" value="OUT" class="button round">
 
     </form>
     @else
@@ -52,7 +52,7 @@
 </div>
 
 @else
-<div class="stamp">
+<div class="stampbox">
     <p class="msg">右リストから利用者名を選択して下さい </p>
 </div>
 @endif

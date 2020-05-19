@@ -37,4 +37,9 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function username() // このメソッドを追記
+    {
+        return 'name'; // 対象のカラム名に。後述するように view も変えます
+    }
 }

@@ -13,14 +13,14 @@
     </head>
 
     <body>
-        <div class="content d-flex justify-content-between">
+        <div class="wrapper stamp d-flex justify-content-between">
             <div class="main text-center">
                 @yield('schoolname')
                 @yield('date')
                 @yield('timer')
                 @yield('userarea')
             </div>
-            <div class="side d-flex flex-row vh-100">
+            <div class="side d-flex flex-row">
                 <div class="userslist list-group">
                     @yield('userslist')
                 </div>
