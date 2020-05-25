@@ -15,4 +15,5 @@ class IndexController extends Controller
         ];
         return view('user.index', $prame);
     }
+
 }

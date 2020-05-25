@@ -15,7 +15,7 @@
         <div class="wrapper common">
 
             <div class="header">
-                <h1 class="text-center">@yield('title')</h1>
+                @yield('header')
             </div>
 
             <div class="content">

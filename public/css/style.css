@@ -8,10 +8,13 @@ body {
 
 h1 {
     font-size: 1.6rem;
+    /* margin-bottom: 0; */
+    /* line-height: 1; */
 }
 
 a,
-a:hover {
+a:hover,
+.navbar-dark .navbar-nav .nav-link {
     color: #ffffff;
     text-decoration: none;
 }
@@ -35,7 +38,8 @@ a:hover {
     border: #fff solid 2px;
 }
 
-.button:hover {
+.button:hover,
+.navbar-dark .navbar-nav .nav-link:hover {
     color: royalblue;
     background: #ffffff;
 }
@@ -49,7 +53,7 @@ a:hover {
 
 .button.square {
     display: block;
-    width: 10em;
+    /* width: 10em; */
     margin: 3% auto;
     font-size: 2.5rem;
     padding: 0.2em 0;
@@ -59,24 +63,30 @@ a:hover {
     padding: 0.5em;
     border: #fff solid 1px;
     font-size: 1rem;
+    margin: 0.2rem;
 }
 
-.common {
-    padding: 5%;
+.navbar {
+    border-bottom: #fff solid 1pt;
+    padding: .5rem 1rem;
 }
 
-.header {}
-
-.content {
-    margin: 5% 0;
+@media (max-width: 768px) {
+    .navbar-expand-md .navbar-nav .button {
+        display: block;
+    }
 }
 
-.footer {
-    margin-top: 8%;
-    /* border-top: #fff solid 1px; */
-    padding-top: 1rem;
+.common {}
+
+.header {
+    border-bottom: 1px solid #fff;
+    padding: 1rem 0;
 }
 
+.content {}
+
+.footer {}
 
 /* 打刻画面 */
 
@@ -146,4 +156,60 @@ a:hover {
     border-radius: 0.2rem;
     padding: 0.2rem 0.5rem;
     margin-bottom: 0;
+}
+
+/* 認証 */
+
+
+
+/* 利用者一覧 */
+
+.usertb {
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: royalblue;
+    overflow: hidden;
+    width: 90%;
+    color: royalblue;
+    margin: 0 auto;
+}
+
+.usertb thead tr {
+    background-color: #85a3ff;
+}
+
+.usertb thead th {
+    border-bottom: 2px royalblue solid;
+    color: #fff;
+    padding: 5px;
+}
+
+.usertb tbody tr {
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.usertb tbody tr td {
+    padding: 5px;
+}
+
+.usertb thead tr th+th,
+.usertb tbody tr td+td {
+    border-left: 1px royalblue dashed;
+}
+
+.usertb tbody tr:nth-child(even) {
+    background-color: #dde5ff;
+}
+
+.usertb tbody tr+tr td {
+    border-top: 1px royalblue solid;
+}
+
+.usertb tbody tr:hover {
+    background-color: gold;
+}
+
+.pagination {
+    justify-content: center;
 }

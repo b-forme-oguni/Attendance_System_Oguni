@@ -1,5 +1,5 @@
 @extends('layouts.common_base')
-@section('title','出欠管理システム')
+@section('title','管理者メニュー')
 
 
 @section('header')
@@ -14,12 +14,8 @@
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            @foreach ($schools as $school)
-            <a class="button square" href="stamp/{{ $school->id }}?index=all">
-
-                {{ $school->getlName() }}</a>
-
-            @endforeach
+            <a class="button square" href="user/0">利用者管理</a>
+            <a class="button square" href="performance">実績記録管理</a>
         </div>
     </div>
 </div>
@@ -29,7 +25,6 @@
 <div class="container">
     <div class="col-md-auto row justify-content-left">
 
-            <a class="button square_min" href="admin">管理者メニュー</a>
     </div>
 </div>
 @endsection

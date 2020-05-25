@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\School;
 use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
@@ -22,6 +23,11 @@ class User extends Model
         return $query->where('school_id', $int);
     }
 
+    public function school()
+    {
+        return $this->belongsTo('App\School');
+    }
+
     public function getName()
     {
         return $this->last_name . '　' . $this->first_name;
@@ -31,4 +37,6 @@ class User extends Model
     {
         return $this->last_name_kana . '　' . $this->first_name_kana;
     }
+
+
 }
