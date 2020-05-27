@@ -3,7 +3,7 @@
 
 
 @section('header')
-<div class="container mt-5">
+<div class="container mt-4">
     <div class="row justify-content-center">
         <h2 class="text-center">@yield('title')</h2>
     </div>

@@ -5,15 +5,20 @@ namespace App\Http\Controllers;
 use App\School;
 use Illuminate\Http\Request;
 
-class IndexController extends Controller
+class MenuController extends Controller
 {
-    public function index()
+    public function top()
     {
         $schools =  School::all();
         $prame = [
             'schools' => $schools,
         ];
-        return view('user.index', $prame);
+        return view('stamp.index', $prame);
+    }
+
+    public function adminMenu()
+    {
+        return view('admin.menu');
     }
 
 }

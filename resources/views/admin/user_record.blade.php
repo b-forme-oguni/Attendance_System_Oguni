@@ -14,20 +14,13 @@
 
                 {{ $school->getlName() }}</option>
             @endforeach
-
         </select>
-        <script>
-            document.getElementById('school_sel').options[
-
-                '{{ $school_id }}'].selected = true;
-
-        </script>
     </div>
     <div class="d-flex flex-row justify-content-left">
 
         {{ csrf_field() }}
-        <a href="user_del" value="" class="button square_min">削除した利用者</a>
-        <a href="user_reg" value="" class="button square_min">新規利用者登録</a>
+        <a href="/user_del" value="" class="button square_min">削除した利用者</a>
+        <a href="/user_reg" value="" class="button square_min">新規利用者登録</a>
     </div>
 </div>
 @endsection

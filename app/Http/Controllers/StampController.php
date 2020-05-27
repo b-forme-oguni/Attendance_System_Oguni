@@ -103,7 +103,7 @@ class StampController extends Controller
             $prame['personal'] = $personal;
         }
 
-        return view('user.stamp', $prame);
+        return view('stamp.stamp', $prame);
     }
 
     //開始打刻

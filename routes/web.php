@@ -12,7 +12,7 @@
 */
 
 // TOP
-Route::get('/', 'IndexController@index');
+Route::get('/', 'MenuController@top');
 
 // 打刻画面
 Route::get('/stamp/{school_id?}', 'StampController@stamp');
@@ -24,8 +24,13 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 // 管理者メニュー
-Route::view('/admin', 'admin.menu')->middleware('auth');
+Route::get('/admin', 'MenuController@adminMenu')->middleware('auth');
 
 // 利用者管理画面
 Route::get('/user/{school_id?}', 'UserManagerController@index');
-Route::post('/user', 'UserManagerController@select');
+Route::get('/user_reg', 'UserManagerController@register');
+Route::post('/user_reg', 'UserManagerController@store');
+Route::get('/user_edit', 'UserManagerController@edit');
+Route::post('/user_edit', 'UserManagerController@update');
+Route::get('/user_del', 'UserManagerController@delete_index');
+Route::post('/user_del', 'UserManagerController@delete');
