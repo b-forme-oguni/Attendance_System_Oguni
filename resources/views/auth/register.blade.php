@@ -1,12 +1,11 @@
 @extends('layouts.app')
+@section('title','管理者登録')
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center py-4">
         <div class="col-md-8">
-
-            <h2 class="text-center">管理者登録</h2>
-
+            <h2 class="text-center">@yield('title')</h2>
             <div class="p-4">
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
@@ -65,6 +64,5 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 @endsection

@@ -4,11 +4,14 @@ namespace App;
 
 use App\School;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Model
 {
+    use SoftDeletes;
     protected $table = 'users';
     protected $guarded = array('id');
+    protected $dates = array('deleted_at');
 
     public static $rulse = array(
         'last_name' => 'required',

@@ -7,9 +7,9 @@
         所属：</dt>
     <dd>
         <select id="school_sel" class="form-control" name="select" onChange="location.href=value;">
-            <option value="/user/0">全ての利用者</option>
+            <option value="/performance/0">全ての利用者</option>
             @foreach ($schools as $school)
-            <option value="/user/{{ $school->id }}">
+            <option value="/performance/{{ $school->id }}">
 
                 {{ $school->getName() }}</option>
             @endforeach
@@ -27,48 +27,61 @@
 @endsection
 
 @section('content')
-@if (isset($users))
+@if (isset($performances))
 <table class="usertb my-5 mx-auto">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>日付</th>
             <th>氏名</th>
-            <th>カナ名</th>
             <th>所属</th>
-            <th>登録日時</th>
-            <th>更新日時</th>
+            <th>開始時間</th>
+            <th>終了時間</th>
+            <th>食事提供加算</th>
+            <th>施設外支援</th>
+            <th>医療連携体制加算</th>
+            <th>備考</th>
         </tr>
     </thead>
     <tbody>
-        @foreach ($users as $user)
+        @foreach ($performances as $performance)
         {{-- <tr onclick="location.href={{ $user->id }};"> --}}
-        <tr class="edit_sel" onclick="location.href='/user_edit?id={{ $user->id }}';">
+        <tr class="edit_sel" onclick="location.href='/user_edit?id={{ $performance->id }}';">
             <td>
 
-                {{ $user->id }}</td>
+                {{ $performance->insert_date }}</td>
             <td>
 
-                {{ $user->getName() }}
+                {{ $performance->user->getName() }}
             </td>
             <td>
 
-                {{ $user->getNameKana() }}
+                {{ $performance->user->school->getName() }}
             </td>
             <td>
 
-                {{ $user->school->getName() }}
+                {{ $performance->start }}
             </td>
             <td>
 
-                {{ $user->created_at }}</td>
+                {{ $performance->end }}
+            </td>
             <td>
 
-                {{ $user->updated_at }}</td>
+                {{ $performance->getFlag($performance->food_fg) }}</td>
+            <td>
+
+                {{ $performance->getFlag($performance->outside_fg) }}</td>
+            <td>
+
+                {{ $performance->getFlag($performance->medical_fg) }}</td>
+            <td>
+
+                {{ $performance->getNote() }}</td>
         </tr>
         @endforeach
     </tbody>
 </table>
 
-{{ $users->links() }}
+{{ $performances->links() }}
 @endif
 @endsection

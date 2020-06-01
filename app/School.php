@@ -14,7 +14,7 @@ class School extends Model
         return $query->where('id', $int);
     }
 
-    public function getlName()
+    public function getName()
     {
         return $this->school_name;
     }

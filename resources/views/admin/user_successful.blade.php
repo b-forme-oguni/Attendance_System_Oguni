@@ -1,18 +1,11 @@
 @extends('layouts.common_base')
 @section('title', $title)
 
-@section('header')
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <h2 class="text-center">@yield('title')</h2>
-    </div>
-</div>
-@endsection
-
 @section('content')
 <div class="container mt-4">
+    <h2 class="text-center">@yield('title')</h2>
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-8 my-4">
             <dl class="form-group row">
                 <dt class="col-md-4 col-form-label text-md-right">
                     ID</dt>
@@ -54,16 +47,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-@endsection
-
-@section('footer')
-<div class="container">
-    <div class="col-md-auto row justify-content-left">
-        {{-- 変数の内容を表示
-        <pre>
-        {{ var_export($users, true)  }}</pre> --}}
     </div>
 </div>
 @endsection

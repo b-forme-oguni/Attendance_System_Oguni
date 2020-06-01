@@ -87,4 +87,55 @@ class UserManagerController extends Controller
         ];
         return view('admin.user_successful', $param);
     }
+
+    // 利用者情報変更処理
+    public function delete(Request $request)
+    {
+        $user = User::where('id', $request->id)->first();
+        $user->delete();
+        $title = '削除完了';
+
+        $param = [
+            'user' => $user,
+            'title' => $title,
+        ];
+        return view('admin.user_successful', $param);
+    }
+
+    // 利用者一覧表示
+    public function deleteindex(Request $request, $school_id)
+    {
+        $schools =  School::all();
+
+        if (empty($school_id)) {
+            $users = User::onlyTrashed()->with('school')->paginate(10);
+        } else {
+            $users = User::onlyTrashed()->schoolIdEqual($school_id)->with('school')->paginate(10);
+        }
+
+        $param = [
+            'users' => $users,
+            'schools' => $schools,
+            'school_id' =>  $school_id,
+        ];
+        return view('admin.user_delete', $param);
+    }
+
+    // ソフトデリートした削除した利用者を復活させる
+    public function revival(Request $request, $school_id)
+    {
+        if ($request->id) {
+            User::whereIn('id', $request->id)->restore();
+        }
+        return  redirect('/delete\\' . $school_id);
+    }
+
+    // ソフトデリートした削除した利用者を完全削除する
+    public function truedelete(Request $request, $school_id)
+    {
+        if ($request->id) {
+            User::whereIn('id', $request->id)->forceDelete();
+        }
+        return  redirect('/delete\\' . $school_id);
+    }
 }

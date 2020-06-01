@@ -1,35 +1,26 @@
 @extends('layouts.common_base')
 @section('title','出欠管理システム')
 
+@section('header_admin_menu')
+<li>
+    <a class="button square_min" href="/admin">
 
-@section('header')
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <h2 class="text-center">@yield('title')</h2>
-    </div>
-</div>
+        管理者メニュー</a>
+</li>
 @endsection
 
 @section('content')
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+<div class="row justify-content-center py-4">
+    <div class="col-md-8">
+        <h2 class="text-center">打刻開始する学校を選択</h2>
+        <div class="p-4">
             @foreach ($schools as $school)
             <a class="button square" href="stamp/{{ $school->id }}?index=all">
 
-                {{ $school->getlName() }}</a>
+                {{ $school->getName() }}</a>
 
             @endforeach
         </div>
-    </div>
-</div>
-@endsection
-
-@section('footer')
-<div class="container">
-    <div class="col-md-auto row justify-content-left">
-
-            <a class="button square_min" href="admin">管理者メニュー</a>
     </div>
 </div>
 @endsection

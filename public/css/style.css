@@ -1,15 +1,32 @@
+
+/* 共通 */
+
 html,
 body {
     background-color: royalblue;
     color: #ffffff;
 }
 
-/* 共通 */
+.wrapper {
+    width: 100%;
+}
 
-h1 {
-    font-size: 1.6rem;
+.header * {
+    margin: 0;
+    padding:0;
+}
+
+.header {
+    border-bottom: 1px solid #fff;
+    padding: 1rem 0;
+}
+
+.header h1 {
+    /* display: inline-block; */
+    font-size: 1.4rem;
     /* margin-bottom: 0; */
-    /* line-height: 1; */
+    /* line-height: 0; */
+    margin-right: 2rem;
 }
 
 a,
@@ -17,10 +34,6 @@ a:hover,
 .navbar-dark .navbar-nav .nav-link {
     color: #ffffff;
     text-decoration: none;
-}
-
-.wrapper {
-    width: 100%;
 }
 
 .msg {
@@ -76,17 +89,6 @@ a:hover,
         display: block;
     }
 }
-
-.common {}
-
-.header {
-    border-bottom: 1px solid #fff;
-    padding: 1rem 0;
-}
-
-.content {}
-
-.footer {}
 
 /* 打刻画面 */
 
@@ -186,7 +188,6 @@ a:hover,
 
 .usertb tbody tr {
     background-color: #fff;
-    cursor: pointer;
 }
 
 .usertb tbody tr td {
@@ -205,8 +206,10 @@ a:hover,
 .usertb tbody tr+tr td {
     border-top: 1px royalblue solid;
 }
-
-.usertb tbody tr:hover {
+.usertb tbody tr.edit_sel {
+    cursor: pointer;
+}
+.usertb tbody tr.edit_sel:hover {
     background-color: gold;
 }
 

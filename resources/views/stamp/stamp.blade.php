@@ -1,10 +1,10 @@
 @extends('layouts.stamp_base')
-@section('title',$school->getlName() . 'タイムカード')
+@section('title',$school->getName() . 'タイムカード')
 
 @section('schoolname')
 <p class="schoolname">
 
-    {{ $school->getlName()}}</p>
+    {{ $school->getName()}}</p>
 @endsection
 
 @section('date')
