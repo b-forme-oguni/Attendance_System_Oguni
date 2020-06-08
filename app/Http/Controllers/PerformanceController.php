@@ -48,8 +48,28 @@ class PerformanceController extends Controller
             ];
         }
 
+
+        $timetable = [];
+        for ($i = 9 * 4; $i <= 16 * 4; $i++) {
+            if ($i <= 16 * 3) {
+                $key = date("H:i", strtotime("00:30 +" . $i * 15 . " minute"));
+                $value = date("H時i分", strtotime("00:30 +" . $i * 15 . " minute"));
+                $timetable += [
+                    $key => $value,
+                ];
+            } else {
+                $key = date("H:i", strtotime("00:00 +" . $i * 15 . " minute"));
+                $value = date("H時i分", strtotime("00:00 +" . $i * 15 . " minute"));
+                $timetable += [
+                    $key => $value,
+                ];
+            }
+        }
+
+
         $param = [
             'userslist' => $userslist,
+            'timetable' => $timetable,
             'record' => $record,
         ];
         return view('admin.performance_edit', $param);

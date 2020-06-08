@@ -70,7 +70,9 @@ class Performance extends Model
         $_hour = date('H', strtotime($value));
         $_minute = date('i', strtotime($value));
 
-        if (!isset($value) || $_hour >= 16) {
+        if (is_null($value)) {
+            return $value;
+        }elseif ( $_hour >= 16 ) {
             $_hour = 16;
             $_minute = 0;
         } elseif ($_minute % $margin_minutes) {

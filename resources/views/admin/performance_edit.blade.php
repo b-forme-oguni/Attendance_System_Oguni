@@ -22,6 +22,7 @@
                     <label class="col-md-2 col-form-label text-md-right">
                         利用者</label>
                     <div class="col-md-8">
+
                         {{ Form::select('user_id', $userslist, $record->user_id, ['class' => 'form-control']) }}
                     </div>
                 </div>
@@ -30,17 +31,24 @@
                     <label class="col-md-2 col-form-label text-md-right">
                         開始時間</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="start" type="time" min="09:30" max="16:00" step="900" value="{{ date('H:i', strtotime($record->start) )}}">
+
+                        {{ Form::select('start', $timetable, $record->start, ['class' => 'form-control']) }}
+                        {{-- <input class="form-control" name="start" type="time" min="09:30" max="16:00" step="900" value="{{ date('H:i', strtotime($record->start) )}}"> --}}
+
                     </div>
                 </div>
-
+                @if ($record->end)
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label text-md-right">
                         終了時間</label>
                     <div class="col-md-8">
-                        <input class="form-control" name="end" type="time" min="09:30" max="16:00" step="900" value="{{ date('H:i', strtotime($record->end) )}}">
+
+                        {{ Form::select('end', $timetable, $record->end, ['class' => 'form-control']) }}
+                        {{-- <input class="form-control" name="end" type="time" min="09:30" max="16:00" step="900" value="{{ date('H:i', strtotime($record->end) )}}"> --}}
+
                     </div>
                 </div>
+                @endif
 
                 <div class="form-group row mb-0">
                     <div class="col-md-8 offset-md-2">
