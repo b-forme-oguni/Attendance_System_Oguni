@@ -37,13 +37,9 @@
                         所　属</label>
 
                     <div class="col-md-4">
-                        <select id="school_sel" class="form-control" name="school_id">
-                            @foreach ($schools as $school)
-                            <option value="{{ $school->id }}">
 
-                                {{ $school->getName() }}</option>
-                            @endforeach
-                        </select>
+                        {{ Form::select('school_id', $schoolslist, $user->school_id, ['class' => 'form-control']) }}
+
                     </div>
                 </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\School;
 use App\Performance;
 use Illuminate\Http\Request;
@@ -13,16 +14,64 @@ class PerformanceController extends Controller
         $schools =  School::all();
 
         if (empty($school_id)) {
-            $performances = Performance::with('user')->with('note')->paginate(10);
+            // リレーション先の条件で検索を行う（所属校）
+            $records = Performance::has('user')->latest()->with(['user', 'note'])->paginate(10);
         } else {
-            $performances = Performance::schoolIdEqual($school_id)->with('user')->with('note')->paginate(10);
+            // リレーション先の条件で検索を行う（所属校）
+            $records = Performance::has('user')->whereHas('User', function ($q) use ($school_id) {
+                $q->where('school_id', $school_id);
+            })
+                ->latest()->with(['user', 'note'])->paginate(10);
         }
 
         $param = [
-            'performances' => $performances,
+            'records' => $records,
             'schools' => $schools,
             'school_id' =>  $school_id,
         ];
         return view('admin.performance_record', $param);
+    }
+
+
+    // 実績記録変更画面
+    public function edit(Request $request)
+    {
+        // クエリから指定したidのレコードを取得
+        $record = Performance::where('id', $request->id)->first();
+
+        // Formファザード用にUserクラスをidと名前の連想配列にする
+        $users = User::all();
+        $userslist = [];
+        foreach ($users as $user) {
+            $userslist += [
+                $user->id => $user->id . '：' . $user->getName(),
+            ];
+        }
+
+        $param = [
+            'userslist' => $userslist,
+            'record' => $record,
+        ];
+        return view('admin.performance_edit', $param);
+    }
+
+    // 実績記録変更画面
+    public function update(Request $request)
+    {
+        $performance = Performance::where('id', $request->id)->first();
+        // すべてのリクエスト内容を取得
+        $form = $request->all();
+        // リクエスト内容から不要な '_token'を取り除く
+        unset($form['_token']);
+        $performance->fill($form)->save();
+        $title = '変更完了';
+
+        // $param = [
+        //     'user' => $user,
+        //     'title' => $title,
+        // ];
+
+        return  redirect('/performance/0');
+        // return view('admin.user_successful', $param);
     }
 }

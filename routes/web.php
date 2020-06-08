@@ -43,3 +43,5 @@ Route::post('/truedelete/{school_id?}', 'UserManagerController@truedelete');
 
 // 【実績記録管理】
 Route::get('/performance/{school_id?}', 'PerformanceController@index');
+Route::get('/performance_edit', 'PerformanceController@edit');
+Route::post('/performance_edit', 'PerformanceController@update');

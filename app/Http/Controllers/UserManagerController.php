@@ -13,6 +13,7 @@ class UserManagerController extends Controller
     {
         $schools =  School::all();
 
+        // 所属校で利用者の表示を絞る
         if (empty($school_id)) {
             $users = User::with('school')->paginate(10);
         } else {
@@ -40,10 +41,16 @@ class UserManagerController extends Controller
     // 利用者登録処理
     public function store(Request $request)
     {
+        // リクエストされた内容に対して、Userクラスのバリデータールールを適用
+        // ルール違反の場合、登録を受付けない
         $this->validate($request, User::$rulse);
-        $user = new User;
+
+        // すべてのリクエスト内容を取得
         $form = $request->all();
+        // リクエスト内容から不要な '_token'を取り除く
         unset($form['_token']);
+        // Modelクラスを生成して、Form内容を一括（fill）で入力し、DBに保存（save）する
+        $user = new User;
         $user->fill($form)->save();
         $title = '登録完了';
 
@@ -57,12 +64,20 @@ class UserManagerController extends Controller
     // 利用者情報変更画面
     public function edit(Request $request)
     {
-        $schools =  School::all();
         $user = User::where('id', $request->id)->first();
+
+        // Formファザード用にSchoolクラスをidと名前の連想配列にする
+        $schools =  School::all();
+        $schoolslist = [];
+        foreach ($schools as $school) {
+            $schoolslist += [
+                $school->id => $school->getName(),
+            ];
+        }
+
         $param = [
             'user' => $user,
-            'schools' => $schools,
-            'school_id' =>  $user->school_id - 1,
+            'schoolslist' => $schoolslist,
         ];
         return view('admin.user_edit', $param);
     }
@@ -72,13 +87,11 @@ class UserManagerController extends Controller
     {
         $this->validate($request, User::$rulse);
         $user = User::where('id', $request->id)->first();
-        $user->update([
-            'last_name' => $request->last_name,
-            'first_name' => $request->first_name,
-            'last_name_kana' => $request->last_name_kana,
-            'first_name_kana' => $request->first_name_kana,
-            'school_id' => $request->school_id,
-        ]);
+        // すべてのリクエスト内容を取得
+        $form = $request->all();
+        // リクエスト内容から不要な '_token'を取り除く
+        unset($form['_token']);
+        $user->fill($form)->save();
         $title = '変更完了';
 
         $param = [
@@ -91,6 +104,7 @@ class UserManagerController extends Controller
     // 利用者情報変更処理
     public function delete(Request $request)
     {
+        // クエリのUserIDのレコードをソフトデリート
         $user = User::where('id', $request->id)->first();
         $user->delete();
         $title = '削除完了';
@@ -102,11 +116,12 @@ class UserManagerController extends Controller
         return view('admin.user_successful', $param);
     }
 
-    // 利用者一覧表示
+    // 削除した利用者を表示
     public function deleteindex(Request $request, $school_id)
     {
         $schools =  School::all();
 
+        // ソフトデリートしたUserレコードを表示
         if (empty($school_id)) {
             $users = User::onlyTrashed()->with('school')->paginate(10);
         } else {

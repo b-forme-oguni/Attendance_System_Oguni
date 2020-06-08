@@ -9,6 +9,11 @@ class School extends Model
     protected $table = 'schools';
     protected $guarded = array('id');
 
+    public function user()
+    {
+        return $this->hasMany('App\User');
+    }
+
     public function scopeIdEqual($query, $int)
     {
         return $query->where('id', $int);

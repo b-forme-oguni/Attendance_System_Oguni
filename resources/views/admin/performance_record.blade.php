@@ -27,12 +27,13 @@
 @endsection
 
 @section('content')
-@if (isset($performances))
+@if (isset($records))
 <table class="usertb my-5 mx-auto">
     <thead>
         <tr>
             <th>日付</th>
-            <th>氏名</th>
+            <th>利用者ID</th>
+            <th>利用者名</th>
             <th>所属</th>
             <th>開始時間</th>
             <th>終了時間</th>
@@ -43,45 +44,49 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($performances as $performance)
+        @foreach ($records as $record)
         {{-- <tr onclick="location.href={{ $user->id }};"> --}}
-        <tr class="edit_sel" onclick="location.href='/user_edit?id={{ $performance->id }}';">
+        <tr class="edit_sel" onclick="location.href='/performance_edit?id={{ $record->id }}';">
             <td>
 
-                {{ $performance->insert_date }}</td>
+                {{ $record->insert_date }}</td>
             <td>
 
-                {{ $performance->user->getName() }}
+                {{ $record->user_id}}
             </td>
             <td>
 
-                {{ $performance->user->school->getName() }}
+                {{ $record->user->getName() }}
             </td>
             <td>
 
-                {{ $performance->start }}
+                {{ $record->user->school->getName() }}
             </td>
             <td>
 
-                {{ $performance->end }}
+                {{ $record->start }}
             </td>
             <td>
 
-                {{ $performance->getFlag($performance->food_fg) }}</td>
+                {{ $record->end }}
+            </td>
             <td>
 
-                {{ $performance->getFlag($performance->outside_fg) }}</td>
+                {{ $record->getFlag($record->food_fg) }}</td>
             <td>
 
-                {{ $performance->getFlag($performance->medical_fg) }}</td>
+                {{ $record->getFlag($record->outside_fg) }}</td>
             <td>
 
-                {{ $performance->getNote() }}</td>
+                {{ $record->getFlag($record->medical_fg) }}</td>
+            <td>
+
+                {{ $record->getNote() }}</td>
         </tr>
         @endforeach
     </tbody>
 </table>
 
-{{ $performances->links() }}
+{{ $records->links() }}
 @endif
 @endsection

@@ -41,7 +41,7 @@
                     <th>カナ名</th>
                     <th>所属</th>
                     <th>登録日時</th>
-                    <th>更新日時</th>
+                    <th>削除日時</th>
                 </tr>
             </thead>
             <tbody>
@@ -70,7 +70,7 @@
                         {{ $user->created_at }}</td>
                     <td>
 
-                        {{ $user->updated_at }}</td>
+                        {{ $user->deleted_at }}</td>
                 </tr>
                 @endforeach
             </tbody>
