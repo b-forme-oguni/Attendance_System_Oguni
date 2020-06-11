@@ -16,14 +16,19 @@
         </select>
     </dd>
 </dl>
-
+<ul class="record_menu d-flex list-unstyled">
+    <li><a href="/performance_reg" value="" class="button square_min">新規実績記録登録</a></li>
+</ul>
 @endsection
 
-@section('header_record_menu')
-<ul class="record_menu d-flex list-unstyled">
-    <li><a href="/delete/0" value="" class="button square_min">削除した利用者</a></li>
-    <li><a href="/user_reg" value="" class="button square_min">新規利用者登録</a></li>
-</ul>
+
+
+@section('header_admin_menu')
+<li>
+    <a class="button square_min" href="/admin">
+
+        管理者メニュー</a>
+</li>
 @endsection
 
 @section('content')
@@ -32,7 +37,6 @@
     <thead>
         <tr>
             <th>日付</th>
-            <th>利用者ID</th>
             <th>利用者名</th>
             <th>所属</th>
             <th>開始時間</th>
@@ -52,9 +56,7 @@
                 {{ $record->insert_date }}</td>
             <td>
 
-                {{ $record->user_id}}
-            </td>
-            <td>
+                {{ $record->user_id}}：
 
                 {{ $record->user->getName() }}
             </td>

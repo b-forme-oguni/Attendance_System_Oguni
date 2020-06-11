@@ -28,27 +28,29 @@ class User extends Model
         'school_id' => 'required | integer',
     );
 
+    // ローカルスコープを設定
     public function scopeSchoolIdEqual($query, $int)
     {
         return $query->where('school_id', $int);
     }
-
+    // 主キーとのリレーション
     public function school()
     {
         return $this->belongsTo('App\School');
     }
 
-    //hasMany設定
+    // 従キーとのリレーション
     public function performance()
     {
         return $this->hasMany('App\Peformance');
     }
 
+    // フルネームを表示（姓名の間にスペースを挿入）
     public function getName()
     {
         return $this->last_name . '　' . $this->first_name;
     }
-
+    // カナ名フルネームを表示（姓名の間にスペースを挿入）
     public function getNameKana()
     {
         return $this->last_name_kana . '　' . $this->first_name_kana;

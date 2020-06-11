@@ -2,18 +2,17 @@
 
 namespace App;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Performance extends Model
 {
+    // テーブル名を明示的に指定（なくても複数形のperformancesのまま）
     protected $table = 'performances';
+    // AIなど、入力から除外するカラムを指定
     protected $guarded = array('id');
-    // 日付ミューテタを適用させるカラムを指定（Carbonクラスにキャストされる）
-    protected $times = [
-        'start',
-        'end',
-    ];
 
+    
     public function user()
     {
         return $this->belongsTo('App\User')->with('school');
@@ -52,33 +51,43 @@ class Performance extends Model
         return $query->where('school_id', $int);
     }
 
+    // startカラムに時間を15分切り上げるアクセサを設定する
     public function getStartAttribute($value, $margin_minutes = 15)
     {
         $_hour = date('H', strtotime($value));
         $_minute = date('i', strtotime($value));
-
         if ($_minute % $margin_minutes) {
             $_minute += $margin_minutes - ($_minute % $margin_minutes);
         }
-
         return date('H:i', mktime($_hour, $_minute, 0));
     }
 
-
+    // endカラムにアクセサを設定する
     public function getEndAttribute($value, $margin_minutes = 15)
     {
-        $_hour = date('H', strtotime($value));
-        $_minute = date('i', strtotime($value));
-
+        // endカラムがNULLの場合
         if (is_null($value)) {
-            return $value;
-        }elseif ( $_hour >= 16 ) {
-            $_hour = 16;
-            $_minute = 0;
-        } elseif ($_minute % $margin_minutes) {
-            $_minute -= ($_minute % $margin_minutes);
+            $dt = Carbon::now();
+            $t = function ($h, $m) {
+                return Carbon::createFromTime($h, $m, 0);
+            };
+            // レコードが当日で且つ16時まではNULLのまま
+            if ($dt->toDateString() == $this->insert_date && $dt->between($t(0, 0), $t(16, 00))) {
+                return $value;
+            } else {
+                // 終了打刻がないまま16時を過ぎた場合、16時に打刻されたことになる
+                $_hour = 16;
+                $_minute = 0;
+            }
+            // endカラムに終了時刻が打刻された場合
+        } else {
+            // endカラムの時間を15分切り下げる
+            $_hour = date('H', strtotime($value));
+            $_minute = date('i', strtotime($value));
+            if ($_minute % $margin_minutes) {
+                $_minute -= ($_minute % $margin_minutes);
+            }
         }
-
         return date('H:i', mktime($_hour, $_minute, 0));
     }
 }

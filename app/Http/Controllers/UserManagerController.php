@@ -101,7 +101,7 @@ class UserManagerController extends Controller
         return view('admin.user_successful', $param);
     }
 
-    // 利用者情報変更処理
+    // 利用者情報削除
     public function delete(Request $request)
     {
         // クエリのUserIDのレコードをソフトデリート

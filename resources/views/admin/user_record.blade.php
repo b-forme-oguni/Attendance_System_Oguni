@@ -16,14 +16,22 @@
         </select>
     </dd>
 </dl>
-
-@endsection
-
-@section('header_record_menu')
 <ul class="record_menu d-flex list-unstyled">
     <li><a href="/delete/0" value="" class="button square_min">削除した利用者</a></li>
     <li><a href="/user_reg" value="" class="button square_min">新規利用者登録</a></li>
 </ul>
+@endsection
+
+@section('header_record_menu')
+
+@endsection
+
+@section('header_admin_menu')
+<li>
+    <a class="button square_min" href="/admin">
+
+        管理者メニュー</a>
+</li>
 @endsection
 
 @section('content')

@@ -42,6 +42,12 @@ Route::post('/revival/{school_id?}', 'UserManagerController@revival');
 Route::post('/truedelete/{school_id?}', 'UserManagerController@truedelete');
 
 // 【実績記録管理】
+// 実績記録一覧表示
 Route::get('/performance/{school_id?}', 'PerformanceController@index');
+// 実績記録登録
+Route::get('/performance_reg', 'PerformanceController@register');
+Route::post('/performance_reg', 'PerformanceController@store');
+// 実績記録情報変更
 Route::get('/performance_edit', 'PerformanceController@edit');
 Route::post('/performance_edit', 'PerformanceController@update');
+Route::get('/performance_del', 'PerformanceController@delete');
