@@ -2,26 +2,21 @@
 @section('title','管理者メニュー')
 
 @section('header_record_school')
+
+<form action="/delete" method="GET">
 <dl class="d-flex align-items-center">
     <dt>
         所属：</dt>
     <dd>
-        <select id="school_sel" class="form-control" name="select" onChange="location.href=value;">
-            <option value="/delete/0">全ての利用者</option>
-            @foreach ($schools as $school)
-            <option value="/delete/{{ $school->id }}">
-
-                {{ $school->getName() }}</option>
-            @endforeach
-        </select>
+            {{ Form::select('school_id', $schoolselect, $school_id, ['class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
     </dd>
 </dl>
-
+</form>
 @endsection
 
 @section('header_record_menu')
 <ul class="record_menu d-flex list-unstyled">
-    <li><a href="/user/0" value="" class="button square_min">利用者一覧に戻る</a></li>
+    <li><a href="/user" value="" class="button square_min">利用者一覧に戻る</a></li>
 </ul>
 @endsection
 
@@ -30,8 +25,8 @@
 <div class="my-5 mx-auto">
     <form method="post" action="">
         @csrf
-        <button type="submit" formaction="/revival/{{ $school_id }}" class="button square_min">再登録</button>
-        <button type="submit" formaction="/truedelete/{{ $school_id }}" class="button square_min">完全に削除</button>
+        <button type="submit" formaction="/revival" class="button square_min">再登録</button>
+        <button type="submit" formaction="/truedelete" class="button square_min">完全に削除</button>
         <table class="usertb mb-2">
             <thead>
                 <tr>
@@ -77,7 +72,8 @@
         </table>
     </form>
 
-    {{ $users->links() }}
+{{ $users->appends(['school_id' => $school_id])->links() }}
+
 </div>
 @endif
 @endsection

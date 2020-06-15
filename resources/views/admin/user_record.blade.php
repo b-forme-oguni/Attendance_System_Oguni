@@ -6,18 +6,14 @@
     <dt>
         所属：</dt>
     <dd>
-        <select id="school_sel" class="form-control" name="select" onChange="location.href=value;">
-            <option value="/user/0">全ての利用者</option>
-            @foreach ($schools as $school)
-            <option value="/user/{{ $school->id }}">
+        <form action="user" method="GET">
 
-                {{ $school->getName() }}</option>
-            @endforeach
-        </select>
+            {{ Form::select('school_id', $schoolselect, $school_id, ['class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
+        </form>
     </dd>
 </dl>
 <ul class="record_menu d-flex list-unstyled">
-    <li><a href="/delete/0" value="" class="button square_min">削除した利用者</a></li>
+    <li><a href="/delete" value="" class="button square_min">削除した利用者</a></li>
     <li><a href="/user_reg" value="" class="button square_min">新規利用者登録</a></li>
 </ul>
 @endsection
@@ -77,6 +73,7 @@
     </tbody>
 </table>
 
-{{ $users->links() }}
+{{ $users->appends(['school_id' => $school_id])->links() }}
+
 @endif
 @endsection

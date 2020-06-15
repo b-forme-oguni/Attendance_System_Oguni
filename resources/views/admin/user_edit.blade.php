@@ -48,7 +48,7 @@
                         <button type="submit" class="button square_min">
                             変　更
                         </button>
-                        <a href="user/0" class="button square_min">戻　る</a>
+                        <a href="user" class="button square_min">戻　る</a>
                         <a href="user_del?id={{ $user->id }}" class="button square_min">削　除</a>
                     </div>
                 </div>

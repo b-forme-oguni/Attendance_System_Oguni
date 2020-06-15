@@ -28,7 +28,7 @@ Route::get('/admin', 'MenuController@adminMenu')->middleware('auth');
 
 // 【利用者管理】
 // 利用者一覧表示
-Route::get('/user/{school_id?}', 'UserManagerController@index');
+Route::get('/user', 'UserManagerController@index');
 // 利用者登録
 Route::get('/user_reg', 'UserManagerController@register');
 Route::post('/user_reg', 'UserManagerController@store');
@@ -37,13 +37,13 @@ Route::get('/user_edit', 'UserManagerController@edit');
 Route::post('/user_edit', 'UserManagerController@update');
 Route::get('/user_del', 'UserManagerController@delete');
 // 利用者削除管理
-Route::get('/delete/{school_id?}', 'UserManagerController@deleteindex');
-Route::post('/revival/{school_id?}', 'UserManagerController@revival');
-Route::post('/truedelete/{school_id?}', 'UserManagerController@truedelete');
+Route::get('/delete', 'UserManagerController@deleteindex');
+Route::post('/revival', 'UserManagerController@revival');
+Route::post('/truedelete', 'UserManagerController@truedelete');
 
 // 【実績記録管理】
 // 実績記録一覧表示
-Route::get('/performance/{school_id?}', 'PerformanceController@index');
+Route::get('/performance', 'PerformanceController@index');
 // 実績記録登録
 Route::get('/performance_reg', 'PerformanceController@register');
 Route::post('/performance_reg', 'PerformanceController@store');

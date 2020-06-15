@@ -4,10 +4,32 @@ namespace app\Library;
 
 use App\Note;
 use App\User;
+use App\School;
 use Illuminate\Support\Carbon;
 
 class BaseClass
 {
+    // Formファザード用にSchoolクラスをidと名前の連想配列にする
+    public static function schoolSelect()
+    {
+        $schools =  School::all();
+        $schoolselect['0'] =  '全ての利用者';
+        foreach ($schools as $school) {
+            $schoolselect[$school->id] =  $school->getName();
+        }
+        return $schoolselect;
+    }
+
+    // Formファザード用にSchoolクラスをidと名前の連想配列にする
+    public static function schoolsList()
+    {
+        $schools =  School::all();
+        foreach ($schools as $school) {
+            $schoolslist[$school->id] =  $school->getName();
+        }
+        return $schoolslist;
+    }
+
     // Formファザード用にUserクラスをidと名前の連想配列にする
     public static function usersList()
     {

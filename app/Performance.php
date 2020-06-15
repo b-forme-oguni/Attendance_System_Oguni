@@ -12,7 +12,7 @@ class Performance extends Model
     // AIなど、入力から除外するカラムを指定
     protected $guarded = array('id');
 
-    
+
     public function user()
     {
         return $this->belongsTo('App\User')->with('school');
@@ -28,12 +28,29 @@ class Performance extends Model
         return $this->belongsTo('App\School');
     }
 
+    // GETメソッド
+    public function getStart()
+    {
+        if ($this->start) {
+            return $this->start;
+        } else {
+            return '-';
+        }
+    }
+    public function getEnd()
+    {
+        if ($this->end) {
+            return $this->end;
+        } else {
+            return '-';
+        }
+    }
     public function getFlag($bool)
     {
         if ($bool) {
             return '○';
         } else {
-            return '―';
+            return '-';
         }
     }
 
@@ -42,13 +59,14 @@ class Performance extends Model
         if ($this->note_id) {
             return $this->note->note;
         } else {
-            return '―';
+            return '-';
         }
     }
 
-    public function scopeSchoolIdEqual($query, $int)
+
+    public function scopeDateIdEqual($query, $string)
     {
-        return $query->where('school_id', $int);
+        return $query->where('insert_date', $string);
     }
 
     // startカラムに時間を15分切り上げるアクセサを設定する

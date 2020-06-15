@@ -49,7 +49,7 @@
                         <button type="submit" class="button square_min">
                             登　録
                         </button>
-                        <a href="user/0" class="button square_min">戻　る</a>
+                        <a href="user" class="button square_min">戻　る</a>
 
                     </div>
                 </div>

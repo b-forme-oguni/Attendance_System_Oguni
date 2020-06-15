@@ -93,9 +93,11 @@
                 <div class="form-group row mb-0">
                     <div class="col-md-8 offset-md-2">
                         <button type="submit" class="button square_min">
-                            変　更
+                          実務記録を変更
                         </button>
-                        <a href="performance/0" class="button square_min">戻　る</a>
+                        <a href="performance" class="button square_min">戻　る</a>
+                        <a href="performance_del?id={{ $record->id }}" class="button square_min">実務記録を削除</a>
+
                     </div>
                 </div>
             </form>

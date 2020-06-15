@@ -7,29 +7,38 @@ use App\User;
 use App\School;
 use App\Performance;
 use app\Library\BaseClass;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PerformanceController extends Controller
 {
     // 実績記録一覧表示
-    public function index(Request $request, $school_id)
+    public function index(Request $request)
     {
-        $schools =  School::all();
-        if (empty($school_id)) {
-            // リレーション先の条件で検索を行う（所属校）
-            $records = Performance::has('user')->latest()->with(['user', 'note'])->paginate(10);
+
+        if ($request->has('school_id')) {
+            $school_id = $request->school_id;
         } else {
-            // リレーション先の条件で検索を行う（所属校）
-            $records = Performance::has('user')->whereHas('User', function ($q) use ($school_id) {
-                $q->where('school_id', $school_id);
-            })
-                ->latest()->with(['user', 'note'])->paginate(10);
+            $school_id = 1;
         }
+
+        if ($request->has('day')) {
+            $day = $request->day;
+        } else {
+            $day = Carbon::now()->toDateString();
+        }
+
+        $records = Performance::dateIdEqual($day)->has('user')->whereHas('User', function ($q) use ($school_id) {
+            $q->where('school_id', $school_id);
+        })
+            ->with(['user', 'note'])->paginate(10);
+
 
         $param = [
             'records' => $records,
-            'schools' => $schools,
+            'schoolselect' => BaseClass::schoolsList(),
             'school_id' =>  $school_id,
+            'day' => $day,
         ];
         return view('admin.performance_record', $param);
     }
@@ -129,11 +138,10 @@ class PerformanceController extends Controller
     }
 
 
-
     // 実績記録情報削除
     public function delete(Request $request)
     {
-        // クエリのUserIDのレコードをソフトデリート
+        // クエリのUserIDのレコードをデリート
         $record = Performance::where('id', $request->id)->first();
         $record->delete();
         $title = '削除完了';

@@ -89,7 +89,7 @@
                         <button type="submit" class="button square_min">
                             登　録
                         </button>
-                        <a href="performance/0" class="button square_min">戻　る</a>
+                        <a href="performance" class="button square_min">戻　る</a>
                     </div>
                 </div>
             </form>

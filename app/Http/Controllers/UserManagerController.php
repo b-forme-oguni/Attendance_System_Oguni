@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use app\Library\BaseClass;
 use App\User;
 use App\School;
 use Illuminate\Http\Request;
@@ -9,9 +10,14 @@ use Illuminate\Http\Request;
 class UserManagerController extends Controller
 {
     // 利用者一覧表示
-    public function index(Request $request, $school_id)
+    public function index(Request $request)
     {
-        $schools =  School::all();
+
+        if ($request->has('school_id')) {
+            $school_id = $request->school_id;
+        } else {
+            $school_id = 0;
+        }
 
         // 所属校で利用者の表示を絞る
         if (empty($school_id)) {
@@ -22,7 +28,7 @@ class UserManagerController extends Controller
 
         $param = [
             'users' => $users,
-            'schools' => $schools,
+            'schoolselect' => BaseClass::schoolSelect(),
             'school_id' =>  $school_id,
         ];
         return view('admin.user_record', $param);
@@ -66,18 +72,9 @@ class UserManagerController extends Controller
     {
         $user = User::where('id', $request->id)->first();
 
-        // Formファザード用にSchoolクラスをidと名前の連想配列にする
-        $schools =  School::all();
-        $schoolslist = [];
-        foreach ($schools as $school) {
-            $schoolslist += [
-                $school->id => $school->getName(),
-            ];
-        }
-
         $param = [
             'user' => $user,
-            'schoolslist' => $schoolslist,
+            'schoolslist' => BaseClass::schoolsList(),
         ];
         return view('admin.user_edit', $param);
     }
@@ -117,10 +114,15 @@ class UserManagerController extends Controller
     }
 
     // 削除した利用者を表示
-    public function deleteindex(Request $request, $school_id)
+    public function deleteindex(Request $request)
     {
-        $schools =  School::all();
 
+        if ($request->has('school_id')) {
+            $school_id = $request->school_id;
+        } else {
+            $school_id = 0;
+        }
+        
         // ソフトデリートしたUserレコードを表示
         if (empty($school_id)) {
             $users = User::onlyTrashed()->with('school')->paginate(10);
@@ -130,27 +132,27 @@ class UserManagerController extends Controller
 
         $param = [
             'users' => $users,
-            'schools' => $schools,
+            'schoolselect' => BaseClass::schoolSelect(),
             'school_id' =>  $school_id,
         ];
         return view('admin.user_delete', $param);
     }
 
     // ソフトデリートした削除した利用者を復活させる
-    public function revival(Request $request, $school_id)
+    public function revival(Request $request)
     {
         if ($request->id) {
             User::whereIn('id', $request->id)->restore();
         }
-        return  redirect('/delete\\' . $school_id);
+        return  redirect('/delete');
     }
 
     // ソフトデリートした削除した利用者を完全削除する
-    public function truedelete(Request $request, $school_id)
+    public function truedelete(Request $request)
     {
         if ($request->id) {
             User::whereIn('id', $request->id)->forceDelete();
         }
-        return  redirect('/delete\\' . $school_id);
+        return  redirect('/delete');
     }
 }
