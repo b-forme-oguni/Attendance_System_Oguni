@@ -12,7 +12,6 @@ class Performance extends Model
     // AIなど、入力から除外するカラムを指定
     protected $guarded = array('id');
 
-
     public function user()
     {
         return $this->belongsTo('App\User')->with('school');

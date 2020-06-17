@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Note;
 use App\User;
 use App\School;
+use Carbon\Carbon;
 use App\Performance;
 use app\Library\BaseClass;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Http\Requests\PerformanceRequest;
+use Illuminate\Support\Facades\Validator;
 
 class PerformanceController extends Controller
 {
@@ -56,12 +58,8 @@ class PerformanceController extends Controller
     }
 
     // 実績記録登録処理
-    public function store(Request $request)
+    public function store(PerformanceRequest $request)
     {
-        // リクエストされた内容に対して、Userクラスのバリデータールールを適用
-        // ルール違反の場合、登録を受付けない
-        // $this->validate($request, User::$rulse);
-
         // すべてのリクエスト内容を取得
         $form = $request->all();
         // リクエスト内容から不要な '_token'を取り除く

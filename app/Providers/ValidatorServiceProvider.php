@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Performance;
+use Illuminate\Validation\Validator;
+use App\Http\Validators\FormValidator;
 use Illuminate\Support\ServiceProvider;
 
 class ValidatorServiceProvider extends ServiceProvider
@@ -23,6 +26,8 @@ class ValidatorServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app['validator']->resolver(function ($translator, $data, $rules, $messages) {
+            return new FormValidator($translator, $data, $rules, $messages);
+        });
     }
 }
