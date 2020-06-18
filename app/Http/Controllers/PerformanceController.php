@@ -116,7 +116,7 @@ class PerformanceController extends Controller
     }
 
     // 実績記録変更画面
-    public function update(Request $request)
+    public function update(PerformanceRequest $request)
     {
         $record = Performance::where('id', $request->id)->first();
         // すべてのリクエスト内容を取得
