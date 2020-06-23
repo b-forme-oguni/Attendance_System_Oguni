@@ -171,9 +171,9 @@ a:hover,
     border-spacing: 0;
     background-color: royalblue;
     overflow: hidden;
-    width: 90%;
+    width: 100%;
     color: royalblue;
-    margin: 0 auto;
+    /* margin: 0 auto; */
 }
 
 .usertb thead tr {

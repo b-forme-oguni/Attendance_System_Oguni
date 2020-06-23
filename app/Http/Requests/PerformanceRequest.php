@@ -23,7 +23,7 @@ class PerformanceRequest extends FormRequest
     public function rules()
     {
         return [
-            'insert_date' => 'required|form',
+            'insert_date' => 'required|performance',
             'start' => 'required',
             'end' => 'required',
             'user_id' => 'required',

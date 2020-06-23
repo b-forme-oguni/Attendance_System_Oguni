@@ -131,7 +131,6 @@ class PerformanceController extends Controller
             'title' => $title,
         ];
 
-        // return  redirect('/performance/0');
         return view('admin.performance_successful', $param);
     }
 

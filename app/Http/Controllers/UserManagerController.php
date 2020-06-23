@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use app\Library\BaseClass;
 use App\User;
 use App\School;
+use app\Library\BaseClass;
+use App\Exports\UsersExport;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserManagerController extends Controller
 {
@@ -122,7 +124,7 @@ class UserManagerController extends Controller
         } else {
             $school_id = 0;
         }
-        
+
         // ソフトデリートしたUserレコードを表示
         if (empty($school_id)) {
             $users = User::onlyTrashed()->with('school')->paginate(10);
@@ -154,5 +156,13 @@ class UserManagerController extends Controller
             User::whereIn('id', $request->id)->forceDelete();
         }
         return  redirect('/delete');
+    }
+
+    // 利用者リストをExcelで出力
+    public function export()
+    {
+        $users = User::with('school')->get();
+        $view = view('export.userexport', compact('users'));
+        return Excel::download(new UsersExport($view), 'users.xlsx');
     }
 }

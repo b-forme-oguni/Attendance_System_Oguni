@@ -51,3 +51,11 @@ Route::post('/performance_reg', 'PerformanceController@store');
 Route::get('/performance_edit', 'PerformanceController@edit');
 Route::post('/performance_edit', 'PerformanceController@update');
 Route::get('/performance_del', 'PerformanceController@delete');
+
+
+Route::get('/user/export', 'UserManagerController@export');
+
+
+Route::get('/output/index', 'ExportController@index');
+Route::get('/output/preview', 'ExportController@preview');
+Route::post('/output/index', 'ExportController@export');

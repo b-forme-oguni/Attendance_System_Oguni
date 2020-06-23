@@ -4,13 +4,14 @@
 @section('header_record_school')
 
 <form action="/delete" method="GET">
-<dl class="d-flex align-items-center">
-    <dt>
-        所属：</dt>
-    <dd>
+    <dl class="d-flex align-items-center">
+        <dt>
+            所属：</dt>
+        <dd>
+
             {{ Form::select('school_id', $schoolselect, $school_id, ['class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
-    </dd>
-</dl>
+        </dd>
+    </dl>
 </form>
 @endsection
 
@@ -22,11 +23,13 @@
 
 @section('content')
 @if (isset($users))
-<div class="my-5 mx-auto">
+<div class="my-5 col-md-12">
     <form method="post" action="">
         @csrf
-        <button type="submit" formaction="/revival" class="button square_min">再登録</button>
-        <button type="submit" formaction="/truedelete" class="button square_min">完全に削除</button>
+        <div class="mb-3">
+            <button type="submit" formaction="/revival" class="button square_min">再登録</button>
+            <button type="submit" formaction="/truedelete" class="button square_min">完全に削除</button>
+        </div>
         <table class="usertb mb-2">
             <thead>
                 <tr>
@@ -70,9 +73,13 @@
                 @endforeach
             </tbody>
         </table>
-    </form>
 
-{{ $users->appends(['school_id' => $school_id])->links() }}
+
+    </form>
+    <div class="mt-3">
+
+        {{ $users->appends(['school_id' => $school_id])->links() }}
+    </div>
 
 </div>
 @endif

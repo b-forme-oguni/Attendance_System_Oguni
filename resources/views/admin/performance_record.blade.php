@@ -8,6 +8,7 @@
         <dt>
             所属：</dt>
         <dd>
+
             {{ Form::select('school_id', $schoolselect, $school_id, ['class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
         </dd>
     </dl>
@@ -15,6 +16,7 @@
         <dt>
             日付：</dt>
         <dd>
+
             {{ Form::date('day', $day, ['class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
         </dd>
     </dl>
@@ -29,6 +31,11 @@
 
 @section('header_admin_menu')
 <li>
+    <a class="button square_min" href="/output/index">
+
+        Excel出力一覧</a>
+</li>
+<li>
     <a class="button square_min" href="/admin">
 
         管理者メニュー</a>
@@ -36,6 +43,8 @@
 @endsection
 
 @section('content')
+<div class="my-5 col-md-12">
+
 @if (isset($records))
 <table class="usertb my-5 mx-auto">
     <thead>
@@ -92,7 +101,11 @@
         @endforeach
     </tbody>
 </table>
-{{ $records->appends(['school_id' => $school_id,'day' => $day])->links() }}
 
+<div class="mt-3">
+
+    {{ $records->appends(['school_id' => $school_id,'day' => $day])->links() }}
+</div>
+</div>
 @endif
 @endsection

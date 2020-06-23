@@ -31,49 +31,52 @@
 @endsection
 
 @section('content')
-@if (isset($users))
-<table class="usertb my-5 mx-auto">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>氏名</th>
-            <th>カナ名</th>
-            <th>所属</th>
-            <th>登録日時</th>
-            <th>更新日時</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($users as $user)
-        {{-- <tr onclick="location.href={{ $user->id }};"> --}}
-        <tr class="edit_sel" onclick="location.href='/user_edit?id={{ $user->id }}';">
-            <td>
+<div class="my-5 col-md-12">
+    @if (isset($users))
+    <table class="usertb">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>氏名</th>
+                <th>カナ名</th>
+                <th>所属</th>
+                <th>登録日時</th>
+                <th>更新日時</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($users as $user)
+            {{-- <tr onclick="location.href={{ $user->id }};"> --}}
+            <tr class="edit_sel" onclick="location.href='/user_edit?id={{ $user->id }}';">
+                <td>
 
-                {{ $user->id }}</td>
-            <td>
+                    {{ $user->id }}</td>
+                <td>
 
-                {{ $user->getName() }}
-            </td>
-            <td>
+                    {{ $user->getName() }}
+                </td>
+                <td>
 
-                {{ $user->getNameKana() }}
-            </td>
-            <td>
+                    {{ $user->getNameKana() }}
+                </td>
+                <td>
 
-                {{ $user->school->getName() }}
-            </td>
-            <td>
+                    {{ $user->school->getName() }}
+                </td>
+                <td>
 
-                {{ $user->created_at }}</td>
-            <td>
+                    {{ $user->created_at }}</td>
+                <td>
 
-                {{ $user->updated_at }}</td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+                    {{ $user->updated_at }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+    <div class="mt-3">
 
-{{ $users->appends(['school_id' => $school_id])->links() }}
-
+        {{ $users->appends(['school_id' => $school_id])->links() }}
+    </div>
+</div>
 @endif
 @endsection
