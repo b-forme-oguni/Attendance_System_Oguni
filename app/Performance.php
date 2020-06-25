@@ -44,7 +44,7 @@ class Performance extends Model
             return '-';
         }
     }
-    public function getFlag($bool)
+    public function getFlagsign($bool)
     {
         if ($bool) {
             return '○';
@@ -52,16 +52,6 @@ class Performance extends Model
             return '-';
         }
     }
-
-    public function getNote()
-    {
-        if ($this->note_id) {
-            return $this->note->note;
-        } else {
-            return '-';
-        }
-    }
-
 
     public function scopeDateIdEqual($query, $string)
     {
@@ -107,4 +97,5 @@ class Performance extends Model
         }
         return date('H:i', mktime($_hour, $_minute, 0));
     }
+
 }

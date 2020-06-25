@@ -22,8 +22,6 @@
 </form>
 @endsection
 
-
-
 @section('header_admin_menu')
 <li>
     <a class="button square_min" href="/admin">

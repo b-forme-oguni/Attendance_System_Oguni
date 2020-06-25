@@ -61,53 +61,81 @@ class ExportController extends Controller
     // 実績記録
     public function preview(Request $request)
     {
-
-        // リクエストにyear_monthがない場合、Carbonから今の年月を取得
-        if ($request->has('date')) {
-            $year_month = $request->date;
-        } else {
-            $year_month = Carbon::now()->format('Y-m');
-        }
+        $user_id = $request->id;
+        $year_month = $request->date;
 
         // リクエストまたはCarbonから取得した年月を、 $yearと$monthに分ける
         $year = date('Y', strtotime($year_month));
         $month = date('m', strtotime($year_month));
 
         // Performanceテーブルのレコードより、
-        //     1. insert_dateの年が一致
-        //     2. insert_dateの月が一致
-        //     3.リレーションしているUserより、所属校がリクエストと一致
+        //     1. user_idが一致
+        //     2. insert_dateの年が一致
+        //     3. insert_dateの月が一致
         //     4. insert_dateの昇順
-        //     5.ペジネートで80区切り
         // で取得
-        $records = Performance::whereYear('insert_date', $year)
+        $records = Performance::where('user_id', $user_id)
+            ->whereYear('insert_date', $year)
             ->whereMonth('insert_date', $month)
+            ->with(['user', 'note'])
             ->orderBy('insert_date')
-            ->get();
+            ->get()->toArray();
 
-        $monthtable = new Carbon($year_month);
+        $dateArray = array_column($records, 'insert_date');
+
+        $monthday = new Carbon($year_month);
+
+        $exceltables = [];
+
+        $totalday = $monthday->daysInMonth;
+        for ($i = 0; $i < $totalday; $i++) {
+            $day = new Carbon($monthday);
+
+            $result = array_search($monthday->toDateString(), $dateArray);
+
+            if ($result !== false) {
+                $record = $records[$result];
+            } else {
+                $record = null;
+            }
+
+            $exceltable = new \app\Library\ExcelTable($day, $record);
+
+            $exceltables[] = $exceltable;
+            $monthday->addDay();
+        }
 
         $param = [
-            'records' => $records,
-            'year_month' => $year_month,
-            'monthtable' => $monthtable,
+            'exceltables' => $exceltables,
         ];
 
-        return view('export.preview', $param);
+        return view('export.perf_preview', $param);
     }
 
 
     // 実務記録表をExcelで出力
-    // public function export(Request $request)
-    // {
-    //     $user_id = $request->id;
-    //     $user_id = $request->id;
+    public function export(Request $request)
+    {
+        $user_id = $request->id;
+        $year_month = $request->date;
 
-    //     $records = Performance::where('user_id', $user_id)->has('user')->whereHas('User', function ($q) use ($school_id) {
-    //         $q->where('school_id', $school_id);
-    //     })
-    //         ->with(['user', 'note'])->get();
-    //     $view = view('export.performanceexport', compact('records'));
-    //     return Excel::download(new UsersExport($view), 'users.xlsx');
-    // }
+        // リクエストから取得した年月を、 $yearと$monthに分ける
+        $year = date('Y', strtotime($year_month));
+        $month = date('m', strtotime($year_month));
+
+        // UserIDと年月で絞り込んだ実務記録レコードを取得
+        $records = Performance::where('user_id', $user_id)
+            ->whereYear('insert_date', $year)
+            ->whereMonth('insert_date', $month)
+            ->with(['user', 'note'])->get();
+
+
+
+
+
+
+
+        $view = view('export.performanceexport', compact('records'));
+        return Excel::download(new UsersExport($view), 'users.xlsx');
+    }
 }

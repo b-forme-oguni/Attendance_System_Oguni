@@ -1,5 +1,4 @@
 <?php
-// app/Library/BaseClass.php
 namespace app\Library;
 
 use App\Note;
@@ -47,6 +46,7 @@ class BaseClass
     public static function notesList()
     {
         $notes = Note::all();
+
         $noteslist = [];
         foreach ($notes as $note) {
             $noteslist += [
@@ -83,4 +83,8 @@ class BaseClass
         $todaydate = Carbon::now()->toDateString();
         return $todaydate;
     }
+
+
+
+
 }

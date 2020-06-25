@@ -48,7 +48,7 @@
                 <label class="col-md-2 col-form-label text-md-right">
                     食事提供加算フラグ</label>
                 <div class="col-md-8">
-                    {{ $record->getFlag($record->food_fg) }}
+                    {{ $record->getFlagsign($record->food_fg) }}
                 </div>
             </div>
             <div class="form-group row">
@@ -56,7 +56,7 @@
                     施設外支援フラグ</label>
                 <div class="col-md-8">
 
-                    {{ $record->getFlag($record->outside_fg) }}
+                    {{ $record->getFlagsign($record->outside_fg) }}
                 </div>
             </div>
             <div class="form-group row">
@@ -64,7 +64,7 @@
                     医療連携体制加算フラグ</label>
                 <div class="col-md-8">
 
-                    {{ $record->getFlag($record->medical_fg) }}
+                    {{ $record->getFlagsign($record->medical_fg) }}
                 </div>
             </div>
 

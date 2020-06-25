@@ -1,4 +1,7 @@
-<table>
+@extends('layouts.common_base')
+
+@section('content')
+<table class="usertb mb-2">
     <thead>
         <tr>
             <th colspan="3">支援決定障害者氏名</th>
@@ -8,10 +11,10 @@
         <tr>
             <td colspan="3">
 
-                {{ $user->getName() }}</td>
+                {{-- {{ $user->getName() }}</td> --}}
             <td colspan="2">未来のかたち　
 
-                {{ $user->school->getName() }}</td>
+                {{-- {{ $user->school->getName() }}</td> --}}
         </tr>
         <tr>
             <th rowspan="3">日付</th>
@@ -35,52 +38,56 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($records as $record)
+        @foreach ($exceltables as $exceltable)
         <tr>
             <td>
                 {{-- 日付 --}}
 
-                {{ $record->insert_date }}</td>
+                {{ $exceltable->getDay()->day }}</td>
             <td>
                 {{-- 曜日 --}}
 
-                {{ $record->insert_date }}
+                {{ $exceltable->getDay()->isoFormat('ddd') }}
             </td>
-            <td>
-                {{-- 欠席の場合、欠を表示 --}}
-
-                {{ $record->user->school->getName() }}
-            </td>
+            <td>{{-- サービス提供の状況 --}}</td>
             <td>
                 {{-- 開始時間 --}}
 
-                {{ $record->getStart() }}
+                {{ $exceltable->getStart() }}
             </td>
             <td>
                 {{-- 終了時間 --}}
 
-                {{ $record->getEnd() }}
+                {{ $exceltable->getend() }}
             </td>
             <td>
-                {{-- 訪問支援特別加算時間 --}}
-
+                {{-- 訪問支援特別加算 --}}
             </td>
             <td>
                 {{-- 食事提供加算 --}}
-                {{ $record->getFlag($record->food_fg) }}</td>
+
+                {{ $exceltable->getFood_fg() }}
+            </td>
             <td>
                 {{-- 施設外支援加算 --}}
-                {{ $record->getFlag($record->outside_fg) }}</td>
+
+                {{ $exceltable->getOutside_fg() }}
+            </td>
             <td>
                 {{-- 医療連携加算 --}}
-                {{ $record->getFlag($record->medical_fg) }}</td>
+
+                {{ $exceltable->getMedical_fg() }}
+            </td>
             <td>
                 {{-- 備考 --}}
-                {{ $record->getNote() }}</td>
+
+                {{ $exceltable->getNote() }}
+            </td>
             <td>
                 {{-- 利用者確認印 --}}
-
-            </tr>
+            </td>
+        </tr>
         @endforeach
     </tbody>
 </table>
+@endsection

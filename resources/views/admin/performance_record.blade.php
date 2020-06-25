@@ -87,13 +87,13 @@
             </td>
             <td>
 
-                {{ $record->getFlag($record->food_fg) }}</td>
+                {{ $record->getFlagsign($record->food_fg) }}</td>
             <td>
 
-                {{ $record->getFlag($record->outside_fg) }}</td>
+                {{ $record->getFlagsign($record->outside_fg) }}</td>
             <td>
 
-                {{ $record->getFlag($record->medical_fg) }}</td>
+                {{ $record->getFlagsign($record->medical_fg) }}</td>
             <td>
 
                 {{ $record->getNote() }}</td>

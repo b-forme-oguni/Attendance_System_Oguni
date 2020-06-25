@@ -32,7 +32,7 @@ class StampController extends Controller
 
         // 日付を曜日付きで表示
         Carbon::setLocale('ja');
-        $dt = new \Carbon\Carbon();
+        $dt = new Carbon();
         $today = $dt->isoFormat('YYYY年MM月DD日（ddd）');
 
         // 利用者リストを学校idでスコープ
