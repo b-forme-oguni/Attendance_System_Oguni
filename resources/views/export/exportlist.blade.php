@@ -16,7 +16,7 @@
         <dt>
             年月：</dt>
         <dd>
-            <input type="month" name="year_month" value={{ $year_month }} class="form-control" onChange='submit(this.form)'>
+            <input type="month" name="date" value={{ $year_month }} class="form-control" onChange='submit(this.form)'>
         </dd>
     </dl>
 </form>

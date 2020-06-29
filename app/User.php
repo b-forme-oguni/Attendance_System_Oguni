@@ -50,6 +50,11 @@ class User extends Model
     {
         return $this->last_name . '　' . $this->first_name;
     }
+    // フルネームを表示
+    public function getNameFull()
+    {
+        return $this->last_name . $this->first_name;
+    }
     // カナ名フルネームを表示（姓名の間にスペースを挿入）
     public function getNameKana()
     {

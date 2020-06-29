@@ -58,4 +58,4 @@ Route::get('/user/export', 'UserManagerController@export');
 
 Route::get('/output/index', 'ExportController@index');
 Route::get('/output/preview', 'ExportController@preview');
-Route::post('/output/index', 'ExportController@export');
+Route::get('/output/export', 'ExportController@export');
