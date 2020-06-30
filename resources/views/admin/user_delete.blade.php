@@ -3,7 +3,7 @@
 
 @section('header_record_school')
 
-<form action="/delete" method="GET">
+<form action="deleteindex" method="GET">
     <dl class="d-flex align-items-center">
         <dt>
             所属：</dt>
@@ -27,8 +27,8 @@
     <form method="post" action="">
         @csrf
         <div class="mb-3">
-            <button type="submit" formaction="/revival" class="button square_min">再登録</button>
-            <button type="submit" formaction="/truedelete" class="button square_min">完全に削除</button>
+            <button type="submit" formaction="revival" class="button square_min">再登録</button>
+            <button type="submit" formaction="truedelete" class="button square_min">完全に削除</button>
         </div>
         <table class="usertb mb-2">
             <thead>

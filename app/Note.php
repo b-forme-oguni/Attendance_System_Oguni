@@ -9,10 +9,10 @@ class Note extends Model
     protected $table = 'notes';
     protected $guarded = array('id');
 
-    //hasMany設定
+    //従キーを設定
     public function performance()
     {
-    return $this->hasMany('App\Peformance');
+        return $this->hasMany('App\Peformance');
     }
 
 }

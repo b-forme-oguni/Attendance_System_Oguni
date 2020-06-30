@@ -33,13 +33,13 @@ class User extends Model
     {
         return $query->where('school_id', $int);
     }
-    // 主キーとのリレーション
+    // 主キーの設定
     public function school()
     {
         return $this->belongsTo('App\School');
     }
 
-    // 従キーとのリレーション
+    // 従キーの設定
     public function performance()
     {
         return $this->hasMany('App\Peformance');

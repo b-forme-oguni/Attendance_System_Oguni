@@ -12,19 +12,21 @@ class Performance extends Model
     // AIなど、入力から除外するカラムを指定
     protected $guarded = array('id');
 
+    //主キーを設定（User）
+    //Userからさらに主キーのSchoolを呼ぶのでwith()でクエリ重複を回避
     public function user()
     {
         return $this->belongsTo('App\User')->with('school');
     }
-
-    public function note()
-    {
-        return $this->belongsTo('App\Note');
-    }
-
+    //主キーを設定（School）
     public function school()
     {
         return $this->belongsTo('App\School');
+    }
+    //主キーを設定（Note）
+    public function note()
+    {
+        return $this->belongsTo('App\Note');
     }
 
     // GETメソッド
@@ -52,7 +54,17 @@ class Performance extends Model
             return '-';
         }
     }
+    
+    public function getNote()
+    {
+        if ($this->note_id) {
+            return $this->note->note;
+        } else {
+            return '-';
+        }
+    }
 
+    //登録年月日でスコープする
     public function scopeDateIdEqual($query, $string)
     {
         return $query->where('insert_date', $string);

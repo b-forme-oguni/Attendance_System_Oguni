@@ -25,7 +25,6 @@ class PerformanceRequest extends FormRequest
         return [
             'insert_date' => 'required|performance',
             'start' => 'required',
-            'end' => 'required',
             'user_id' => 'required',
             'food_fg' => 'required',
             'outside_fg' => 'required',

@@ -17,22 +17,25 @@ class PerformanceController extends Controller
     // 実績記録一覧表示
     public function index(Request $request)
     {
-
+        // 所属校で実績記録の表示を絞る
         if ($request->has('school_id')) {
             $school_id = $request->school_id;
         } else {
             $school_id = 1;
         }
 
+        // 日付で実績記録の表示を絞る
         if ($request->has('day')) {
             $day = $request->day;
         } else {
             $day = Carbon::now()->toDateString();
         }
 
-        $records = Performance::dateIdEqual($day)->has('user')->whereHas('User', function ($q) use ($school_id) {
-            $q->where('school_id', $school_id);
-        })
+        $records = Performance::dateIdEqual($day)
+            // ->has('user')
+            ->whereHas('User', function ($q) use ($school_id) {
+                $q->where('school_id', $school_id);
+            })
             ->with(['user', 'note'])->paginate(10);
 
 
@@ -42,7 +45,7 @@ class PerformanceController extends Controller
             'school_id' =>  $school_id,
             'day' => $day,
         ];
-        return view('admin.performance_record', $param);
+        return view('admin.performance_index', $param);
     }
 
     // 実績記録登録画面

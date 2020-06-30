@@ -218,40 +218,48 @@ a:hover,
     color: royalblue;
     text-align: center;
 }
-
-
-
 .recordtb caption {
     caption-side: top;
     color: #fff;
 }
-
 .recordtb caption p {
     margin: 0;
 }
-
 .recordtb thead tr {
     background-color: #2c4692;
 }
 .recordtb thead tr:first-child th {
-    border-top: 1px #fff solid;
+    border-top: 1px solid #fff;
+}
+
+.caption td {
+    /* padding: 5px; */
+    /* margin: 1rem; */
+}
+
+.caption tr {
+    /* padding: 1rem; */
+}
+
+.caption {
+    width: 100%;
 }
 .recordtb thead tr th:last-child,
 .recordtb thead tr td:last-child
  {
-    border-right: 1px #fff solid;
+    border-right: 1px solid #fff;
 }
 .recordtb thead th {
-    border-bottom: 1px #fff solid;
-    border-left: #fff 1px solid;
+    border-bottom: 1px solid #fff;
+    border-left: 1px solid #fff;
     color: #fff;
     padding: 5px;
     font-size: 0.75rem;
 }
 
 .recordtb thead td {
-    border-bottom: 1px #fff solid;
-    border-left: 1px #fff solid;
+    border-bottom: 1px solid #fff;
+    border-left: 1px solid #fff;
     font-size: 1rem;
     background: #fff;
 }
@@ -264,12 +272,8 @@ a:hover,
     padding: 5px;
 }
 
-.recordtb thead tr th+th {
-    /* border-left: 1px #fff solid; */
-}
-
 .recordtb tbody tr td+td {
-    border-left: 1px royalblue solid;
+    border-left: 1px solid royalblue;
 }
 
 .recordtb tbody tr:nth-child(even) {
@@ -277,7 +281,7 @@ a:hover,
 }
 
 .recordtb tbody tr+tr td {
-    border-top: 1px royalblue dashed;
+    border-top: 1px dashed royalblue;
 }
 
 .recordtb tbody tr.edit_sel {
@@ -287,7 +291,6 @@ a:hover,
 .recordtb tbody tr.edit_sel:hover {
     background-color: gold;
 }
-
 
 .pagination {
     justify-content: center;

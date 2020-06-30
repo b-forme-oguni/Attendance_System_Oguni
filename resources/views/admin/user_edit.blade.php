@@ -6,7 +6,7 @@
     <h2 class="text-center">@yield('title')</h2>
     <div class="row justify-content-center">
         <div class="col-md-8 my-4">
-            <form action="/user_edit" method="POST">
+            <form action="edit" method="POST">
 
                 {{ csrf_field() }}
                 <input type="hidden" name="id" value="{{ $user->id }}">
@@ -48,8 +48,8 @@
                         <button type="submit" class="button square_min">
                             変　更
                         </button>
-                        <a href="user" class="button square_min">戻　る</a>
-                        <a href="user_del?id={{ $user->id }}" class="button square_min">削　除</a>
+                        <a href="/user" class="button square_min">戻　る</a>
+                        <a href="delete?id={{ $user->id }}" class="button square_min">削　除</a>
                     </div>
                 </div>
             </form>

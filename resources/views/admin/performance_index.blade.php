@@ -36,7 +36,7 @@
         Excel出力一覧</a>
 </li>
 <li>
-    <a class="button square_min" href="/admin">
+    <a class="button square_min" href="/menu">
 
         管理者メニュー</a>
 </li>

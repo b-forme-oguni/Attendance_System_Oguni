@@ -59,7 +59,7 @@ class ExportController extends Controller
             'year_month' => $year_month,
         ];
 
-        return view('export.exportlist', $param);
+        return view('export.index', $param);
     }
 
 

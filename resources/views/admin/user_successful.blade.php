@@ -42,7 +42,7 @@
             <div class="form-group row mb-0">
                 <div class="col-md-8 offset-md-4">
 
-                    <a href="user" class="button square_min">戻　る</a>
+                    <a href="/user" class="button square_min">戻　る</a>
 
                 </div>
             </div>

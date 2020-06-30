@@ -14,7 +14,7 @@ class UserManagerController extends Controller
     // 利用者一覧表示
     public function index(Request $request)
     {
-
+        // 所属校で利用者の表示を絞る
         if ($request->has('school_id')) {
             $school_id = $request->school_id;
         } else {
@@ -33,7 +33,7 @@ class UserManagerController extends Controller
             'schoolselect' => BaseClass::schoolSelect(),
             'school_id' =>  $school_id,
         ];
-        return view('admin.user_record', $param);
+        return view('admin.user_index', $param);
     }
 
     // 利用者登録画面
@@ -146,7 +146,7 @@ class UserManagerController extends Controller
         if ($request->id) {
             User::whereIn('id', $request->id)->restore();
         }
-        return  redirect('/delete');
+        return  redirect('user/deleteindex');
     }
 
     // ソフトデリートした削除した利用者を完全削除する
@@ -155,7 +155,7 @@ class UserManagerController extends Controller
         if ($request->id) {
             User::whereIn('id', $request->id)->forceDelete();
         }
-        return  redirect('/delete');
+        return  redirect('user/deleteindex');
     }
 
     // 利用者リストをExcelで出力

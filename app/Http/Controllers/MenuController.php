@@ -16,7 +16,7 @@ class MenuController extends Controller
         return view('stamp.index', $prame);
     }
 
-    public function adminMenu()
+    public function menu()
     {
         return view('admin.menu');
     }

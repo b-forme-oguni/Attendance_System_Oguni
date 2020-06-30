@@ -6,7 +6,7 @@
     <h2 class="text-center">@yield('title')</h2>
     <div class="row justify-content-center">
         <div class="col-md-8 my-4">
-            <form action="/user_reg" method="POST">
+            <form action="store" method="POST">
                 {{ csrf_field() }}
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label text-md-right">
@@ -49,7 +49,7 @@
                         <button type="submit" class="button square_min">
                             登　録
                         </button>
-                        <a href="user" class="button square_min">戻　る</a>
+                        <a href="/user" class="button square_min">戻　る</a>
 
                     </div>
                 </div>

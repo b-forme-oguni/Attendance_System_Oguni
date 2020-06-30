@@ -13,8 +13,8 @@
     </dd>
 </dl>
 <ul class="record_menu d-flex list-unstyled">
-    <li><a href="/delete" value="" class="button square_min">削除した利用者</a></li>
-    <li><a href="/user_reg" value="" class="button square_min">新規利用者登録</a></li>
+    <li><a href="user/deleteindex" value="" class="button square_min">削除した利用者</a></li>
+    <li><a href="user/store" value="" class="button square_min">新規利用者登録</a></li>
 </ul>
 @endsection
 
@@ -24,7 +24,7 @@
 
 @section('header_admin_menu')
 <li>
-    <a class="button square_min" href="/admin">
+    <a class="button square_min" href="menu">
 
         管理者メニュー</a>
 </li>
@@ -46,8 +46,7 @@
         </thead>
         <tbody>
             @foreach ($users as $user)
-            {{-- <tr onclick="location.href={{ $user->id }};"> --}}
-            <tr class="edit_sel" onclick="location.href='/user_edit?id={{ $user->id }}';">
+            <tr class="edit_sel" onclick="location.href='user/edit?id={{ $user->id }}';">
                 <td>
 
                     {{ $user->id }}</td>
