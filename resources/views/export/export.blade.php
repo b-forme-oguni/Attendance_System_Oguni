@@ -52,7 +52,13 @@
     </thead>
     <tbody>
         @foreach ($exceltables as $exceltable)
+
+        @if ($exceltable->getService() !== false)
+        <tr class="edit_sel" onclick="location.href='/performance/edit?id={{ $exceltable->getId() }}';">
+            @else
         <tr>
+            @endif
+
             <td>
                 {{-- 日付 --}}
 
@@ -63,7 +69,7 @@
                 {{ $exceltable->getDay()->isoFormat('ddd') }}
             </td>
             <td>{{-- サービス提供の状況 --}}
-                @if ($exceltable->getService() === false)
+                @if ( $exceltable->getService() === false && $exceltable->getDay()->dayOfWeek !== 0)
                 欠
                 @endif
             </td>

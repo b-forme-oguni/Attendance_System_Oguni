@@ -157,12 +157,4 @@ class UserManagerController extends Controller
         }
         return  redirect('user/deleteindex');
     }
-
-    // 利用者リストをExcelで出力
-    public function export()
-    {
-        $users = User::with('school')->get();
-        $view = view('export.userexport', compact('users'));
-        return Excel::download(new UsersExport($view), 'users.xlsx');
-    }
 }

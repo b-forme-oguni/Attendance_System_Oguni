@@ -7,7 +7,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8 my-4">
 
-            <form action="/performance_reg" method="POST">
+            <form action="store" method="POST">
 
                 {{ csrf_field() }}
                 <div class="form-group row">
@@ -89,7 +89,7 @@
                         <button type="submit" class="button square_min">
                             登　録
                         </button>
-                        <a href="performance" class="button square_min">戻　る</a>
+                        <a href="/performance" class="button square_min">戻　る</a>
                     </div>
                 </div>
             </form>

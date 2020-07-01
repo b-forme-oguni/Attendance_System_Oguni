@@ -1,4 +1,5 @@
 <?php
+
 namespace app\Library;
 
 use App\Note;
@@ -37,6 +38,19 @@ class BaseClass
         foreach ($users as $user) {
             $userslist += [
                 $user->id => $user->id . '：' . $user->getName() . '（' . $user->school->getName() . '）',
+            ];
+        }
+        return $userslist;
+    }
+
+    // Formファザード用にUserクラスをidと名前の連想配列にする
+    public static function usersListScorp($school_id)
+    {
+        $users = User::schoolIdEqual($school_id)->get();
+        $userslist = [];
+        foreach ($users as $user) {
+            $userslist += [
+                $user->id => $user->id . '：' . $user->getName(),
             ];
         }
         return $userslist;
@@ -83,8 +97,4 @@ class BaseClass
         $todaydate = Carbon::now()->toDateString();
         return $todaydate;
     }
-
-
-
-
 }

@@ -14,7 +14,7 @@
 // 【TOP】
 Route::get('/', 'MenuController@top');
 
-// 【打刻】
+// 【利用者打刻画面】
 Route::prefix('stamp')->group(function () {
     Route::get('/{school_id?}', 'StampController@stamp');
     Route::post('/start/{school_id?}', 'StampController@start');
@@ -25,12 +25,12 @@ Route::prefix('stamp')->group(function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
-// 【管理者画面】
+// 【管理者編集画面】
 // 管理者画面全てのルートに対してauthミドルウェアを指定
 Route::group(['middleware' => ['auth']], function () {
 
     // 【管理者メニュー】
-    Route::get('/menu', 'MenuController@menu');
+    Route::get('menu', 'MenuController@menu');
 
     // 【利用者管理】
     Route::prefix('user')->group(function () {
@@ -49,22 +49,27 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/truedelete', 'UserManagerController@truedelete');
     });
 
-
     // 【実績記録管理】
-    // 実績記録一覧表示
-    Route::get('/performance', 'PerformanceController@index');
-    // 実績記録登録
-    Route::get('/performance_reg', 'PerformanceController@register');
-    Route::post('/performance_reg', 'PerformanceController@store');
-    // 実績記録情報変更
-    Route::get('/performance_edit', 'PerformanceController@edit');
-    Route::post('/performance_edit', 'PerformanceController@update');
-    Route::get('/performance_del', 'PerformanceController@delete');
+    Route::prefix('performance')->group(function () {
+        // 実績記録一覧表示
+        Route::get('/', 'PerformanceController@index');
+        // 実績記録登録
+        Route::get('/store', 'PerformanceController@register');
+        Route::post('/store', 'PerformanceController@store');
+        // 実績記録変更
+        Route::get('/edit', 'PerformanceController@edit');
+        Route::post('/edit', 'PerformanceController@update');
+        // 実績記録削除
+        Route::get('/delete', 'PerformanceController@delete');
+    });
 
-
-    Route::get('/user/export', 'UserManagerController@export');
-
-    Route::get('/output/index', 'ExportController@index');
-    Route::get('/output/preview', 'ExportController@preview');
-    Route::get('/output/export', 'ExportController@export');
+    // 【実績記録Excel出力】
+    Route::prefix('preview')->group(function () {
+        // 月ごとの出力対象者一覧表示
+        // Route::get('/', 'ExportController@index');
+        // Excel出力プレビュー表示
+        Route::get('/', 'ExportController@preview');
+        // Excel出力
+        Route::get('/export', 'ExportController@export');
+    });
 });

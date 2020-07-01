@@ -14,62 +14,80 @@ use Maatwebsite\Excel\Facades\Excel;
 class ExportController extends Controller
 {
 
-    // 指定校、指定年月で、実務記録レコードが存在する利用者名をリスト表示
-    public function index(Request $request)
+    // // 指定校、指定年月で、利用者名をリスト表示
+    // public function index(Request $request)
+    // {
+    //     // リクエストにschool_idがない場合、１（本校）を取得
+    //     if ($request->has('school_id')) {
+    //         $school_id = $request->school_id;
+    //     } else {
+    //         $school_id = 1;
+    //     }
+    //     // リクエストにyear_monthがない場合、Carbonから今の年月を取得
+    //     if ($request->has('date')) {
+    //         $year_month = $request->date;
+    //     } else {
+    //         $year_month = Carbon::now()->format('Y-m');
+    //     }
+
+    //     // リクエストまたはCarbonから取得した年月を、 $yearと$monthに分ける
+    //     $year = date('Y', strtotime($year_month));
+    //     $month = date('m', strtotime($year_month));
+
+    //     // Performanceテーブルのレコードより、
+    //     //     1. insert_dateの年が一致
+    //     //     2. insert_dateの月が一致
+    //     //     3.リレーションしているUserより、所属校がリクエストと一致
+    //     //     4. user_idが重複しない一意のもの
+    //     //     5. user_idの昇順
+    //     //     6.ペジネートで80区切り
+    //     // で取得
+    //     $records = Performance::whereYear('insert_date', $year)
+    //         ->whereMonth('insert_date', $month)
+    //         ->whereHas('User', function ($q) use ($school_id) {
+    //             $q->where('school_id', $school_id);
+    //         })
+    //         ->groupBy('user_id')
+    //         ->orderBy('user_id')
+    //         ->with('user')
+    //         ->paginate(80);
+
+    //     $param = [
+    //         'records' => $records,
+    //         'schoolselect' => BaseClass::schoolsList(),
+    //         'school_id' =>  $school_id,
+    //         'year_month' => $year_month,
+    //     ];
+
+    //     return view('export.index', $param);
+    // }
+
+
+    // Excel出力プレビューを表示
+    public function preview(Request $request)
     {
+
         // リクエストにschool_idがない場合、１（本校）を取得
         if ($request->has('school_id')) {
             $school_id = $request->school_id;
         } else {
             $school_id = 1;
         }
-        // リクエストにyear_monthがない場合、Carbonから今の年月を取得
-        if ($request->has('date')) {
+
+        if ($request->has('user_id')) {
+            $user_id = $request->user_id;
+        } else {
+            $user_id = null;
+        }
+
+        $user = User::where('id', $user_id)->first();
+
+
+        if ($request->has('year_month')) {
             $year_month = $request->date;
         } else {
             $year_month = Carbon::now()->format('Y-m');
         }
-
-        // リクエストまたはCarbonから取得した年月を、 $yearと$monthに分ける
-        $year = date('Y', strtotime($year_month));
-        $month = date('m', strtotime($year_month));
-
-        // Performanceテーブルのレコードより、
-        //     1. insert_dateの年が一致
-        //     2. insert_dateの月が一致
-        //     3.リレーションしているUserより、所属校がリクエストと一致
-        //     4. user_idが重複しない一意のもの
-        //     5. user_idの昇順
-        //     6.ペジネートで80区切り
-        // で取得
-        $records = Performance::whereYear('insert_date', $year)
-            ->whereMonth('insert_date', $month)
-            ->whereHas('User', function ($q) use ($school_id) {
-                $q->where('school_id', $school_id);
-            })
-            ->groupBy('user_id')
-            ->orderBy('user_id')
-            ->with('user')
-            ->paginate(80);
-
-        $param = [
-            'records' => $records,
-            'schoolselect' => BaseClass::schoolsList(),
-            'school_id' =>  $school_id,
-            'year_month' => $year_month,
-        ];
-
-        return view('export.index', $param);
-    }
-
-
-    // Excel出力プレビューを表示
-    public function preview(Request $request)
-    {
-        $user_id = $request->id;
-        $user = User::where('id', $user_id)->first();
-
-        $year_month = $request->date;
 
         // リクエストから取得した年月を、 $yearと$monthに分ける
         $year = date('Y', strtotime($year_month));
@@ -125,9 +143,14 @@ class ExportController extends Controller
         }
 
         $param = [
+            'user_id' =>  $user_id,
+            'school_id' =>  $school_id,
+            // 'users' => $users,
             'user' => $user,
             'year_month' => $year_month,
             'exceltables' => $exceltables,
+            'schoolselect' => BaseClass::schoolsList(),
+            'userslist' => BaseClass::usersListScorp($school_id),
         ];
 
         return view('export.preview', $param);

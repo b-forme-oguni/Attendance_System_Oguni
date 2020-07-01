@@ -3,7 +3,7 @@
 
 @section('header_record_school')
 
-<form action="/performance" method="GET" class="d-flex">
+<form action="performance" method="GET" class="d-flex">
     <dl class="d-flex align-items-center">
         <dt>
             所属：</dt>
@@ -23,7 +23,7 @@
 </form>
 
 <ul class="record_menu d-flex list-unstyled">
-    <li><a href="/performance_reg" value="" class="button square_min">新規実績記録登録</a></li>
+    <li><a href="/performance/store" value="" class="button square_min">新規実績記録登録</a></li>
 </ul>
 @endsection
 
@@ -31,9 +31,9 @@
 
 @section('header_admin_menu')
 <li>
-    <a class="button square_min" href="/output/index">
+    <a class="button square_min" href="/preview">
 
-        Excel出力一覧</a>
+        Excel出力プレビュー</a>
 </li>
 <li>
     <a class="button square_min" href="/menu">
@@ -62,8 +62,7 @@
     </thead>
     <tbody>
         @foreach ($records as $record)
-        {{-- <tr onclick="location.href={{ $user->id }};"> --}}
-        <tr class="edit_sel" onclick="location.href='/performance_edit?id={{ $record->id }}';">
+        <tr class="edit_sel" onclick="location.href='/performance/edit?id={{ $record->id }}';">
             <td>
 
                 {{ $record->insert_date }}</td>

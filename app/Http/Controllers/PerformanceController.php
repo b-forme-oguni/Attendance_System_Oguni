@@ -106,11 +106,14 @@ class PerformanceController extends Controller
             $medical_fg = false;
         }
 
+        $return_url =  url()->previous();
+
         $param = [
             'record' => $record,
             'food_fg' => $food_fg,
             'outside_fg' => $outside_fg,
             'medical_fg' => $medical_fg,
+            'return_url' => $return_url,
             'userslist' => BaseClass::usersList(),
             'noteslist' => BaseClass::notesList(),
             'timetable' => BaseClass::timeTable(),
@@ -126,12 +129,16 @@ class PerformanceController extends Controller
         $form = $request->all();
         // リクエスト内容から不要な '_token'を取り除く
         unset($form['_token']);
+        unset($form['url']);
         $record->fill($form)->save();
         $title = '変更完了';
+
+        $return_url =  $request->url;
 
         $param = [
             'record' => $record,
             'title' => $title,
+            'return_url' => $return_url,
         ];
 
         return view('admin.performance_successful', $param);

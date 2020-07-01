@@ -4,6 +4,7 @@ namespace app\Library;
 
 class ExcelTable
 {
+    private $id;
     private $service = false;
     private $day = '';
     private $start = '';
@@ -17,6 +18,7 @@ class ExcelTable
     {
         $this->day = $day;
         if (isset($record)) {
+            $this->id = $record['id'];
             $this->service = true;
             $this->start = $record['start'];
             $this->end = $record['end'];
@@ -28,12 +30,21 @@ class ExcelTable
     }
 
     /**
+     * Get the value of id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * Get the value of service
      */
     public function getService()
     {
         return $this->service;
     }
+
     /**
      * Get the value of day
      */
@@ -69,7 +80,6 @@ class ExcelTable
         return '';
     }
 
-
     /**
      * Get the value of outside_fg
      */
@@ -100,7 +110,4 @@ class ExcelTable
     {
         return $this->note;
     }
-
-    
-
 }
