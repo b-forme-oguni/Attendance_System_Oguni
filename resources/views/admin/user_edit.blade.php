@@ -38,7 +38,7 @@
 
                     <div class="col-md-4">
 
-                        {{ Form::select('school_id', $schoolslist, $user->school_id, ['class' => 'form-control']) }}
+                        {{ Form::select('school_id', $schoolselect, $user->school_id, ['class' => 'form-control']) }}
 
                     </div>
                 </div>

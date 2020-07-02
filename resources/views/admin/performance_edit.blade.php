@@ -8,7 +8,7 @@
 
     <div class="row justify-content-center">
         <div class="col-md-8 my-4">
-            <form action="edit" method="POST">
+            <form action="" method="POST">
 
                 {{ csrf_field() }}
                 <input type="hidden" name="url" value="{{ $return_url }}">
@@ -94,12 +94,12 @@
 
                 <div class="form-group row mb-0">
                     <div class="col-md-8 offset-md-2">
-                        <button type="submit" class="button square_min">
-                          実務記録を変更
+                        <button type="submit" formaction="edit" class="button square_min">
+                            実務記録を変更
                         </button>
                         <a href="{{ $return_url }}" class="button square_min">戻　る</a>
-                        <a href="/performance/delete?id={{ $record->id }}" class="button square_min">実務記録を削除</a>
-
+                            <button type="submit" formaction="delete" class="button square_min">
+                                実務記録を削除</button>
                     </div>
                 </div>
             </form>

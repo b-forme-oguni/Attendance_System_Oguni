@@ -1,4 +1,5 @@
 @extends('layouts.common_base')
+@section('title','Excel出力プレビュー')
 
 @section('header_record_school')
 <form action="preview" method="GET" class="d-flex">
@@ -15,14 +16,14 @@
             利用者：</dt>
         <dd>
 
-            {{ Form::select('user_id', $userslist, old($user_id),['placeholder' => '選択してください','class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
+            {{ Form::select('user_id', $userslist, $user_id,['placeholder' => '選択してください','class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
         </dd>
     </dl>
     <dl class="d-flex align-items-center">
         <dt>
             年月：</dt>
         <dd>
-            <input type="month" name="date" value={{ $year_month }} class="form-control" onChange='submit(this.form)'>
+            <input type="month" name="year_month" value={{ $year_month }} class="form-control" onChange='submit(this.form)'>
         </dd>
     </dl>
 </form>
@@ -32,7 +33,7 @@
 @if (isset($user))
 
 <li>
-    <a class="button square_min" href="/output/export?id={{ $user->id }}&date={{ $year_month }}">
+    <a class="button square_min" href="/preview/export?id={{ $user->id }}&date={{ $year_month }}">
 
         Excel出力</a>
 </li>

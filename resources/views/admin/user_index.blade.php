@@ -8,7 +8,7 @@
     <dd>
         <form action="user" method="GET">
 
-            {{ Form::select('school_id', $schoolselect, $school_id, ['class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
+            {{ Form::select('school_id', $schoolselect->prepend('全ての利用者', '0'), $school_id, ['class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
         </form>
     </dd>
 </dl>

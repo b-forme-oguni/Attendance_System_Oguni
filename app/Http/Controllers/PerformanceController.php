@@ -25,13 +25,13 @@ class PerformanceController extends Controller
         }
 
         // 日付で実績記録の表示を絞る
-        if ($request->has('day')) {
-            $day = $request->day;
+        if ($request->has('date')) {
+            $date = $request->date;
         } else {
-            $day = Carbon::now()->toDateString();
+            $date = Carbon::now()->toDateString();
         }
 
-        $records = Performance::dateIdEqual($day)
+        $records = Performance::dateIdEqual($date)
             // ->has('user')
             ->whereHas('User', function ($q) use ($school_id) {
                 $q->where('school_id', $school_id);
@@ -41,9 +41,9 @@ class PerformanceController extends Controller
 
         $param = [
             'records' => $records,
-            'schoolselect' => BaseClass::schoolsList(),
+            'schoolselect' => BaseClass::schoolSelect(),
             'school_id' =>  $school_id,
-            'day' => $day,
+            'date' => $date,
         ];
         return view('admin.performance_index', $param);
     }
@@ -51,8 +51,24 @@ class PerformanceController extends Controller
     // 実績記録登録画面
     public function register(Request $request)
     {
+        if ($request->has('id')) {
+            $user_id = $request->id;
+        } else {
+            $user_id = null;
+        }
+
+        if ($request->has('date')) {
+            $date = $request->date;
+        } else {
+            $date = BaseClass::toDayDate();
+        }
+
+        $return_url = url()->previous();
+
         $param = [
-            'todaydate' => BaseClass::toDayDate(),
+            'user_id' => $user_id,
+            'date' => $date,
+            'return_url' => $return_url,
             'userslist' => BaseClass::usersList(),
             'noteslist' => BaseClass::notesList(),
             'timetable' => BaseClass::timeTable(),
@@ -67,14 +83,18 @@ class PerformanceController extends Controller
         $form = $request->all();
         // リクエスト内容から不要な '_token'を取り除く
         unset($form['_token']);
+        unset($form['url']);
         // Modelクラスを生成して、Form内容を一括（fill）で入力し、DBに保存（save）する
         $record = new Performance();
         $record->fill($form)->save();
         $title = '登録完了';
 
+        $return_url =  $request->url;
+
         $param = [
             'record' => $record,
             'title' => $title,
+            'return_url' => $return_url,
         ];
         return view('admin.performance_successful', $param);
     }
@@ -153,9 +173,12 @@ class PerformanceController extends Controller
         $record->delete();
         $title = '削除完了';
 
+        $return_url =  $request->url;
+
         $param = [
             'record' => $record,
             'title' => $title,
+            'return_url' => $return_url,
         ];
         return view('admin.performance_successful', $param);
     }

@@ -13,81 +13,29 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ExportController extends Controller
 {
-
-    // // 指定校、指定年月で、利用者名をリスト表示
-    // public function index(Request $request)
-    // {
-    //     // リクエストにschool_idがない場合、１（本校）を取得
-    //     if ($request->has('school_id')) {
-    //         $school_id = $request->school_id;
-    //     } else {
-    //         $school_id = 1;
-    //     }
-    //     // リクエストにyear_monthがない場合、Carbonから今の年月を取得
-    //     if ($request->has('date')) {
-    //         $year_month = $request->date;
-    //     } else {
-    //         $year_month = Carbon::now()->format('Y-m');
-    //     }
-
-    //     // リクエストまたはCarbonから取得した年月を、 $yearと$monthに分ける
-    //     $year = date('Y', strtotime($year_month));
-    //     $month = date('m', strtotime($year_month));
-
-    //     // Performanceテーブルのレコードより、
-    //     //     1. insert_dateの年が一致
-    //     //     2. insert_dateの月が一致
-    //     //     3.リレーションしているUserより、所属校がリクエストと一致
-    //     //     4. user_idが重複しない一意のもの
-    //     //     5. user_idの昇順
-    //     //     6.ペジネートで80区切り
-    //     // で取得
-    //     $records = Performance::whereYear('insert_date', $year)
-    //         ->whereMonth('insert_date', $month)
-    //         ->whereHas('User', function ($q) use ($school_id) {
-    //             $q->where('school_id', $school_id);
-    //         })
-    //         ->groupBy('user_id')
-    //         ->orderBy('user_id')
-    //         ->with('user')
-    //         ->paginate(80);
-
-    //     $param = [
-    //         'records' => $records,
-    //         'schoolselect' => BaseClass::schoolsList(),
-    //         'school_id' =>  $school_id,
-    //         'year_month' => $year_month,
-    //     ];
-
-    //     return view('export.index', $param);
-    // }
-
-
     // Excel出力プレビューを表示
     public function preview(Request $request)
     {
-
-        // リクエストにschool_idがない場合、１（本校）を取得
+        // リクエストにschool_idがない場合、NULL
         if ($request->has('school_id')) {
             $school_id = $request->school_id;
         } else {
-            $school_id = 1;
+            $school_id = null;
         }
-
+        // リクエストにuser_idがない場合、NULL
         if ($request->has('user_id')) {
             $user_id = $request->user_id;
         } else {
             $user_id = null;
         }
-
-        $user = User::where('id', $user_id)->first();
-
-
+        // リクエストにyear_monthがない場合、現在の年月を取得
         if ($request->has('year_month')) {
-            $year_month = $request->date;
+            $year_month = $request->year_month;
         } else {
             $year_month = Carbon::now()->format('Y-m');
         }
+
+        $user = User::where('id', $user_id)->first();
 
         // リクエストから取得した年月を、 $yearと$monthに分ける
         $year = date('Y', strtotime($year_month));
@@ -111,21 +59,21 @@ class ExportController extends Controller
         // recordsレコードセットからinsert_dateキーを配列番号で取得
         $dateArray = array_column($records, 'insert_date');
         // リクエストから取得した年月からCarbonインスタンスを取得
-        $monthday = new Carbon($year_month);
+        $monthdays = new Carbon($year_month);
         // viewに渡すexceltables配列を宣言
         $exceltables = [];
         // 指定された月の日数を取得
-        $totalday = $monthday->daysInMonth;
+        $totalday = $monthdays->daysInMonth;
 
         // 月の日数分、exceltables配列にExcelTableインスタンスを入れる
         for ($i = 0; $i < $totalday; $i++) {
             // 指定月の１日から末日までのCarbonインスタンスを生成
-            $day = new Carbon($monthday);
+            $day = new Carbon($monthdays);
 
             // Performanceレコードから抽出したinsert_dateの値と、
             // Carbonインスタンス（１日から末日）の日付を比較
             // 一致の場合は配列番号、不一致の場合はfalseを返す
-            $result = array_search($monthday->toDateString(), $dateArray);
+            $result = array_search($monthdays->toDateString(), $dateArray);
             if ($result !== false) {
                 // 一致：recordsから日付の一致する配列番号を指定してrecordに代入
                 $record = $records[$result];
@@ -139,18 +87,17 @@ class ExportController extends Controller
             // ExcelTableインスタンスを配列に格納
             $exceltables[] = $exceltable;
             // Carbonクラスの日付を１日プラス
-            $monthday->addDay();
+            $monthdays->addDay();
         }
 
         $param = [
             'user_id' =>  $user_id,
             'school_id' =>  $school_id,
-            // 'users' => $users,
-            'user' => $user,
             'year_month' => $year_month,
+            'user' => $user,
             'exceltables' => $exceltables,
-            'schoolselect' => BaseClass::schoolsList(),
-            'userslist' => BaseClass::usersListScorp($school_id),
+            'schoolselect' => BaseClass::schoolSelect(),
+            'userslist' => BaseClass::usersListScope($school_id),
         ];
 
         return view('export.preview', $param);

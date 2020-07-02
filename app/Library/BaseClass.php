@@ -12,22 +12,10 @@ class BaseClass
     // Formファザード用にSchoolクラスをidと名前の連想配列にする
     public static function schoolSelect()
     {
-        $schools =  School::all();
-        $schoolselect['0'] =  '全ての利用者';
-        foreach ($schools as $school) {
-            $schoolselect[$school->id] =  $school->getName();
-        }
+        $schoolselect = School::select('id', 'school_name')
+        ->get()
+        ->pluck('school_name','id');
         return $schoolselect;
-    }
-
-    // Formファザード用にSchoolクラスをidと名前の連想配列にする
-    public static function schoolsList()
-    {
-        $schools =  School::all();
-        foreach ($schools as $school) {
-            $schoolslist[$school->id] =  $school->getName();
-        }
-        return $schoolslist;
     }
 
     // Formファザード用にUserクラスをidと名前の連想配列にする
@@ -44,7 +32,7 @@ class BaseClass
     }
 
     // Formファザード用にUserクラスをidと名前の連想配列にする
-    public static function usersListScorp($school_id)
+    public static function usersListScope($school_id)
     {
         $users = User::schoolIdEqual($school_id)->get();
         $userslist = [];
@@ -59,14 +47,9 @@ class BaseClass
     // Formファザード用にNoteクラスをidと名前の連想配列にする
     public static function notesList()
     {
-        $notes = Note::all();
-
-        $noteslist = [];
-        foreach ($notes as $note) {
-            $noteslist += [
-                $note->id => $note->note,
-            ];
-        }
+        $noteslist = Note::select('id','note')
+            ->get()
+            ->pluck('note', 'id');
         return $noteslist;
     }
 
@@ -74,21 +57,19 @@ class BaseClass
     {
         // 9:30から16:00までの時間を15分単位で連想配列に格納
         $timetable = [];
-        for ($i = 9 * 4; $i <= 16 * 4; $i++) {
-            if ($i <= 16 * 3) {
-                $key = date("H:i", strtotime("00:30 +" . $i * 15 . " minute"));
-                $value = date("H時i分", strtotime("00:30 +" . $i * 15 . " minute"));
-                $timetable += [
-                    $key => $value,
-                ];
-            } else {
-                $key = date("H:i", strtotime("00:00 +" . $i * 15 . " minute"));
-                $value = date("H時i分", strtotime("00:00 +" . $i * 15 . " minute"));
-                $timetable += [
-                    $key => $value,
-                ];
-            }
+
+        $start_time = Carbon::createFromTimeString('09:30:00');
+        $end_time = Carbon::createFromTimeString('16:00:00');
+
+        while ($start_time <= $end_time) {
+            $key = date("H:i", strtotime($start_time->toTimeString()));
+            $value = date("G時i分", strtotime($start_time->toTimeString()));
+            $timetable += [
+                $key => $value,
+            ];
+            $start_time->addMinutes(15);
         }
+
         return $timetable;
     }
 

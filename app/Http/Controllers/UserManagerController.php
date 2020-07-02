@@ -39,9 +39,8 @@ class UserManagerController extends Controller
     // 利用者登録画面
     public function register(Request $request)
     {
-        $schools =  School::all();
         $param = [
-            'schools' => $schools,
+            'schoolselect' => BaseClass::schoolSelect(),
         ];
         return view('admin.user_register', $param);
     }
@@ -76,7 +75,7 @@ class UserManagerController extends Controller
 
         $param = [
             'user' => $user,
-            'schoolslist' => BaseClass::schoolsList(),
+            'schoolselect' => BaseClass::schoolSelect(),
         ];
         return view('admin.user_edit', $param);
     }

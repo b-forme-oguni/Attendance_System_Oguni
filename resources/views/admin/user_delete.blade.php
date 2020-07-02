@@ -1,5 +1,5 @@
 @extends('layouts.common_base')
-@section('title','管理者メニュー')
+@section('title','削除した利用者')
 
 @section('header_record_school')
 

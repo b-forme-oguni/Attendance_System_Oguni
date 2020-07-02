@@ -7,6 +7,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8 my-4">
             <form action="store" method="POST">
+
                 {{ csrf_field() }}
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label text-md-right">
@@ -33,14 +34,8 @@
                         所　属</label>
 
                     <div class="col-md-4">
-                        <select class="form-control" name="school_id">
-                            @foreach ($schools as $school)
-                            <option value="{{ $school->id }}">
 
-                                {{ $school->getName() }}</option>
-                            @endforeach
-
-                        </select>
+                        {{ Form::select('school_id', $schoolselect, 1, ['class' => 'form-control']) }}
                     </div>
                 </div>
 

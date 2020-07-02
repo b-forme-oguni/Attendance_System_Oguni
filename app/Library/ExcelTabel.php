@@ -22,9 +22,9 @@ class ExcelTable
             $this->service = true;
             $this->start = $record['start'];
             $this->end = $record['end'];
-            $this->food_fg = $record['food_fg'];
-            $this->outside_fg = $record['outside_fg'];
-            $this->medical_fg = $record['medical_fg'];
+            $this->food_fg = $this->setFood_fg($record['food_fg']);
+            $this->outside_fg = $this->setOutside_fg($record['outside_fg']);
+            $this->medical_fg = $this->setMedical_fg($record['medical_fg']);
             $this->note = $record['note']['note'];
         }
     }
@@ -74,10 +74,7 @@ class ExcelTable
      */
     public function getFood_fg()
     {
-        if ($this->food_fg) {
-            return '1';
-        }
-        return '';
+        return $this->food_fg;
     }
 
     /**
@@ -85,10 +82,7 @@ class ExcelTable
      */
     public function getOutside_fg()
     {
-        if ($this->outside_fg) {
-            return '1';
-        }
-        return '';
+        return $this->outside_fg;
     }
 
     /**
@@ -96,11 +90,7 @@ class ExcelTable
      */
     public function getMedical_fg()
     {
-
-        if ($this->medical_fg) {
-            return '2';
-        }
-        return '';
+        return $this->medical_fg;
     }
 
     /**
@@ -109,5 +99,44 @@ class ExcelTable
     public function getNote()
     {
         return $this->note;
+    }
+
+    /**
+     * Set the value of food_fg
+     *
+     * @return  self
+     */
+    public function setFood_fg($food_fg)
+    {
+        if ($food_fg) {
+            return '1';
+        }
+        return '';
+    }
+
+    /**
+     * Set the value of outside_fg
+     *
+     * @return  self
+     */
+    public function setOutside_fg($outside_fg)
+    {
+        if ($outside_fg) {
+            return '2';
+        }
+        return '';
+    }
+
+    /**
+     * Set the value of medical_fg
+     *
+     * @return  self
+     */
+    public function setMedical_fg($medical_fg)
+    {
+        if ($medical_fg) {
+            return '2';
+        }
+        return '';
     }
 }

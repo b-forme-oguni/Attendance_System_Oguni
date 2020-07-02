@@ -3,13 +3,13 @@
         <tr>
             <td>
 
-                {{ date('Y', strtotime($year_month)) }}年
+                {{ date('Y年', strtotime($year_month)) }}
             </td>
         </tr>
         <tr>
             <td>
 
-                {{ date('n', strtotime($year_month)) }}月
+                {{ date('n月', strtotime($year_month)) }}
             </td>
         </tr>
     </tbody>
@@ -53,10 +53,12 @@
     <tbody>
         @foreach ($exceltables as $exceltable)
 
-        @if ($exceltable->getService() !== false)
+        @if ($exceltable->getDay()->dayOfWeek === 0)
+        <tr>
+            @elseif ($exceltable->getService() !== false)
         <tr class="edit_sel" onclick="location.href='/performance/edit?id={{ $exceltable->getId() }}';">
             @else
-        <tr>
+        <tr class="edit_sel" onclick="location.href='/performance/store?id={{ $user->id }}&date={{ $exceltable->getDay()->toDateString() }}';">
             @endif
 
             <td>

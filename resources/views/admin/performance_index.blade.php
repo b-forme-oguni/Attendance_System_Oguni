@@ -17,13 +17,13 @@
             日付：</dt>
         <dd>
 
-            {{ Form::date('day', $day, ['class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
+            {{ Form::date('date', $date, ['class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
         </dd>
     </dl>
 </form>
 
 <ul class="record_menu d-flex list-unstyled">
-    <li><a href="/performance/store" value="" class="button square_min">新規実績記録登録</a></li>
+    <li><a href="/performance/store?date={{ $date }}" value="" class="button square_min">新規実績記録登録</a></li>
 </ul>
 @endsection
 
@@ -103,7 +103,7 @@
 
 <div class="mt-3">
 
-    {{ $records->appends(['school_id' => $school_id,'day' => $day])->links() }}
+    {{ $records->appends(['school_id' => $school_id,'date' => $date])->links() }}
 </div>
 </div>
 @endif

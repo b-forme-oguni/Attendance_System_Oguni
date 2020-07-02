@@ -60,7 +60,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/edit', 'PerformanceController@edit');
         Route::post('/edit', 'PerformanceController@update');
         // 実績記録削除
-        Route::get('/delete', 'PerformanceController@delete');
+        Route::post('/delete', 'PerformanceController@delete');
     });
 
     // 【実績記録Excel出力】
