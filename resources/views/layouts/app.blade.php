@@ -17,8 +17,8 @@
     <body>
         <div id="app" class="wrapper">
 
-            <div class="header">
-                <div class="d-flex justify-content-between align-items-center mx-4">
+            <div class="header container-fluid py-2">
+                <div class="d-flex justify-content-between align-items-center col-md-12 px-3">
                     <div class="d-flex align-items-center">
                         <h1><a href="{{ url('/') }}">
 
@@ -29,8 +29,6 @@
 
                         <ul class="login_menu d-flex list-unstyled">
                             @guest
-                            @yield('header_admin_menu')
-
                             <li>
                                 <a class="button square_min" href="{{ route('login') }}">
 
@@ -44,8 +42,6 @@
                             </li>
                             @endif
                             @else
-                            @yield('header_admin_menu')
-
                             <li>
                                 <a class="button square_min" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -62,8 +58,19 @@
             </div>
         </div>
 
-        <div class="content">
-            @yield('content')
+
+        <div class="content container-fluid mt-2">
+
+            <nav aria-label="breadcrumb col-md-12">
+                <ol class="breadcrumb">
+                    @yield('breadcrumb')
+                </ol>
+            </nav>
+
+            <div class="my-4 col-md-12">
+                @yield('content')
+            </div>
+
         </div>
 
         </div>

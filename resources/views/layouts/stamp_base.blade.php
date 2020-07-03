@@ -15,6 +15,7 @@
     <body>
         <div class="wrapper stamp d-flex justify-content-between">
             <div class="main text-center">
+                @yield('breadcrumb')
                 @yield('schoolname')
                 @yield('date')
                 @yield('timer')

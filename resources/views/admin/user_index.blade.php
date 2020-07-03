@@ -1,7 +1,7 @@
 @extends('layouts.common_base')
-@section('title','管理者メニュー')
+@section('title','利用者管理')
 
-@section('header_record_school')
+@section('header_menu_main')
 <dl class="d-flex align-items-center">
     <dt>
         所属：</dt>
@@ -12,26 +12,22 @@
         </form>
     </dd>
 </dl>
-<ul class="record_menu d-flex list-unstyled">
-    <li><a href="user/deleteindex" value="" class="button square_min">削除した利用者</a></li>
-    <li><a href="user/store" value="" class="button square_min">新規利用者登録</a></li>
+@endsection
+
+@section('header_menu_sub')
+<ul class="menu_sub d-flex list-unstyled">
+    <li><a href="user/store" class="button square_min">新規利用者登録</a></li>
+    <li><a href="user/deleteindex" class="button square_min">削除した利用者</a></li>
 </ul>
 @endsection
 
-@section('header_record_menu')
-
-@endsection
-
-@section('header_admin_menu')
-<li>
-    <a class="button square_min" href="menu">
-
-        管理者メニュー</a>
-</li>
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="/">Top</a></li>
+<li class="breadcrumb-item"><a href="menu">管理者メニュー</a></li>
+<li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
 @endsection
 
 @section('content')
-<div class="my-5 col-md-12">
     @if (isset($users))
     <table class="usertb">
         <thead>
@@ -76,6 +72,5 @@
 
         {{ $users->appends(['school_id' => $school_id])->links() }}
     </div>
-</div>
 @endif
 @endsection

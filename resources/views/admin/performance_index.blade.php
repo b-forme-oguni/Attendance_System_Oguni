@@ -1,8 +1,7 @@
 @extends('layouts.common_base')
-@section('title','管理者メニュー')
+@section('title','実績記録管理')
 
-@section('header_record_school')
-
+@section('header_menu_main')
 <form action="performance" method="GET" class="d-flex">
     <dl class="d-flex align-items-center">
         <dt>
@@ -21,32 +20,27 @@
         </dd>
     </dl>
 </form>
+@endsection
 
-<ul class="record_menu d-flex list-unstyled">
-    <li><a href="/performance/store?date={{ $date }}" value="" class="button square_min">新規実績記録登録</a></li>
+@section('header_menu_sub')
+<ul class="menu_sub d-flex list-unstyled">
+    <li>
+        <a class="button square_min" href="/preview">
+
+            Excel出力プレビュー</a>
+    </li>
 </ul>
 @endsection
 
-
-
-@section('header_admin_menu')
-<li>
-    <a class="button square_min" href="/preview">
-
-        Excel出力プレビュー</a>
-</li>
-<li>
-    <a class="button square_min" href="/menu">
-
-        管理者メニュー</a>
-</li>
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="/">Top</a></li>
+<li class="breadcrumb-item"><a href="/menu">管理者メニュー</a></li>
+<li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
 @endsection
 
 @section('content')
-<div class="my-5 col-md-12">
-
 @if (isset($records))
-<table class="usertb my-5 mx-auto">
+<table class="usertb">
     <thead>
         <tr>
             <th>日付</th>
@@ -100,11 +94,9 @@
         @endforeach
     </tbody>
 </table>
-
 <div class="mt-3">
 
     {{ $records->appends(['school_id' => $school_id,'date' => $date])->links() }}
-</div>
 </div>
 @endif
 @endsection

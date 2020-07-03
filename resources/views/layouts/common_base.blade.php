@@ -15,26 +15,17 @@
     <body>
         <div id="@yield('page_id')" class="wrapper">
 
-            <div class="header">
-                <div class="d-flex justify-content-between align-items-center mx-4">
+            <div class="header container-fluid py-2">
+                <div class="d-flex justify-content-between align-items-center col-md-12 px-3">
                     <div class="d-flex align-items-center">
-                        <h1><a href="{{ url('/') }}">
-
-                                出欠管理システム
-                            </a></h1>
-
-                        @yield('header_record_school')
-
+                        @yield('header_menu_main')
                     </div>
                     <div class="d-flex align-items-center">
 
-                        @yield('header_record_menu')
+                        @yield('header_menu_sub')
 
                         <ul class="login_menu d-flex list-unstyled">
                             @guest
-
-                            @yield('header_admin_menu')
-
                             @if (Route::has('register'))
                             <li>
                                 <a class="button square_min" href="{{ route('login') }}">
@@ -43,12 +34,9 @@
                             </li>
                             @endif
                             @else
-
-                            @yield('header_admin_menu')
-
                             <li>
                                 <a class="button square_min" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                    document.getElementById('logout-form').submit();">
                                     ログアウト
                                 </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -61,8 +49,18 @@
                 </div>
             </div>
 
-            <div class="content">
-                @yield('content')
+            <div class="content container-fluid mt-2">
+
+                <nav aria-label="breadcrumb col-md-12">
+                    <ol class="breadcrumb">
+                        @yield('breadcrumb')
+                    </ol>
+                </nav>
+
+                <div class="my-4 col-md-12">
+                    @yield('content')
+                </div>
+
             </div>
 
         </div>

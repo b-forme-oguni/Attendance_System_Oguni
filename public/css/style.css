@@ -17,7 +17,7 @@ body {
 
 .header {
     border-bottom: 1px solid #fff;
-    padding: 1rem 0;
+    /* padding: 1rem 0; */
 }
 
 .header h1 {
@@ -89,12 +89,35 @@ a:hover,
     }
 }
 
-/* 打刻画面 */
+.menu_sub {
+    border-right: 1px #fff solid;
+    box-sizing: border-box;
+    margin-right: 0.5rem;
+    padding-right: 0.5rem;
+}
 
+/* パンくず */
+.breadcrumb {
+    padding:0 1rem;
+    background-color:unset;
+}
+.breadcrumb a,
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+.breadcrumb-item.active {
+    color: #fff;
+}
+.breadcrumb-item+.breadcrumb-item::before {
+    color: #fff;
+    content: '>';
+}
+
+/* 打刻画面 */
 .stamp .main {
     min-width: inherit;
     width: 60%;
-    padding: 4%;
+    padding: 2% 0;
 }
 
 .stamp .main .stampbox {

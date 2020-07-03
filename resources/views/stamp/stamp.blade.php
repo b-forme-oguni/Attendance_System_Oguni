@@ -1,6 +1,15 @@
 @extends('layouts.stamp_base')
 @section('title',$school->getName() . 'タイムカード')
 
+@section('breadcrumb')
+<nav aria-label="breadcrumb col-md-12">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Top</a></li>
+        <li class="breadcrumb-item active" aria-current="page">打刻画面</li>
+    </ol>
+</nav>
+@endsection
+
 @section('schoolname')
 <p class="schoolname">
 
