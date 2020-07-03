@@ -52,15 +52,7 @@
     </thead>
     <tbody>
         @foreach ($exceltables as $exceltable)
-
-        @if ($exceltable->getDay()->dayOfWeek === 0)
         <tr>
-            @elseif ($exceltable->getService() !== false)
-        <tr class="edit_sel" onclick="location.href='/performance/edit?id={{ $exceltable->getId() }}';">
-            @else
-        <tr class="edit_sel" onclick="location.href='/performance/store?id={{ $user->id }}&date={{ $exceltable->getDay()->toDateString() }}';">
-            @endif
-
             <td>
                 {{-- 日付 --}}
 

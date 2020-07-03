@@ -10,9 +10,8 @@ use Illuminate\Support\Carbon;
 
 class StampController extends Controller
 {
-
     // 五十音を解列で格納
-    const  KANA = array(
+    const KANA = array(
         'ア' => ['ア', 'イ', 'ウ', 'エ', 'オ'],
         'カ' => ['カ', 'ガ', 'キ', 'ギ', 'ク', 'グ', 'ケ', 'ゲ', 'コ', 'ゴ'],
         'サ' => ['サ', 'ザ', 'シ', 'ジ', 'ス', 'ズ', 'セ', 'ゼ', 'ソ', 'ゾ'],
@@ -128,7 +127,8 @@ class StampController extends Controller
                 'start' => Carbon::now()->toTimeString(),
             ]);
         }
-        return  redirect('stamp/' . $school_id . '?index=all');
+        return  redirect(url()->previous());
+        // return  redirect('stamp/' . $school_id . '?index=all');
     }
 
     //終了打刻
@@ -141,6 +141,7 @@ class StampController extends Controller
                 'end' => Carbon::now()->toTimeString(),
             ]);
         }
-        return  redirect('stamp/' . $school_id . '?index=all');
+        return  redirect(url()->previous());
+        // return  redirect('stamp/' . $school_id . '?index=all');
     }
 }
