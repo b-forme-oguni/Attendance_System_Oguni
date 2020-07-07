@@ -19,20 +19,53 @@
                 <label class="col-md-2 col-form-label text-md-right">
                     氏　名</label>
                 <div class="col-md-5">
-                    <input type="text" name="last_name" placeholder="姓" class="form-control">
+                    <input type="text" name="last_name" placeholder="姓" class="form-control" value="{{old('last_name')}}">
+                    @if($errors->has('last_name'))
+
+                    <span class="error_msg" role="alert">
+                        <strong>
+
+                            {{ $errors->first('last_name') }} </strong>
+                    </span>
+                    @endif
                 </div>
                 <div class="col-md-5">
-                    <input type="text" name="first_name" placeholder="名" class="form-control">
+                    <input type="text" name="first_name" placeholder="名" class="form-control" value="{{old('first_name')}}">
+                    @if($errors->has('first_name'))
+
+                    <span class="error_msg" role="alert">
+                        <strong>
+
+                            {{ $errors->first('first_name') }} </strong>
+                    </span>
+                    @endif
                 </div>
+
             </div>
             <div class="form-group row">
                 <label class="col-md-2 col-form-label text-md-right">
                     カナ名</label>
                 <div class="col-md-5">
-                    <input type="text" name="last_name_kana" placeholder="セイ" class="form-control">
+                    <input type="text" name="last_name_kana" placeholder="セイ" class="form-control" value="{{old('last_name_kana')}}">
+                    @if($errors->has('last_name_kana'))
+
+                    <span class="error_msg" role="alert">
+                        <strong>
+
+                            {{ $errors->first('last_name_kana') }} </strong>
+                    </span>
+                    @endif
                 </div>
                 <div class="col-md-5">
-                    <input type="text" name="first_name_kana" placeholder="メイ" class="form-control">
+                    <input type="text" name="first_name_kana" placeholder="メイ" class="form-control" value="{{old('first_name_kana')}}">
+                    @if($errors->has('first_name_kana'))
+
+                    <span class="error_msg" role="alert">
+                        <strong>
+
+                            {{ $errors->first('first_name_kana') }} </strong>
+                    </span>
+                    @endif
                 </div>
             </div>
             <div class="form-group row">

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+
 class PerformanceRequest extends FormRequest
 {
     /**
@@ -30,6 +31,12 @@ class PerformanceRequest extends FormRequest
             'outside_fg' => 'required',
             'medical_fg' => 'required',
             'note_id' => 'required',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'insert_date.performance' => '既に同日にその利用者の実績記録が存在しています。日付か利用者を変更して下さい。',
         ];
     }
 }

@@ -18,6 +18,12 @@
                         日　付</label>
                     <div class="col-md-8">
                         <input type="date" name="insert_date" class="form-control" value="{{ $record->insert_date }}">
+                        @error('insert_date')
+                        <span class="error_msg" role="alert">
+                            <strong>
+                                {{ $message }} </strong>
+                        </span>
+                        @enderror
                     </div>
                 </div>
 
@@ -27,6 +33,13 @@
                     <div class="col-md-8">
 
                         {{ Form::select('user_id', $userslist, $record->user_id, ['class' => 'form-control']) }}
+                        @error('insert_date')
+                        <span class="error_msg" role="alert">
+                            <strong>
+
+                                {{ $message }} </strong>
+                        </span>
+                        @enderror
                     </div>
                 </div>
 
@@ -98,8 +111,8 @@
                             実務記録を変更
                         </button>
                         <a href="{{ $return_url }}" class="button square_min">戻　る</a>
-                            <button type="submit" formaction="delete" class="button square_min">
-                                実務記録を削除</button>
+                        <button type="submit" formaction="delete" class="button square_min">
+                            実務記録を削除</button>
                     </div>
                 </div>
             </form>

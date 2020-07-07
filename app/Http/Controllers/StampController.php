@@ -32,12 +32,12 @@ class StampController extends Controller
         // 日付を曜日付きで表示
         Carbon::setLocale('ja');
         $dt = new Carbon();
-        $today = $dt->isoFormat('YYYY年MM月DD日（ddd）');
+        $today = $dt->isoFormat('YYYY年M月D日（ddd）');
 
-        // 利用者リストを学校idでスコープ
+        // 利用者を学校idでスコープ
         $userstable = User::schoolIdEqual($school_id);
 
-        // 利用者リストを配列で取得
+        // 利用者を取得
         $users = $userstable->orderBy('last_name_kana')->get();
 
         // クエリ実行の繰り返しを回避
@@ -51,12 +51,10 @@ class StampController extends Controller
         //利用者の出席状態を連想配列で記録
         $attendlist = array();
         foreach ($timestamp as $stamp) {
-            if ($stamp) {
-                if (!$stamp->end) {
-                    $attendlist[$stamp->user_id] = true;
-                } else {
-                    $attendlist[$stamp->user_id] = false;
-                }
+            if (is_null($stamp->end)) {
+                $attendlist[$stamp->user_id] = true;
+            } else {
+                $attendlist[$stamp->user_id] = false;
             }
         }
 
@@ -89,7 +87,7 @@ class StampController extends Controller
         ];
 
         // idクエリがあれば対象のユーザー情報を取得
-        if ($request->id) {
+        if ($request->has('id')) {
             foreach ($users as $user) {
                 if ($user->id == $request->id) {
                     $username = $user->getName();

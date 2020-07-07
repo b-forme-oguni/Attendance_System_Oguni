@@ -1,5 +1,5 @@
 @extends('layouts.common_base')
-@section('title','新規実績記録登録')
+@section('title','実績記録作成')
 
 @section('content')
 <div class="container mt-4">
@@ -10,14 +10,23 @@
             <form action="store" method="POST">
 
                 {{ csrf_field() }}
-                <input type="hidden" name="url" value="{{ $return_url }}">
+                <input type="hidden" name="url" value="{{ session('return_url') }}">
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label text-md-right">
                         日　付</label>
                     <div class="col-md-8">
 
                         {{ Form::date('insert_date', $date,['class' => 'form-control']) }}
+
+                        @error('insert_date')
+                        <span class="error_msg" role="alert">
+                            <strong>
+
+                                {{ $message }} </strong>
+                        </span>
+                        @enderror
                     </div>
+
                 </div>
 
                 <div class="form-group row">
@@ -26,6 +35,13 @@
                     <div class="col-md-8">
 
                         {{ Form::select('user_id', $userslist, $user_id,['placeholder' => '選択してください','class' => 'form-control']) }}
+                        @error('insert_date')
+                        <span class="error_msg" role="alert">
+                            <strong>
+
+                                {{ $message }} </strong>
+                        </span>
+                        @enderror
                     </div>
                 </div>
 

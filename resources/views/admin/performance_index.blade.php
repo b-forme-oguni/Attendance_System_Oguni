@@ -25,6 +25,11 @@
 @section('header_menu_sub')
 <ul class="menu_sub d-flex list-unstyled">
     <li>
+        <a class="button square_min" href="/performance/store">
+
+            実績記録作成</a>
+    </li>
+    <li>
         <a class="button square_min" href="/preview">
 
             Excel出力プレビュー</a>

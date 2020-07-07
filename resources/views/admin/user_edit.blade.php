@@ -22,9 +22,25 @@
 
                 <div class="col-md-5">
                     <input type="text" name="last_name" value="{{ $user->last_name }}" placeholder="姓" class="form-control">
+                    @if($errors->has('last_name'))
+
+                    <span class="error_msg" role="alert">
+                        <strong>
+
+                            {{ $errors->first('last_name') }} </strong>
+                    </span>
+                    @endif
                 </div>
                 <div class="col-md-5">
                     <input type="text" name="first_name" value="{{ $user->first_name }}" placeholder="名" class="form-control">
+                    @if($errors->has('first_name'))
+
+                    <span class="error_msg" role="alert">
+                        <strong>
+
+                            {{ $errors->first('first_name') }} </strong>
+                    </span>
+                    @endif
                 </div>
             </div>
             <div class="form-group row">
@@ -33,9 +49,25 @@
 
                 <div class="col-md-5">
                     <input type="text" name="last_name_kana" value="{{ $user->last_name_kana }}" placeholder="セイ" class="form-control">
+                    @if($errors->has('last_name_kana'))
+
+                    <span class="error_msg" role="alert">
+                        <strong>
+
+                            {{ $errors->first('last_name_kana') }} </strong>
+                    </span>
+                    @endif
                 </div>
                 <div class="col-md-5">
                     <input type="text" name="first_name_kana" value="{{ $user->first_name_kana }}" placeholder="メイ" class="form-control">
+                    @if($errors->has('first_name_kana'))
+
+                    <span class="error_msg" role="alert">
+                        <strong>
+
+                            {{ $errors->first('first_name_kana') }} </strong>
+                    </span>
+                    @endif
                 </div>
             </div>
             <div class="form-group row">

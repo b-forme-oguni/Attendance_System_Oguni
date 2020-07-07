@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Performance;
 use app\Library\BaseClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use App\Http\Requests\PerformanceRequest;
 use Illuminate\Support\Facades\Validator;
 
@@ -63,7 +64,13 @@ class PerformanceController extends Controller
             $date = BaseClass::toDayDate();
         }
 
-        $return_url = url()->previous();
+        // 以前のパスを取得
+        if ($request->session()->has('return_url')) {
+            $return_url = session('return_url');
+        } else {
+            $request->session()->flash('return_url', url()->previous());
+            $return_url = session('return_url');
+        }
 
         $param = [
             'user_id' => $user_id,
@@ -82,8 +89,7 @@ class PerformanceController extends Controller
         // すべてのリクエスト内容を取得
         $form = $request->all();
         // リクエスト内容から不要な '_token'を取り除く
-        unset($form['_token']);
-        unset($form['url']);
+        unset($form['_token'], $form['url']);
         // Modelクラスを生成して、Form内容を一括（fill）で入力し、DBに保存（save）する
         $record = new Performance();
         $record->fill($form)->save();
@@ -126,6 +132,7 @@ class PerformanceController extends Controller
             $medical_fg = false;
         }
 
+        // 以前のパスを取得
         $return_url =  url()->previous();
 
         $param = [
@@ -148,8 +155,7 @@ class PerformanceController extends Controller
         // すべてのリクエスト内容を取得
         $form = $request->all();
         // リクエスト内容から不要な '_token'を取り除く
-        unset($form['_token']);
-        unset($form['url']);
+        unset($form['_token'], $form['url']);
         $record->fill($form)->save();
         $title = '変更完了';
 

@@ -50,7 +50,7 @@ class UserManagerController extends Controller
     {
         // リクエストされた内容に対して、Userクラスのバリデータールールを適用
         // ルール違反の場合、登録を受付けない
-        $this->validate($request, User::$rulse);
+        $this->validate($request, User::$rulse, User::$messages);
 
         // すべてのリクエスト内容を取得
         $form = $request->all();
@@ -83,7 +83,7 @@ class UserManagerController extends Controller
     // 利用者情報変更処理
     public function update(Request $request)
     {
-        $this->validate($request, User::$rulse);
+        $this->validate($request, User::$rulse, User::$messages);
         $user = User::where('id', $request->id)->first();
         // すべてのリクエスト内容を取得
         $form = $request->all();
