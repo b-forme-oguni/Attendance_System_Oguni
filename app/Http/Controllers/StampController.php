@@ -104,7 +104,7 @@ class StampController extends Controller
     }
 
     //開始打刻
-    public function start(Request $request, $school_id)
+    public function start(Request $request)
     {
         //利用者の前回のレコードがあれば、最終打刻の日付を取得
         $oldTimestamp = Performance::where('user_id', $request->user_id)->latest()->first();
@@ -126,11 +126,10 @@ class StampController extends Controller
             ]);
         }
         return  redirect(url()->previous());
-        // return  redirect('stamp/' . $school_id . '?index=all');
     }
 
     //終了打刻
-    public function end(Request $request, $school_id)
+    public function end(Request $request)
     {
         //終了打刻が空であれば、レコードに終了時刻を追加変更
         $timestamp = Performance::where('user_id', $request->user_id)->latest()->first();
@@ -140,6 +139,5 @@ class StampController extends Controller
             ]);
         }
         return  redirect(url()->previous());
-        // return  redirect('stamp/' . $school_id . '?index=all');
     }
 }

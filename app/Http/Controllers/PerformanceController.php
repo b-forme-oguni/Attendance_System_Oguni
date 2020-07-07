@@ -133,7 +133,12 @@ class PerformanceController extends Controller
         }
 
         // 以前のパスを取得
-        $return_url =  url()->previous();
+        if ($request->session()->has('_flash')) {
+            $return_url = session('return_url');
+        } else {
+            $request->session()->flash('return_url', url()->previous());
+            $return_url = session('return_url');
+        }
 
         $param = [
             'record' => $record,
