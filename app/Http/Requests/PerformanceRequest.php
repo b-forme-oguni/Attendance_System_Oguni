@@ -44,8 +44,9 @@ class PerformanceRequest extends FormRequest
 
     protected function getRedirectUrl()
     {
-        // リダイレクト直前にセッションを保存
-        Session::flash('return_url', session('return_url'));
+        // リダイレクト直前にセッションを継続
+        Session::reflash();
+
         return url()->previous();
     }
 }

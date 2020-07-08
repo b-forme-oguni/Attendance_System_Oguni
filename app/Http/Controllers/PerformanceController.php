@@ -64,9 +64,9 @@ class PerformanceController extends Controller
         }
 
         // 全画面のパスをセッション保存。
-        // リダイレクトされた際は、リダイレクト直前にセッション保存された内容を再度セッション保存
+        // リダイレクトされた際は、リダイレクト直前に継続されたセッションを再度継続
         if ($request->session()->has('return_url')) {
-            $request->session()->flash('return_url', session('return_url'));
+            $request->session()->reflash();
         } else {
             $request->session()->flash('return_url', url()->previous());
         }
@@ -92,6 +92,8 @@ class PerformanceController extends Controller
         $record = new Performance();
         $record->fill($form)->save();
         $title = '登録完了';
+
+        dump(session('return_url'));
 
         $param = [
             'record' => $record,
@@ -136,9 +138,9 @@ class PerformanceController extends Controller
         }
 
         // 全画面のパスをセッション保存。
-        // リダイレクトされた際は、リダイレクト直前にセッション保存された内容を再度セッション保存
+        // リダイレクトされた際は、リダイレクト直前に継続されたセッションを再度継続
         if ($request->session()->has('return_url')) {
-            $request->session()->flash('return_url', session('return_url'));
+            $request->session()->reflash();
         } else {
             $request->session()->flash('return_url', url()->previous());
         }
