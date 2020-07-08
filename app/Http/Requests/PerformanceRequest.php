@@ -37,16 +37,15 @@ class PerformanceRequest extends FormRequest
     public function messages()
     {
         return [
-            'insert_date.performance' => '既に同日にその利用者の実績記録が存在しています。日付か利用者を変更して下さい。',
+            'insert_date.performance' => '既に同日にその利用者の実績記録が存在しています。日付か利用者を変更して下さい',
+            'user_id.required' => '利用者を選択して下さい',
         ];
     }
-
 
     protected function getRedirectUrl()
     {
         // リダイレクト直前にセッションを継続
         Session::reflash();
-
         return url()->previous();
     }
 }

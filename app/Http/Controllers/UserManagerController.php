@@ -7,6 +7,7 @@ use App\School;
 use app\Library\BaseClass;
 use App\Exports\UsersExport;
 use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserManagerController extends Controller
@@ -46,12 +47,8 @@ class UserManagerController extends Controller
     }
 
     // 利用者登録処理
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        // リクエストされた内容に対して、Userクラスのバリデータールールを適用
-        // ルール違反の場合、登録を受付けない
-        $this->validate($request, User::$rulse, User::$messages);
-
         // すべてのリクエスト内容を取得
         $form = $request->all();
         // リクエスト内容から不要な '_token'を取り除く
@@ -81,9 +78,8 @@ class UserManagerController extends Controller
     }
 
     // 利用者情報変更処理
-    public function update(Request $request)
+    public function update(UserRequest $request)
     {
-        $this->validate($request, User::$rulse, User::$messages);
         $user = User::where('id', $request->id)->first();
         // すべてのリクエスト内容を取得
         $form = $request->all();

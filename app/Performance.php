@@ -54,7 +54,7 @@ class Performance extends Model
             return '-';
         }
     }
-    
+
     public function getNote()
     {
         if ($this->note_id) {
@@ -109,5 +109,4 @@ class Performance extends Model
         }
         return date('H:i', mktime($_hour, $_minute, 0));
     }
-
 }

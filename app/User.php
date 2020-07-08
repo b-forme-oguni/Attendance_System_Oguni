@@ -19,23 +19,6 @@ class User extends Model
         'deleted_at'
     ];
 
-    // バリデータールールを指定
-    public static $rulse = array(
-        'last_name' => 'required',
-        'first_name' => 'required',
-        'last_name_kana' => 'required',
-        'first_name_kana' => 'required',
-        'school_id' => 'required | integer',
-    );
-
-    // エラーメッセージを指定
-    public static $messages = [
-        'last_name.required' => '姓を入力して下さい',
-        'first_name.required' => '名を入力して下さい',
-        'last_name_kana.required' => '姓（カナ）を入力して下さい',
-        'first_name_kana.required' => '名（カナ）を入力して下さい',
-    ];
-
     // ローカルスコープを設定
     public function scopeSchoolIdEqual($query, $int)
     {

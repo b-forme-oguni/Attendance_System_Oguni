@@ -34,7 +34,7 @@
                     <div class="col-md-8">
 
                         {{ Form::select('user_id', $userslist, $user_id,['placeholder' => '選択してください','class' => 'form-control']) }}
-                        @error('insert_date')
+                        @error('user_id')
                         <span class="error_msg" role="alert">
                             <strong>
 
