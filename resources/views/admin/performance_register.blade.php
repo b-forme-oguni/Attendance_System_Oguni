@@ -10,7 +10,6 @@
             <form action="store" method="POST">
 
                 {{ csrf_field() }}
-                <input type="hidden" name="url" value="{{ session('return_url') }}">
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label text-md-right">
                         日　付</label>
@@ -107,7 +106,7 @@
                         <button type="submit" class="button square_min">
                             登　録
                         </button>
-                        <a href="{{ $return_url }}" class="button square_min">戻　る</a>
+                        <a href="{{ session('return_url') }}" class="button square_min">戻　る</a>
                     </div>
                 </div>
             </form>

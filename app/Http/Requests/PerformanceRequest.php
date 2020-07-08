@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PerformanceRequest extends FormRequest
@@ -38,5 +39,13 @@ class PerformanceRequest extends FormRequest
         return [
             'insert_date.performance' => '既に同日にその利用者の実績記録が存在しています。日付か利用者を変更して下さい。',
         ];
+    }
+
+
+    protected function getRedirectUrl()
+    {
+        // リダイレクト直前にセッションを保存
+        Session::flash('return_url', session('return_url'));
+        return url()->previous();
     }
 }

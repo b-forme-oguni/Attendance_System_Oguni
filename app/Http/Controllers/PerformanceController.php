@@ -33,7 +33,6 @@ class PerformanceController extends Controller
         }
 
         $records = Performance::dateIdEqual($date)
-            // ->has('user')
             ->whereHas('User', function ($q) use ($school_id) {
                 $q->where('school_id', $school_id);
             })
@@ -64,18 +63,17 @@ class PerformanceController extends Controller
             $date = BaseClass::toDayDate();
         }
 
-        // 以前のパスを取得
+        // 全画面のパスをセッション保存。
+        // リダイレクトされた際は、リダイレクト直前にセッション保存された内容を再度セッション保存
         if ($request->session()->has('return_url')) {
-            $return_url = session('return_url');
+            $request->session()->flash('return_url', session('return_url'));
         } else {
             $request->session()->flash('return_url', url()->previous());
-            $return_url = session('return_url');
         }
 
         $param = [
             'user_id' => $user_id,
             'date' => $date,
-            'return_url' => $return_url,
             'userslist' => BaseClass::usersList(),
             'noteslist' => BaseClass::notesList(),
             'timetable' => BaseClass::timeTable(),
@@ -89,18 +87,15 @@ class PerformanceController extends Controller
         // すべてのリクエスト内容を取得
         $form = $request->all();
         // リクエスト内容から不要な '_token'を取り除く
-        unset($form['_token'], $form['url']);
+        unset($form['_token']);
         // Modelクラスを生成して、Form内容を一括（fill）で入力し、DBに保存（save）する
         $record = new Performance();
         $record->fill($form)->save();
         $title = '登録完了';
 
-        $return_url =  $request->url;
-
         $param = [
             'record' => $record,
             'title' => $title,
-            'return_url' => $return_url,
         ];
         return view('admin.performance_successful', $param);
     }
@@ -140,12 +135,19 @@ class PerformanceController extends Controller
             $return_url = session('return_url');
         }
 
+        // 全画面のパスをセッション保存。
+        // リダイレクトされた際は、リダイレクト直前にセッション保存された内容を再度セッション保存
+        if ($request->session()->has('return_url')) {
+            $request->session()->flash('return_url', session('return_url'));
+        } else {
+            $request->session()->flash('return_url', url()->previous());
+        }
+
         $param = [
             'record' => $record,
             'food_fg' => $food_fg,
             'outside_fg' => $outside_fg,
             'medical_fg' => $medical_fg,
-            'return_url' => $return_url,
             'userslist' => BaseClass::usersList(),
             'noteslist' => BaseClass::notesList(),
             'timetable' => BaseClass::timeTable(),
@@ -160,18 +162,14 @@ class PerformanceController extends Controller
         // すべてのリクエスト内容を取得
         $form = $request->all();
         // リクエスト内容から不要な '_token'を取り除く
-        unset($form['_token'], $form['url']);
+        unset($form['_token']);
         $record->fill($form)->save();
         $title = '変更完了';
-
-        $return_url =  $request->url;
 
         $param = [
             'record' => $record,
             'title' => $title,
-            'return_url' => $return_url,
         ];
-
         return view('admin.performance_successful', $param);
     }
 
@@ -184,12 +182,9 @@ class PerformanceController extends Controller
         $record->delete();
         $title = '削除完了';
 
-        $return_url =  $request->url;
-
         $param = [
             'record' => $record,
             'title' => $title,
-            'return_url' => $return_url,
         ];
         return view('admin.performance_successful', $param);
     }

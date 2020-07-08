@@ -11,7 +11,6 @@
             <form action="" method="POST">
 
                 {{ csrf_field() }}
-                <input type="hidden" name="url" value="{{ $return_url }}">
                 <input type="hidden" name="id" value="{{ $record->id }}">
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label text-md-right">
@@ -110,7 +109,7 @@
                         <button type="submit" formaction="edit" class="button square_min">
                             実務記録を変更
                         </button>
-                        <a href="{{ $return_url }}" class="button square_min">戻　る</a>
+                        <a href="{{ session('return_url') }}" class="button square_min">戻　る</a>
                         <button type="submit" formaction="delete" class="button square_min">
                             実務記録を削除</button>
                     </div>
