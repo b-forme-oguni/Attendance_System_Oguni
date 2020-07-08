@@ -26,7 +26,7 @@ class PerformanceRequest extends FormRequest
     {
         return [
             'insert_date' => 'required|performance',
-            'start' => 'required',
+            'start' => 'required|startendtime',
             'user_id' => 'required',
             'food_fg' => 'required',
             'outside_fg' => 'required',
@@ -39,6 +39,7 @@ class PerformanceRequest extends FormRequest
         return [
             'insert_date.performance' => '既に同日にその利用者の実績記録が存在しています。日付か利用者を変更して下さい',
             'user_id.required' => '利用者を選択して下さい',
+            'start.startendtime' => '開始時刻は終了時刻より以前にして下さい',
         ];
     }
 

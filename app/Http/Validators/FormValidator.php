@@ -34,5 +34,22 @@ class FormValidator extends Validator
         return false;
     }
 
+    public function validateStartendtime($attribute, $value, $parameters)
+    {
+        // バリデーションインスタンスからstartの値を取得
+        $start = date("H:i", strtotime($this->data['start']));
+        // バリデーションインスタンスからendの値を取得
+        // endが入力されていない場合は、true
+        if (isset($this->data['end'])) {
+            $end = date("H:i", strtotime($this->data['end']));
+        } else {
+            return true;
+        }
 
+        // start時刻がend時刻以下の場合のみ、true
+        if ($start < $end) {
+            return true;
+        }
+        return false;
+    }
 }

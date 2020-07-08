@@ -46,9 +46,14 @@
                     <label class="col-md-2 col-form-label text-md-right">
                         開始時間</label>
                     <div class="col-md-8">
-
                         {{ Form::select('start', $timetable, $record->start, ['class' => 'form-control']) }}
+                        @error('start')
+                        <span class="error_msg" role="alert">
+                            <strong>
 
+                                {{ $message }} </strong>
+                        </span>
+                        @enderror
                     </div>
                 </div>
                 <div class="form-group row">

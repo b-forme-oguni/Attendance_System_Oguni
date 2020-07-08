@@ -93,8 +93,6 @@ class PerformanceController extends Controller
         $record->fill($form)->save();
         $title = '登録完了';
 
-        dump(session('return_url'));
-
         $param = [
             'record' => $record,
             'title' => $title,
