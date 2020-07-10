@@ -109,7 +109,7 @@
                 <div class="form-group row mb-0">
                     <div class="col-md-8 offset-md-2">
                         <button type="submit" class="button square_min">
-                            登　録
+                            作　成
                         </button>
                         <a href="{{ session('return_url') }}" class="button square_min">戻　る</a>
                     </div>

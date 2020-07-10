@@ -81,7 +81,7 @@ class PerformanceController extends Controller
         return view('admin.performance_register', $param);
     }
 
-    // 実績記録登録処理
+    // 実績記録作成処理
     public function store(PerformanceRequest $request)
     {
         // すべてのリクエスト内容を取得
@@ -91,7 +91,7 @@ class PerformanceController extends Controller
         // Modelクラスを生成して、Form内容を一括（fill）で入力し、DBに保存（save）する
         $record = new Performance();
         $record->fill($form)->save();
-        $title = '登録完了';
+        $title = '実績記録作成完了';
 
         $param = [
             'record' => $record,
@@ -164,7 +164,7 @@ class PerformanceController extends Controller
         // リクエスト内容から不要な '_token'を取り除く
         unset($form['_token']);
         $record->fill($form)->save();
-        $title = '変更完了';
+        $title = '実績記録変更完了';
 
         $param = [
             'record' => $record,
@@ -180,7 +180,7 @@ class PerformanceController extends Controller
         // クエリのUserIDのレコードをデリート
         $record = Performance::where('id', $request->id)->first();
         $record->delete();
-        $title = '削除完了';
+        $title = '実績記録削除完了';
 
         $param = [
             'record' => $record,

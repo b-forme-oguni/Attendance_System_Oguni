@@ -28,11 +28,11 @@ class UserRequest extends FormRequest
             'first_name' => 'required',
             'last_name_kana' => [
                 'required',
-                'regex:/^[ア-ン゛゜ァ-ォャ-ョー]+$/u',
+                'regex:/^[ア-ンァ-ォャ-ョー！-／：-＠［-｀｛-～、-〜”’・\x20　]+$/u',
             ],
             'first_name_kana' => [
                 'required',
-                'regex:/^[ア-ン゛゜ァ-ォャ-ョー]+$/u',
+                'regex:/^[ア-ンァ-ォャ-ョー！-／：-＠［-｀｛-～、-〜”’・\x20　]+$/u',
             ],
             'school_id' => 'required | integer',
         ];

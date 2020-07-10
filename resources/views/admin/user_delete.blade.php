@@ -16,7 +16,7 @@
 
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="/">Top</a></li>
-<li class="breadcrumb-item"><a href="menu">管理者メニュー</a></li>
+<li class="breadcrumb-item"><a href="/menu">管理者メニュー</a></li>
 <li class="breadcrumb-item"><a href="/user">利用者管理</a></li>
 <li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
 @endsection

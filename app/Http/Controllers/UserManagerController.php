@@ -56,7 +56,7 @@ class UserManagerController extends Controller
         // Modelクラスを生成して、Form内容を一括（fill）で入力し、DBに保存（save）する
         $user = new User;
         $user->fill($form)->save();
-        $title = '登録完了';
+        $title = '新規利用者登録完了';
 
         $param = [
             'user' => $user,
@@ -86,7 +86,7 @@ class UserManagerController extends Controller
         // リクエスト内容から不要な '_token'を取り除く
         unset($form['_token']);
         $user->fill($form)->save();
-        $title = '変更完了';
+        $title = '利用者情報変更完了';
 
         $param = [
             'user' => $user,
@@ -101,7 +101,7 @@ class UserManagerController extends Controller
         // クエリのUserIDのレコードをソフトデリート
         $user = User::where('id', $request->id)->first();
         $user->delete();
-        $title = '削除完了';
+        $title = '利用者登録削除完了';
 
         $param = [
             'user' => $user,
