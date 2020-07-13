@@ -65,8 +65,6 @@ Route::group(['middleware' => ['auth']], function () {
 
     // 【実績記録Excel出力】
     Route::prefix('preview')->group(function () {
-        // 月ごとの出力対象者一覧表示
-        // Route::get('/', 'ExportController@index');
         // Excel出力プレビュー表示
         Route::get('/', 'ExportController@preview');
         // Excel出力

@@ -40,6 +40,6 @@ class LoginController extends Controller
 
     public function username() // このメソッドを追記
     {
-        return 'name'; // 対象のカラム名に。後述するように view も変えます
+        return 'name'; // 対象のカラム名に。
     }
 }

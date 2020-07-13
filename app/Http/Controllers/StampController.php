@@ -29,23 +29,42 @@ class StampController extends Controller
     {
         $school =  School::idEqual($school_id)->first();
 
-        // 日付を曜日付きで表示
+        // Carbonで現在日時を取得
         Carbon::setLocale('ja');
-        $dt = new Carbon();
-        $today = $dt->isoFormat('YYYY年M月D日（ddd）');
+        $today = Carbon::now();
 
         // 利用者を学校idでスコープ
-        $userstable = User::schoolIdEqual($school_id);
+        $userstable = User::schoolIdEqual($school_id)->orderBy('last_name_kana');
 
-        // 利用者を取得
-        $users = $userstable->orderBy('last_name_kana')->get();
+        // 目次を選択した場合or選択しなかった場合
+        if ($request->index == 'all') {
+            // 全ての利用者を取得
+            $users = $userstable->get();
+        } else {
+            // 利用者を目次で絞り取得
+            $index = $request->index;
+            // クエリ文作成
+            $kanaindex = self::KANA[$index];
+            $initial = '';
+            for ($i = 0; $i < count($kanaindex); $i++) {
+                if ($i < count($kanaindex) - 1) {
+                    $initial .= '"' . $kanaindex[$i] . '", ';
+                } else {
+                    $initial .= '"' . $kanaindex[$i] . '"';
+                }
+            }
+            $sqltxt = 'left(last_name_kana, 1) in (' . $initial . ')';
+            $users = $userstable
+                ->whereRaw($sqltxt)
+                ->get();
+        }
 
         // クエリ実行の繰り返しを回避
         $userIdlist = array();
         foreach ($users as $user) {
             $userIdlist[] = $user['id'];
         }
-        $newTimestampDay = Carbon::now()->toDateString();
+        $newTimestampDay = $today->toDateString();
         $timestamp = Performance::where('insert_date', $newTimestampDay)->whereIn('user_id', $userIdlist)->get();
 
         //利用者の出席状態を連想配列で記録
@@ -56,26 +75,6 @@ class StampController extends Controller
             } else {
                 $attendlist[$stamp->user_id] = false;
             }
-        }
-
-        // 利用者リストを目次で絞る
-        $index = $request->index;
-        if ($index != 'all') {
-            // クエリ文作成（指定行のユーザーのみ表示）
-            $kanaindex = self::KANA[$index];
-            $initial = '';
-            for ($i = 0; $i < count($kanaindex); $i++) {
-                if ($i == count($kanaindex) - 1) {
-                    $initial .= '"' . $kanaindex[$i] . '"';
-                } else {
-                    $initial .= '"' . $kanaindex[$i] . '", ';
-                }
-            }
-            $sqltxt = 'left(last_name_kana, 1) in (' . $initial . ')';
-            $users = $userstable
-                ->whereRaw($sqltxt)
-                ->orderBy('last_name_kana')
-                ->get();
         }
 
         $prame = [

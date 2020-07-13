@@ -19,7 +19,7 @@
 @section('date')
 <p class="todaydate">
 
-    {{ $today }}</p>
+    {{ $today->isoFormat('YYYY年M月D日（ddd）') }}</p>
 @endsection
 
 @section('timer')
@@ -36,14 +36,19 @@
 <div class="stampbox">
 
     @if ( !array_key_exists ($personal['id'], $attendlist) )
-    {{-- 出席ボタンの表示 --}}
-    <form action="start/{{ $school->id }}" method="POST">
+        @if ($today->totimestring() <= '16:00:00' )
+        {{-- 出席ボタンの表示 --}}
+        <form action="start/{{ $school->id }}" method="POST">
 
-        {{ csrf_field() }}
-        <input type="hidden" name="user_id" value="{{ $personal['id'] }}">
-        <input type="submit" value=" IN " class="button round">
+            {{ csrf_field() }}
+            <input type="hidden" name="user_id" value="{{ $personal['id'] }}">
+            <input type="submit" value=" IN " class="button round">
 
-    </form>
+        </form>
+        @else
+        <p class="msg"> 本日はお疲れ様でした！</p>
+        <p class="msg">右リストから利用者名を選択して下さい </p>
+        @endif
     @elseif ( $attendlist[$personal['id']] == true )
     {{-- 退席ボタンの表示 --}}
     <form action="end/{{ $school->id }}" method="POST">
@@ -69,7 +74,9 @@
 
 @section('userslist')
 @foreach ($users as $user)
-<a href="{{ url()->full()}}&id={{ $user->id }}" class="d-flex justify-content-between list-group-item list-group-item-action">
+
+<a href="{{ url()->full() }}&id={{ $user->id }}" class="d-flex justify-content-between list-group-item list-group-item-action">
+
     <dl class="namebox d-inline-block">
         <dt class="namebox_id d-inline-block text-right">
 
@@ -100,7 +107,7 @@
 @section('kanaindex')
 <a href="{{ $school->id }}?index=all" class="list-group-item list-group-item-action">ALL</a>
 @foreach ($kanalist as $key=>$value)
-<a href="{{ $school->id }}?index={{ urlencode($key) }}" class="list-group-item list-group-item-action">
+<a href="{{ $school->id }}?index={{ $key }}" class="list-group-item list-group-item-action">
 
     {{ $key }}</a>
 @endforeach
