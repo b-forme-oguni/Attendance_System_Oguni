@@ -73,6 +73,10 @@ class Performance extends Model
     // startカラムに時間を15分切り上げるアクセサを設定する
     public function getStartAttribute($value, $margin_minutes = 15)
     {
+        // 9:30以前に打刻の場合、9:30に変更
+        if ($value < '09:30:00') {
+            $value = '09:30:00';
+        }
         $_hour = date('H', strtotime($value));
         $_minute = date('i', strtotime($value));
         if ($_minute % $margin_minutes) {
@@ -90,7 +94,7 @@ class Performance extends Model
             $t = function ($h, $m) {
                 return Carbon::createFromTime($h, $m, 0);
             };
-            // レコードが当日で且つ16時まではNULLのまま
+            // レコードが当日で且つ、0時から16時まではNULLのまま
             if ($dt->toDateString() == $this->insert_date && $dt->between($t(0, 0), $t(16, 00))) {
                 return $value;
             } else {
@@ -100,6 +104,10 @@ class Performance extends Model
             }
             // endカラムに終了時刻が打刻された場合
         } else {
+            // 16:00以降に打刻の場合、16:00に変更
+            if ($value > '16:00:00') {
+                $value = '16:00:00';
+            }
             // endカラムの時間を15分切り下げる
             $_hour = date('H', strtotime($value));
             $_minute = date('i', strtotime($value));

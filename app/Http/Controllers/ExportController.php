@@ -180,7 +180,7 @@ class ExportController extends Controller
     public function bulkExport(Request $request)
     {
         $school_id = $request->school_id;
-        $users = User:: get();
+        $users = User::schoolIdEqual($school_id)->get();
 
         $year_month = $request->date;
 
@@ -188,62 +188,59 @@ class ExportController extends Controller
         $year = date('Y', strtotime($year_month));
         $month = date('n', strtotime($year_month));
 
-        // Performanceテーブルのレコードより、
-        //     1. user_idが一致
-        //     2. insert_dateの年が一致
-        //     3. insert_dateの月が一致
-        //     4. insert_dateの昇順
-        //     5. getしたものを連想配列に変換
-        // で取得
-        $records = Performance::where('user_id', $user_id)
-            ->whereYear('insert_date', $year)
-            ->whereMonth('insert_date', $month)
-            ->with('note')
-            ->orderBy('insert_date')
-            ->get()
-            ->toArray();
 
-        // recordsレコードセットからinsert_dateキーを配列番号で取得
-        $dateArray = array_column($records, 'insert_date');
-        // リクエストから取得した年月からCarbonインスタンスを取得
-        $monthday = new Carbon($year_month);
-        // viewに渡すexceltables配列を宣言
-        $exceltables = [];
-        // 指定された月の日数を取得
-        $totalday = $monthday->daysInMonth;
+        foreach ($users as $user) {
 
-        // 月の日数分、exceltables配列にExcelTableインスタンスを入れる
-        for ($i = 0; $i < $totalday; $i++) {
-            // 指定月の１日から末日までのCarbonインスタンスを生成
-            $day = new Carbon($monthday);
+            $records = Performance::where('user_id', $user->user_id)
+                ->whereYear('insert_date', $year)
+                ->whereMonth('insert_date', $month)
+                ->with('note')
+                ->orderBy('insert_date')
+                ->get()
+                ->toArray();
 
-            // Performanceレコードから抽出したinsert_dateの値と、
-            // Carbonインスタンス（１日から末日）の日付を比較
-            // 一致の場合は配列番号、不一致の場合はfalseを返す
-            $result = array_search($monthday->toDateString(), $dateArray);
-            if ($result !== false) {
-                // 一致：recordsから日付の一致する配列番号を指定してrecordに代入
-                $record = $records[$result];
-            } else {
-                // 不一致：recordにNULLを代入
-                $record = null;
+            // recordsレコードセットからinsert_dateキーを配列番号で取得
+            $dateArray = array_column($records, 'insert_date');
+            // リクエストから取得した年月からCarbonインスタンスを取得
+            $monthday = new Carbon($year_month);
+            // viewに渡すexceltables配列を宣言
+            $exceltables = [];
+            // 指定された月の日数を取得
+            $totalday = $monthday->daysInMonth;
+
+            // 月の日数分、exceltables配列にExcelTableインスタンスを入れる
+            for ($i = 0; $i < $totalday; $i++) {
+                // 指定月の１日から末日までのCarbonインスタンスを生成
+                $day = new Carbon($monthday);
+
+                // Performanceレコードから抽出したinsert_dateの値と、
+                // Carbonインスタンス（１日から末日）の日付を比較
+                // 一致の場合は配列番号、不一致の場合はfalseを返す
+                $result = array_search($monthday->toDateString(), $dateArray);
+                if ($result !== false) {
+                    // 一致：recordsから日付の一致する配列番号を指定してrecordに代入
+                    $record = $records[$result];
+                } else {
+                    // 不一致：recordにNULLを代入
+                    $record = null;
+                }
+
+                // ExcelTableインスタンスを生成
+                $exceltable = new ExcelTable($day, $record);
+                // ExcelTableインスタンスを配列に格納
+                $exceltables[] = $exceltable;
+                // Carbonクラスの日付を１日プラス
+                $monthday->addDay();
             }
 
-            // ExcelTableインスタンスを生成
-            $exceltable = new ExcelTable($day, $record);
-            // ExcelTableインスタンスを配列に格納
-            $exceltables[] = $exceltable;
-            // Carbonクラスの日付を１日プラス
-            $monthday->addDay();
+            $param = [
+                'user' => $user,
+                'year_month' => $year_month,
+                'exceltables' => $exceltables,
+            ];
+
+            $view = view('export.export', compact('user', 'year_month', 'exceltables'));
+            return Excel::download(new UsersExport($view), $year_month . '_' . $user->getNameFull() . '.xlsx');
         }
-
-        $param = [
-            'user' => $user,
-            'year_month' => $year_month,
-            'exceltables' => $exceltables,
-        ];
-
-        $view = view('export.export', compact('user', 'year_month', 'exceltables'));
-        return Excel::download(new UsersExport($view), $year_month . '_' . $user->getNameFull() . '.xlsx');
     }
 }

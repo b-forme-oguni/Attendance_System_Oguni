@@ -48,7 +48,7 @@
                     <label class="col-md-2 col-form-label text-md-right">
                         開始時間</label>
                     <div class="col-md-8">
-                        {{ Form::select('start', $timetable,0 ,['class' => 'form-control']) }}
+                        {{ Form::select('start', $timetable, '09:30',['class' => 'form-control']) }}
                         @error('start')
                         <span class="error_msg" role="alert">
                             <strong>
@@ -63,7 +63,7 @@
                         終了時間</label>
                     <div class="col-md-8">
 
-                        {{ Form::select('end', $timetable,0 ,['class' => 'form-control']) }}
+                        {{ Form::select('end', $timetable,'16:00',['class' => 'form-control']) }}
 
                     </div>
                 </div>

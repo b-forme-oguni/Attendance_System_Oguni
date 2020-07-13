@@ -69,5 +69,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/', 'ExportController@preview');
         // Excel出力
         Route::get('/export', 'ExportController@export');
+        Route::get('/bulkexport', 'ExportController@bulkExport');
     });
 });

@@ -37,6 +37,11 @@
 
             Excel出力</a>
     </li>
+    <li>
+        <a class="button square_min" href="/preview/bulkexport?school_id={{ $school_id }}&date={{ $year_month }}">
+
+            Excel一括出力</a>
+    </li>
 </ul>
 @endif
 @endsection
