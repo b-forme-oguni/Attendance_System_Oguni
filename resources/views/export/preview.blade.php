@@ -33,7 +33,7 @@
 @if (isset($user))
 <ul class="menu_sub d-flex list-unstyled">
     <li>
-        <a class="button square_min" href="/preview/export?id={{ $user->id }}&date={{ $year_month }}">
+        <a class="button square_min" href="/preview/export?user_id={{ $user->id }}&date={{ $year_month }}">
 
             Excel出力</a>
     </li>

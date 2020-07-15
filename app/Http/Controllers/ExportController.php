@@ -6,10 +6,15 @@ use App\User;
 use App\Performance;
 use app\Library\BaseClass;
 use app\Library\ExcelTable;
-use App\Exports\UsersExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Maatwebsite\Excel\Facades\Excel;
+
+use Illuminate\Support\Facades\File;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Shared;
+use Madnest\Madzipper\Facades\Madzipper;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 
 class ExportController extends Controller
 {
@@ -107,22 +112,15 @@ class ExportController extends Controller
     // 利用者１件の実務記録表をExcelで出力
     public function export(Request $request)
     {
-        $user_id = $request->id;
-        $user = User::where('id', $user_id)->first();
 
+        $user_id = $request->user_id;
+        $user = User::where('id', $user_id)->first();
         $year_month = $request->date;
 
         // リクエストから取得した年月を、 $yearと$monthに分ける
         $year = date('Y', strtotime($year_month));
         $month = date('n', strtotime($year_month));
 
-        // Performanceテーブルのレコードより、
-        //     1. user_idが一致
-        //     2. insert_dateの年が一致
-        //     3. insert_dateの月が一致
-        //     4. insert_dateの昇順
-        //     5. getしたものを連想配列に変換
-        // で取得
         $records = Performance::where('user_id', $user_id)
             ->whereYear('insert_date', $year)
             ->whereMonth('insert_date', $month)
@@ -139,14 +137,12 @@ class ExportController extends Controller
         $exceltables = [];
         // 指定された月の日数を取得
         $totalday = $monthday->daysInMonth;
-
         // 月の日数分、exceltables配列にExcelTableインスタンスを入れる
         for ($i = 0; $i < $totalday; $i++) {
             // 指定月の１日から末日までのCarbonインスタンスを生成
             $day = new Carbon($monthday);
 
-            // Performanceレコードから抽出したinsert_dateの値と、
-            // Carbonインスタンス（１日から末日）の日付を比較
+            // Performanceレコードから抽出したinsert_dateの値と、Carbonインスタンス（１日から末日）の日付を比較
             // 一致の場合は配列番号、不一致の場合はfalseを返す
             $result = array_search($monthday->toDateString(), $dateArray);
             if ($result !== false) {
@@ -165,33 +161,63 @@ class ExportController extends Controller
             $monthday->addDay();
         }
 
-        $param = [
-            'user' => $user,
-            'year_month' => $year_month,
-            'exceltables' => $exceltables,
-        ];
+        // publicフォルダ内のテンプレートxlsxファイルをスプレッドシートで読込
+        $spreadsheet = IOFactory::load(public_path() . '/excel/template.xlsx');
+        // 選択シートにアクセスを開始
+        $sheet = $spreadsheet->getActiveSheet();
+        // テンプレートのセルに値を挿入
+        $sheet->setCellValue('A1', date('Y年n月', strtotime($year_month)));
+        $sheet->setCellValue('A3', $user->getName());
+        $sheet->setCellValue('J3', '未来のかたち　' . $user->school->getName());
+        for ($i = 0; $i < count($exceltables); $i++) {
+            $celno = 7 + $i;
+            $sheet->setCellValue('A' . $celno, $exceltables[$i]->getDay()->day . '日');
+            $sheet->setCellValue('B' . $celno, $exceltables[$i]->getDay()->isoFormat('ddd'));
+            // 変数に無名関数を代入
+            $funstr = function ($i) use ($exceltables) {
+                $string = '';
+                if ($exceltables[$i]->getService() === false && $exceltables[$i]->getDay()->dayOfWeek !== 0) {
+                    $string = '欠';
+                    return $string;
+                }
+                return $string;
+            };
+            $sheet->setCellValue('C' . $celno, $funstr($i));
+            $sheet->setCellValue('D' . $celno, $exceltables[$i]->getStart());
+            $sheet->setCellValue('E' . $celno, $exceltables[$i]->getEnd());
+            $sheet->setCellValue('G' . $celno, $exceltables[$i]->getFood_fg());
+            $sheet->setCellValue('H' . $celno, $exceltables[$i]->getOutside_fg());
+            $sheet->setCellValue('I' . $celno, $exceltables[$i]->getMedical_fg());
+            $sheet->setCellValue('J' . $celno, $exceltables[$i]->getNote());
+        }
 
-        $view = view('export.export', compact('user', 'year_month', 'exceltables'));
-        return Excel::download(new UsersExport($view), $year_month . '_' . $user->getNameFull() . '.xlsx');
+        Shared\File::setUseUploadTempDirectory(public_path());
+        $writer = new Xlsx($spreadsheet);
+        $writer->save(public_path() . '/excel/export/output.xlsx');
+
+        return response()->download(
+            public_path() . '/excel/export/output.xlsx',
+            $year_month . '_' . $user->id . '_' . $user->getNameFull() . '.xlsx',
+            ['content-type' => 'application/vnd.ms-excel',]
+        )
+            ->deleteFileAfterSend(true);
     }
 
 
     // 利用者の実務記録表を所属校、年月で絞ってExcelで一括出力
     public function bulkExport(Request $request)
     {
-        $school_id = $request->school_id;
-        $users = User::schoolIdEqual($school_id)->get();
 
         $year_month = $request->date;
+        $school_id = $request->school_id;
+        $users = User::schoolIdEqual($school_id)->get();
 
         // リクエストから取得した年月を、 $yearと$monthに分ける
         $year = date('Y', strtotime($year_month));
         $month = date('n', strtotime($year_month));
 
-
         foreach ($users as $user) {
-
-            $records = Performance::where('user_id', $user->user_id)
+            $records = Performance::where('user_id', $user->id)
                 ->whereYear('insert_date', $year)
                 ->whereMonth('insert_date', $month)
                 ->with('note')
@@ -233,14 +259,52 @@ class ExportController extends Controller
                 $monthday->addDay();
             }
 
-            $param = [
-                'user' => $user,
-                'year_month' => $year_month,
-                'exceltables' => $exceltables,
-            ];
+            // publicフォルダ内のテンプレートxlsxファイルをスプレッドシートで読込
+            $spreadsheet = IOFactory::load(public_path() . '/excel/template.xlsx');
+            // 選択シートにアクセスを開始
+            $sheet = $spreadsheet->getActiveSheet();
 
-            $view = view('export.export', compact('user', 'year_month', 'exceltables'));
-            return Excel::download(new UsersExport($view), $year_month . '_' . $user->getNameFull() . '.xlsx');
+            // テンプレートのセルに値を挿入
+            $sheet->setCellValue('A1', date('Y年n月', strtotime($year_month)));
+            $sheet->setCellValue('A3', $user->getName());
+            $sheet->setCellValue('J3', '未来のかたち　' . $user->school->getName());
+            for ($i = 0; $i < count($exceltables); $i++) {
+                $celno = 7 + $i;
+                $sheet->setCellValue('A' . $celno, $exceltables[$i]->getDay()->day . '日');
+
+                $funstr = function ($i) use ($exceltables) {
+                    $string = '';
+                    if ($exceltables[$i]->getService() === false && $exceltables[$i]->getDay()->dayOfWeek !== 0) {
+                        $string = '欠';
+                        return $string;
+                    }
+                    return $string;
+                };
+
+                $sheet->setCellValue('B' . $celno, $exceltables[$i]->getDay()->isoFormat('ddd'));
+                $sheet->setCellValue('C' . $celno, $funstr($i));
+                $sheet->setCellValue('D' . $celno, $exceltables[$i]->getStart());
+                $sheet->setCellValue('E' . $celno, $exceltables[$i]->getEnd());
+                $sheet->setCellValue('G' . $celno, $exceltables[$i]->getFood_fg());
+                $sheet->setCellValue('H' . $celno, $exceltables[$i]->getOutside_fg());
+                $sheet->setCellValue('I' . $celno, $exceltables[$i]->getMedical_fg());
+                $sheet->setCellValue('J' . $celno, $exceltables[$i]->getNote());
+            }
+
+            Shared\File::setUseUploadTempDirectory(public_path());
+            $writer = new Xlsx($spreadsheet);
+            $writer->save(public_path() . '/excel/export/' . $year_month . '_' . $user->id . '_' . $user->getNameFull() . '.xlsx');
         }
+
+        $files = glob(public_path() . '/excel/export/*');
+        Madzipper::make(public_path(),'output.zip')->add($files)->close();
+        File::cleanDirectory(public_path() . '/excel/export');
+
+        return response()->download(
+            'output.zip',
+            $year_month . '.zip',
+            ['content-type' => 'application/zip',]
+        )
+            ->deleteFileAfterSend(true);
     }
 }

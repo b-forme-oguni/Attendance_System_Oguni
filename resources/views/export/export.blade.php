@@ -75,7 +75,7 @@
             <td>
                 {{-- 終了時間 --}}
 
-                {{ $exceltable->getend() }}
+                {{ $exceltable->getEnd() }}
             </td>
             <td>
                 {{-- 訪問支援特別加算 --}}

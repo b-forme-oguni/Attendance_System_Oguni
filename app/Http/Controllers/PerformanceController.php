@@ -33,8 +33,8 @@ class PerformanceController extends Controller
         }
 
         $records = Performance::dateIdEqual($date)
-            ->whereHas('User', function ($q) use ($school_id) {
-                $q->where('school_id', $school_id);
+            ->whereHas('User', function ($query) use ($school_id) {
+                $query->where('school_id', $school_id);
             })
             ->with(['user', 'note'])->paginate(10);
 

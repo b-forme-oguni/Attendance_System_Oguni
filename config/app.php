@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ValidatorServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Madnest\Madzipper\MadzipperServiceProvider::class,
     ],
 
     /*
@@ -228,6 +229,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Madzipper' => Madnest\Madzipper\Madzipper::class,
 
     ],
 
