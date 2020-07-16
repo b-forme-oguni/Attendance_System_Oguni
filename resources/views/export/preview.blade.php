@@ -30,20 +30,27 @@
 @endsection
 
 @section('header_menu_sub')
-@if (isset($user))
+
 <ul class="menu_sub d-flex list-unstyled">
+    @if (isset($user))
     <li>
         <a class="button square_min" href="/preview/export?user_id={{ $user->id }}&date={{ $year_month }}">
 
             Excel出力</a>
     </li>
+    @endif
+    @if (isset($school_id))
     <li>
         <a class="button square_min" href="/preview/bulkexport?school_id={{ $school_id }}&date={{ $year_month }}">
 
             Excel一括出力</a>
     </li>
+    @endif
 </ul>
-@endif
+
+
+
+
 @endsection
 
 @section('breadcrumb')

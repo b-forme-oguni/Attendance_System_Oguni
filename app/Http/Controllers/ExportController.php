@@ -15,7 +15,6 @@ use PhpOffice\PhpSpreadsheet\Shared;
 use Madnest\Madzipper\Facades\Madzipper;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-
 class ExportController extends Controller
 {
     // Excel出力プレビューを表示
@@ -112,18 +111,13 @@ class ExportController extends Controller
     // 利用者１件の実務記録表をExcelで出力
     public function export(Request $request)
     {
-
         $user_id = $request->user_id;
         $user = User::where('id', $user_id)->first();
         $year_month = $request->date;
 
-        // リクエストから取得した年月を、 $yearと$monthに分ける
-        $year = date('Y', strtotime($year_month));
-        $month = date('n', strtotime($year_month));
-
         $records = Performance::where('user_id', $user_id)
-            ->whereYear('insert_date', $year)
-            ->whereMonth('insert_date', $month)
+            ->whereYear('insert_date', date('Y', strtotime($year_month)))
+            ->whereMonth('insert_date', date('n', strtotime($year_month)))
             ->with('note')
             ->orderBy('insert_date')
             ->get()
@@ -141,7 +135,6 @@ class ExportController extends Controller
         for ($i = 0; $i < $totalday; $i++) {
             // 指定月の１日から末日までのCarbonインスタンスを生成
             $day = new Carbon($monthday);
-
             // Performanceレコードから抽出したinsert_dateの値と、Carbonインスタンス（１日から末日）の日付を比較
             // 一致の場合は配列番号、不一致の場合はfalseを返す
             $result = array_search($monthday->toDateString(), $dateArray);
@@ -190,16 +183,20 @@ class ExportController extends Controller
             $sheet->setCellValue('I' . $celno, $exceltables[$i]->getMedical_fg());
             $sheet->setCellValue('J' . $celno, $exceltables[$i]->getNote());
         }
-
+        // 一時ファイルを作成するパスを選択
         Shared\File::setUseUploadTempDirectory(public_path());
         $writer = new Xlsx($spreadsheet);
-        $writer->save(public_path() . '/excel/export/output.xlsx');
-
+        $writer->save(public_path() . '/excel/temporary/output.xlsx');
+        // ダウンロードを促すレスポンスを返す
         return response()->download(
-            public_path() . '/excel/export/output.xlsx',
+            // 対象のファイルパスを指定
+            public_path() . '/excel/temporary/output.xlsx',
+            // ファイル名を変更
             $year_month . '_' . $user->id . '_' . $user->getNameFull() . '.xlsx',
+            // Httpヘッダーに配列を追加
             ['content-type' => 'application/vnd.ms-excel',]
         )
+            // ダウンロード操作後にファイルを削除する
             ->deleteFileAfterSend(true);
     }
 
@@ -207,19 +204,14 @@ class ExportController extends Controller
     // 利用者の実務記録表を所属校、年月で絞ってExcelで一括出力
     public function bulkExport(Request $request)
     {
-
         $year_month = $request->date;
         $school_id = $request->school_id;
         $users = User::schoolIdEqual($school_id)->get();
 
-        // リクエストから取得した年月を、 $yearと$monthに分ける
-        $year = date('Y', strtotime($year_month));
-        $month = date('n', strtotime($year_month));
-
         foreach ($users as $user) {
             $records = Performance::where('user_id', $user->id)
-                ->whereYear('insert_date', $year)
-                ->whereMonth('insert_date', $month)
+                ->whereYear('insert_date', date('Y', strtotime($year_month)))
+                ->whereMonth('insert_date', date('n', strtotime($year_month)))
                 ->with('note')
                 ->orderBy('insert_date')
                 ->get()
@@ -293,18 +285,24 @@ class ExportController extends Controller
 
             Shared\File::setUseUploadTempDirectory(public_path());
             $writer = new Xlsx($spreadsheet);
-            $writer->save(public_path() . '/excel/export/' . $year_month . '_' . $user->id . '_' . $user->getNameFull() . '.xlsx');
+            $writer->save(public_path() . '/excel/temporary/' . $year_month . '_' . $user->id . '_' . $user->getNameFull() . '.xlsx');
         }
-
-        $files = glob(public_path() . '/excel/export/*');
-        Madzipper::make(public_path(),'output.zip')->add($files)->close();
-        File::cleanDirectory(public_path() . '/excel/export');
-
+        // 指定フォルダのファイルパスを連想配列で取得
+        $files = glob(public_path() . '/excel/temporary/*');
+        // ファイルパスで指定したファイルをzipで保存
+        Madzipper::make(public_path() . '/excel/export/output.zip')->add($files)->close();
+        // 指定フォルダ内のファイルを一括削除
+        File::cleanDirectory(public_path() . '/excel/temporary');
+        // ダウンロードを促すレスポンスを返す
         return response()->download(
-            'output.zip',
+            // 対象のファイルパスを指定
+            public_path() . '/excel/export/output.zip',
+            // ファイル名を変更
             $year_month . '.zip',
+            // Httpヘッダーに配列を追加
             ['content-type' => 'application/zip',]
         )
+            // ダウンロード操作後にファイルを削除する
             ->deleteFileAfterSend(true);
     }
 }
