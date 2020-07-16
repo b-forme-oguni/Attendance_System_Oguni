@@ -3,7 +3,7 @@
 
 @section('header_menu_main')
 <form action="deleteindex" method="GET">
-    <dl class="d-flex align-items-center">
+    <dl class="d-flex align-items-center mr-2">
         <dt>
             所属：</dt>
         <dd>

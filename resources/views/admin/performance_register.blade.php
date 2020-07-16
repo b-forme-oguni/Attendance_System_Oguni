@@ -1,6 +1,20 @@
 @extends('layouts.common_base')
 @section('title','実績記録作成')
 
+@section('header_menu_main')
+<form action="store" method="GET" class="d-flex">
+    <input type="hidden" name="date" value="{{ $date }}">
+    <dl class="d-flex align-items-center mr-2">
+        <dt>
+            所属：</dt>
+        <dd>
+
+            {{ Form::select('school_id', $schoolselect, $school_id, ['placeholder' => '選択してください','class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
+        </dd>
+    </dl>
+</form>
+@endsection
+
 @section('content')
 <div class="container mt-4">
     <h2 class="text-center">@yield('title')</h2>

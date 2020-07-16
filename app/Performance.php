@@ -64,6 +64,11 @@ class Performance extends Model
         }
     }
 
+    public function getSchoolId()
+    {
+        return $this->user->school_id;
+    }
+
     //登録年月日でスコープする
     public function scopeDateIdEqual($query, $string)
     {

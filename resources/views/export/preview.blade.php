@@ -3,7 +3,7 @@
 
 @section('header_menu_main')
 <form action="preview" method="GET" class="d-flex">
-    <dl class="d-flex align-items-center">
+    <dl class="d-flex align-items-center mr-2">
         <dt>
             所属：</dt>
         <dd>
@@ -11,7 +11,14 @@
             {{ Form::select('school_id', $schoolselect, $school_id, ['placeholder' => '選択してください','class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
         </dd>
     </dl>
-    <dl class="d-flex align-items-center">
+    <dl class="d-flex align-items-center mr-2">
+        <dt>
+            年月：</dt>
+        <dd>
+            <input type="month" name="year_month" value={{ $year_month }} class="form-control" onChange='submit(this.form)'>
+        </dd>
+    </dl>
+    <dl class="d-flex align-items-center mr-2">
         <dt>
             利用者：</dt>
         <dd>
@@ -19,38 +26,20 @@
             {{ Form::select('user_id', $userslist, $user_id,['placeholder' => '選択してください','class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
         </dd>
     </dl>
-    <dl class="d-flex align-items-center">
-        <dt>
-            年月：</dt>
-        <dd>
-            <input type="month" name="year_month" value={{ $year_month }} class="form-control" onChange='submit(this.form)'>
-        </dd>
-    </dl>
 </form>
 @endsection
 
 @section('header_menu_sub')
 
+@if (isset($school_id))
 <ul class="menu_sub d-flex list-unstyled">
-    @if (isset($user))
-    <li>
-        <a class="button square_min" href="/preview/export?user_id={{ $user->id }}&date={{ $year_month }}">
-
-            Excel出力</a>
-    </li>
-    @endif
-    @if (isset($school_id))
     <li>
         <a class="button square_min" href="/preview/bulkexport?school_id={{ $school_id }}&date={{ $year_month }}">
 
-            Excel一括出力</a>
+            所属校と年月から一括出力</a>
     </li>
-    @endif
 </ul>
-
-
-
-
+@endif
 @endsection
 
 @section('breadcrumb')
@@ -60,9 +49,13 @@
 <li class="breadcrumb-item active" aria-current="page">@yield('title')</li>
 @endsection
 
-
 @section('content')
 @if (isset($user))
+<p class="text-right m-0">
+    <a class="button square_min" href="/preview/export?user_id={{ $user->id }}&date={{ $year_month }}">
+
+        プレビューを出力</a>
+</p>
 <table class="caption">
     <tbody>
         <tr>
@@ -113,7 +106,7 @@
         @foreach ($exceltables as $exceltable)
 
         @if ($exceltable->getService() === false)
-        <tr class="edit_sel" onclick="location.href='/performance/store?id={{ $user->id }}&date={{ $exceltable->getDay()->toDateString() }}'">
+        <tr class="edit_sel" onclick="location.href='/performance/store?id={{ $user->id }}&school_id={{ $user->school_id }}&date={{ $exceltable->getDay()->toDateString() }}'">
             @else
         <tr class="edit_sel" onclick="location.href='/performance/edit?id={{ $exceltable->getId() }}'">
             @endif

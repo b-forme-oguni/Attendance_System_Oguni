@@ -38,7 +38,6 @@ class PerformanceController extends Controller
             })
             ->with(['user', 'note'])->paginate(10);
 
-
         $param = [
             'records' => $records,
             'schoolselect' => BaseClass::schoolSelect(),
@@ -57,6 +56,12 @@ class PerformanceController extends Controller
             $user_id = null;
         }
 
+        if ($request->has('school_id')) {
+            $school_id = $request->school_id;
+        } else {
+            $school_id = null;
+        }
+
         if ($request->has('date')) {
             $date = $request->date;
         } else {
@@ -72,9 +77,11 @@ class PerformanceController extends Controller
         }
 
         $param = [
+            'school_id' => $school_id,
             'user_id' => $user_id,
             'date' => $date,
-            'userslist' => BaseClass::usersList(),
+            'schoolselect' => BaseClass::schoolSelect(),
+            'userslist' => BaseClass::usersListScope($school_id),
             'noteslist' => BaseClass::notesList(),
             'timetable' => BaseClass::timeTable(),
         ];
@@ -103,8 +110,22 @@ class PerformanceController extends Controller
     // 実績記録変更画面
     public function edit(Request $request)
     {
+        if ($request->has('id')) {
+            $performance_id = $request->id;
+        } else {
+            $performance_id = null;
+        }
+
         // クエリから指定したidのレコードを取得
-        $record = Performance::where('id', $request->id)->first();
+        $record = Performance::where('id', $performance_id)->with('user')->first();
+
+        if ($request->has('school_id')) {
+            $school_id = $request->school_id;
+        } elseif ($request->has('id')) {
+            $school_id = $record->getSchoolId();
+        } else {
+            $school_id = null;
+        }
 
         // food_fgフラグに真偽値を入力
         if (!empty($record->food_fg)) {
@@ -144,11 +165,14 @@ class PerformanceController extends Controller
         }
 
         $param = [
+            'school_id' => $school_id,
+            'performance_id' => $performance_id,
             'record' => $record,
             'food_fg' => $food_fg,
             'outside_fg' => $outside_fg,
             'medical_fg' => $medical_fg,
-            'userslist' => BaseClass::usersList(),
+            'userslist' => BaseClass::usersListScope($school_id),
+            'schoolselect' => BaseClass::schoolSelect(),
             'noteslist' => BaseClass::notesList(),
             'timetable' => BaseClass::timeTable(),
         ];

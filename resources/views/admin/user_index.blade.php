@@ -2,7 +2,7 @@
 @section('title','利用者管理')
 
 @section('header_menu_main')
-<dl class="d-flex align-items-center">
+<dl class="d-flex align-items-center mr-2">
     <dt>
         所属：</dt>
     <dd>

@@ -1,6 +1,19 @@
 @extends('layouts.common_base')
 @section('title','実績記録の変更')
 
+@section('header_menu_main')
+<form action="edit" method="GET" class="d-flex">
+    <input type="hidden" name="id" value="{{ $record->id }}">
+    <dl class="d-flex align-items-center mr-2">
+        <dt>
+            所属：</dt>
+        <dd>
+
+            {{ Form::select('school_id', $schoolselect, $school_id, ['placeholder' => '選択してください','class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
+        </dd>
+    </dl>
+</form>
+@endsection
 
 @section('content')
 <div class="container mt-4">
@@ -30,9 +43,8 @@
                     <label class="col-md-2 col-form-label text-md-right">
                         利用者</label>
                     <div class="col-md-8">
-
-                        {{ Form::select('user_id', $userslist, $record->user_id, ['class' => 'form-control']) }}
-                        @error('insert_date')
+                        {{ Form::select('user_id', $userslist, $record->user_id,['placeholder' => '選択してください','class' => 'form-control']) }}
+                        @error('user_id')
                         <span class="error_msg" role="alert">
                             <strong>
 

@@ -3,7 +3,7 @@
 
 @section('header_menu_main')
 <form action="performance" method="GET" class="d-flex">
-    <dl class="d-flex align-items-center">
+    <dl class="d-flex align-items-center mr-2">
         <dt>
             所属：</dt>
         <dd>
@@ -11,7 +11,7 @@
             {{ Form::select('school_id', $schoolselect, $school_id, ['class' => 'form-control', 'onChange' => 'submit(this.form)']) }}
         </dd>
     </dl>
-    <dl class="d-flex align-items-center">
+    <dl class="d-flex align-items-center mr-2">
         <dt>
             日付：</dt>
         <dd>

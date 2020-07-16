@@ -13,8 +13,8 @@ class BaseClass
     public static function schoolSelect()
     {
         $schoolselect = School::select('id', 'school_name')
-        ->get()
-        ->pluck('school_name','id');
+            ->get()
+            ->pluck('school_name', 'id');
         return $schoolselect;
     }
 
@@ -34,7 +34,9 @@ class BaseClass
     // Formファザード用にUserクラスをidと名前の連想配列にする
     public static function usersListScope($school_id)
     {
-        $users = User::schoolIdEqual($school_id)->get();
+        $users = User::schoolIdEqual($school_id)
+            ->orderby('last_name_kana')
+            ->get();
         $userslist = [];
         foreach ($users as $user) {
             $userslist += [
@@ -47,7 +49,7 @@ class BaseClass
     // Formファザード用にNoteクラスをidと名前の連想配列にする
     public static function notesList()
     {
-        $noteslist = Note::select('id','note')
+        $noteslist = Note::select('id', 'note')
             ->get()
             ->pluck('note', 'id');
         return $noteslist;
