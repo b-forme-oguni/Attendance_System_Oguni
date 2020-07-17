@@ -110,7 +110,9 @@ class Performance extends Model
             // endカラムに終了時刻が打刻された場合
         } else {
             // 16:00以降に打刻の場合、16:00に変更
-            if ($value > '16:00:00') {
+            if ($value < '09:30:00') {
+                $value = '09:30:00';
+            }elseif ($value > '16:00:00') {
                 $value = '16:00:00';
             }
             // endカラムの時間を15分切り下げる

@@ -298,7 +298,7 @@ class ExportController extends Controller
             // 対象のファイルパスを指定
             public_path() . '/excel/export/output.zip',
             // ファイル名を変更
-            $year_month . '.zip',
+            $year_month . '_' . $user->school->getName() . '.zip',
             // Httpヘッダーに配列を追加
             ['content-type' => 'application/zip',]
         )

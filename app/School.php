@@ -9,6 +9,7 @@ class School extends Model
     protected $table = 'schools';
     protected $guarded = array('id');
 
+    //従キーを設定
     public function user()
     {
         return $this->hasMany('App\User');
