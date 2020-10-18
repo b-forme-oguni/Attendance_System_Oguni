@@ -69,29 +69,31 @@ class ExportController extends Controller
         // 指定された月の日数を取得
         $totalday = $monthdays->daysInMonth;
 
-        // 月の日数分、exceltables配列にExcelTableインスタンスを入れる
-        for ($i = 0; $i < $totalday; $i++) {
-            // 指定月の１日から末日までのCarbonインスタンスを生成
-            $day = new Carbon($monthdays);
+        if(isset($user_id)){
+            // 月の日数分、exceltables配列にExcelTableインスタンスを入れる
+            for ($i = 0; $i < $totalday; $i++) {
+                // 指定月の１日から末日までのCarbonインスタンスを生成
+                $day = new Carbon($monthdays);
 
-            // Performanceレコードから抽出したinsert_dateの値と、
-            // Carbonインスタンス（１日から末日）の日付を比較
-            // 一致の場合は配列番号、不一致の場合はfalseを返す
-            $result = array_search($monthdays->toDateString(), $dateArray);
-            if ($result !== false) {
-                // 一致：recordsから日付の一致する配列番号を指定してrecordに代入
-                $record = $records[$result];
-            } else {
-                // 不一致：recordにNULLを代入
-                $record = null;
+                // Performanceレコードから抽出したinsert_dateの値と、
+                // Carbonインスタンス（１日から末日）の日付を比較
+                // 一致の場合は配列番号、不一致の場合はfalseを返す
+                $result = array_search($monthdays->toDateString(), $dateArray);
+                if ($result !== false) {
+                    // 一致：recordsから日付の一致する配列番号を指定してrecordに代入
+                    $record = $records[$result];
+                } else {
+                    // 不一致：recordにNULLを代入
+                    $record = null;
+                }
+
+                // ExcelTableインスタンスを生成
+                $exceltable = new ExcelTable($day, $record);
+                // ExcelTableインスタンスを配列に格納
+                $exceltables[] = $exceltable;
+                // Carbonクラスの日付を１日プラス
+                $monthdays->addDay();
             }
-
-            // ExcelTableインスタンスを生成
-            $exceltable = new ExcelTable($day, $record);
-            // ExcelTableインスタンスを配列に格納
-            $exceltables[] = $exceltable;
-            // Carbonクラスの日付を１日プラス
-            $monthdays->addDay();
         }
 
         $param = [
